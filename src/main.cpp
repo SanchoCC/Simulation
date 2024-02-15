@@ -51,23 +51,21 @@ int Width = 800;
 int Height = 600;
 float KoefScreen = static_cast<float>(Width) / Height;
 
-// Обработчик событий изменения размера окна
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
 int main() {
-    // Инициализация GLFW
+    // GLFW
     if (!glfwInit()) {
         std::cerr << "glfwInit error" << std::endl;
         return -1;
     }
 
-    // Устанавливаем версию OpenGL (3.3)
+    // OpenGL (4.6)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
-    // Создаем окно
     GLFWwindow* window = glfwCreateWindow(Width, Height, "Hello, OpenGL!", nullptr, nullptr);
     if (!window) {
         std::cerr << "glfwCreateWindow error" << std::endl;
@@ -75,12 +73,11 @@ int main() {
         return -1;
     }
 
-    // Делаем текущим контекст окна
     glfwMakeContextCurrent(window);
 
-    // Инициализация Glad
+    // Glad
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cerr << "Ошибка инициализации Glad" << std::endl;
+        std::cerr << "Glad" << std::endl;
         glfwTerminate();
         return -1;
     }
@@ -88,11 +85,9 @@ int main() {
 
     glScalef(1/KoefScreen, 1, 1);
 
-    // Устанавливаем обработчик изменения размера окна
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 
-    // Создаем экземпляр класса для отрисовки пола
 
     std::list<Object> ObjectsList;
     Floor floor;
@@ -101,28 +96,28 @@ int main() {
     ObjectsList.push_back(square);
     Square square1;
     
-    
-    
-    
 
     int fpsCounter = 0;
     double lastTime = glfwGetTime();
     glfwSwapInterval(1);
-    // Основной цикл
     while (!glfwWindowShouldClose(window)) {
-        // Очистка экрана (яркий серый цвет фона)
         glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
+        glBegin(GL_TRIANGLES);
+        glColor3f(0.5, 0.5, 1);
+        glVertex2f(1, 1);
+        glVertex2f(0, 1);
+        glVertex2f(0, 0);
+        glEnd();
         double currentTime = glfwGetTime();
         double deltaTime = currentTime - lastTime;
-        // Отрисовка пола;
         for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
             it->Render();
             it->Move(0, g, deltaTime);
            
             auto inner_it = it;
-            ++inner_it;  // Переходим к следующему элементу
+            ++inner_it;  
 
             while (inner_it != ObjectsList.end()) 
             {
@@ -147,14 +142,12 @@ int main() {
                 }
                 
                 
-                ++inner_it;  // Переходим к следующему элементу
+                ++inner_it;  
             }
         }
 
-        // Обмен буферов
         glfwSwapBuffers(window);
 
-        // Проверка событий и вызов обработчиков
         glfwPollEvents();
 
         lastTime = currentTime;
@@ -162,7 +155,6 @@ int main() {
         ++fpsCounter;
     }
 
-    // Завершение работы
     glfwTerminate();
     std::cout << fpsCounter << std::endl;
     return 0;

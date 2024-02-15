@@ -38,18 +38,18 @@ void Object::Render()
 {
     Angles.clear();
     glColor3f(Color_Red, Color_Green, Color_Blue);
-    glBegin(GL_POLYGON); // Начало описания полигона
+    glBegin(GL_POLYGON); 
     for (int i = 0; i < Sides; i++) {
 
         
-        float theta = 2.0f * M_PI * i / Sides+(M_PI/4); // Угол текущего сегмента
-        float x = Radius * cosf(theta); // Вычисление координаты x для текущего сегмента
-        float y = Radius * sinf(theta); // Вычисление координаты y для текущего сегмента
+        float theta = 2.0f * M_PI * i / Sides+(M_PI/4); 
+        float x = Radius * cosf(theta); 
+        float y = Radius * sinf(theta); 
         Angles.push_back(std::make_pair(PositionX + x, PositionY + y));
         auto it = Angles.begin();
         std::advance(it, i);
-        glVertex2f(it->first, it->second); // Добавление вершины
+        glVertex2f(it->first, it->second); 
     }
 
-    glEnd(); // Завершение описания полигона
+    glEnd(); 
 }
