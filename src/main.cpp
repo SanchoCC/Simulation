@@ -83,7 +83,8 @@ int main() {
             squarePtr.reset();
         }
     }
-    glfwTerminate();
     std::cout << fpsCounter << std::endl;
+    std::cout << fpsCounter / glfwGetTime();
+    glfwTerminate(); 
     return 0;
 }
