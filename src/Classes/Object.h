@@ -11,36 +11,46 @@
 class Object {
 public:
 
+	static int counter;
+
 	Object(bool Collision, bool Static, double Mass, int Sides, double Radius, float PositionX, float PositionY);
 
-	void Move(double AccelerationX, double AccelerationY, double deltaTime);
-
-	void Render();
+	virtual ~Object();
+	
 	std::vector<std::pair<float, float>> Angles;
-
-	double VelocityX = 0;
-	double VelocityY = 0;
-
+	
+	bool operator==(const Object& other) const {
+		return (this->index == other.index);
+	}
 protected:
 	bool Collision;
 	bool Static;
 
-	int Sides;
-	float Radius;
-
-	double Mass;
-
-	float PositionX = 0;
-	float PositionY = 0;
-
-	
-
+	double VelocityX = 0;
+	double VelocityY = 0;
+	double Mass;		
 	double Energy = 0; 
 
 	float Color_Red;
 	float Color_Green;
 	float Color_Blue;
+private:
+	static std::list<Object> ObjectsList;
 
-	
+	void GravityAcceleration(double deltaTime);
 
+	void Move(double deltaTime);
+
+	void Render();
+
+	int index;
+
+	float PositionX = 0;
+	float PositionY = 0;
+
+	int Sides;
+	float Radius;
+		
+public:
+	static void ObjectsMain(double deltaTime);
 };
