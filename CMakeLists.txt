@@ -20,6 +20,10 @@ add_subdirectory(libs/glfw)
 
 target_link_libraries(simulation glfw)
 
+add_subdirectory(libs/glm)
+
+target_link_libraries(simulation glm)
+
 
 
  

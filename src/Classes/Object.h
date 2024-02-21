@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include <iostream>
 #define _USE_MATH_DEFINES
@@ -17,7 +18,7 @@ public:
 
 	virtual ~Object();
 	
-	std::vector<std::pair<float, float>> Angles;
+	std::vector<glm::vec2> Angles;
 	
 	bool operator==(const Object& other) const {
 		return (this->index == other.index);
@@ -30,6 +31,7 @@ protected:
 	double VelocityY = 0;
 	double Mass;		
 	double Energy = 0; 
+	double RotationAngle = 0;
 
 	float Color_Red;
 	float Color_Green;
@@ -53,4 +55,6 @@ private:
 		
 public:
 	static void ObjectsMain(double deltaTime);
+
+
 };

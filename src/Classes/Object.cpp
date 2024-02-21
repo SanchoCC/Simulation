@@ -43,11 +43,10 @@ void Object::Render() {
     glColor3f(Color_Red, Color_Green, Color_Blue);
     glBegin(GL_POLYGON); 
     for (int i = 0; i < Sides; ++i) {        
-        float theta = 2.0f * M_PI * i / Sides+(M_PI/4); 
-        float x = Radius * cosf(theta); 
-        float y = Radius * sinf(theta); 
-        Angles.push_back(std::make_pair(PositionX + x, PositionY + y));        
-        glVertex2f(Angles[i].first, Angles[i].second);
+        float theta = 2.0f * M_PI * i / Sides-(M_PI/4+(RotationAngle/180*M_PI));
+        glm::vec2 angle(Radius * cosf(theta)+PositionX, Radius * sinf(theta)+PositionY); 
+        Angles.push_back(angle);        
+        glVertex2f(angle.x, angle.y);
     }
     glEnd(); 
 }
@@ -59,3 +58,4 @@ void Object::ObjectsMain(double deltaTime)
         it->Render();
     }
 }
+
