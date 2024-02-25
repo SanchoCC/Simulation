@@ -23,35 +23,29 @@ public:
 	std::vector<glm::vec2> Angles;
 
 protected:
+	static std::list<std::shared_ptr<Object>> ObjectsList;
+
 	bool Collision;
 	bool Static;
 
 	double VelocityX = 0;
 	double VelocityY = 0;
 	double Mass = 0;		
-	double Energy = 0; 
 	double RotationAngle = 0;
 
 	float PositionX = 0;
 	float PositionY = 0;
 
 	struct Color {
-		Color()
-		{
-			std::random_device rd;
-			std::mt19937 rng(rd());
-			std::uniform_real_distribution<float> color_dist(0.0f, 1.0f);
-			this->Red = color_dist(rng);
-			this->Green = color_dist(rng);
-			this->Blue = color_dist(rng);
-		}
+		Color();
+		Color(float Red, float Green, float Blue);
+		void SetRandomColor();
+		void SetColor(float Red, float Green, float Blue);
 		float Red;
 		float Green;
 		float Blue;
 	};
 	Color Color;
-
-	static std::list<std::shared_ptr<Object>> ObjectsList;
 private:
 	void GravityAcceleration(double deltaTime);
 	void Move(double deltaTime);

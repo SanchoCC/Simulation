@@ -17,7 +17,6 @@ void Object::Move(double deltaTime) {
     if (!Static) {
         PositionX += (VelocityX*0.001) * deltaTime;
         PositionY += (VelocityY*0.001) * deltaTime;
-        this->Energy = (Mass * (pow((VelocityY + VelocityX) * 100, 2))) / 2;
     }
 }
 void Object::ObjectsMain(double deltaTime)
@@ -27,5 +26,24 @@ void Object::ObjectsMain(double deltaTime)
         (*it)->Move(deltaTime);
         (*it)->Render();
     }
+}
+Object::Color::Color() {
+    SetRandomColor();
+}
+Object::Color::Color(float Red, float Green, float Blue) {
+    SetColor(Red, Green, Blue);
+}
+void Object::Color::SetRandomColor() {
+    std::random_device rd;
+    std::mt19937 rng(rd());
+    std::uniform_real_distribution<float> color_dist(0.0f, 1.0f);
+    this->Red = color_dist(rng);
+    this->Green = color_dist(rng);
+    this->Blue = color_dist(rng);
+}
+void Object::Color::SetColor(float Red, float Green, float Blue) {
+    this->Red = Red;
+    this->Green = Green;
+    this->Blue = Blue;
 }
 

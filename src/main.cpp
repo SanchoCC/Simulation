@@ -1,14 +1,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <iostream>
-#include <math.h>
-#include <list>
-#include <iterator>
-#include <memory>
-
 #include "classes/Object.h"
 #include "classes/ObjectShapes.h"
+
+#include <iostream>
 
 int Width = 800;
 int Height = 600;
@@ -49,7 +45,8 @@ int main() {
     double lastTime = glfwGetTime();
     glfwSwapInterval(1);
     //
-    Circle ball(0, 0, 0.0, 0.5, 0.5);
+    Circle ball(true, false, 0, 0.5f, 0.5f);
+    Rectangle floor(true, true, 0, -0.8f, 1, 2.0f);
     //
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.8f, 0.8f, 0.8f, 1.0f);

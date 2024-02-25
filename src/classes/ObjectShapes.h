@@ -15,5 +15,15 @@ private:
     float Radius;
     const int kCircleSides = 360;
 };
+class Rectangle:public Object
+{
+public:
+    Rectangle(bool Collision, bool Static, float PositionX, float PositionY, float Height, float Width);
+private:
+    void Render() override;
+private:
+    float Height; 
+    float Width;
+};
 
 #endif //SIMULATION_CLASSES_OBJECTSHAPES_H_
