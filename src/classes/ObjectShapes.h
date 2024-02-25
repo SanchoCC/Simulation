@@ -1,7 +1,6 @@
+#pragma once
 #ifndef SIMULATION_CLASSES_OBJECTSHAPES_H_
 #define SIMULATION_CLASSES_OBJECTSHAPES_H_
-
-#pragma once
 
 #include "Object.h"
 
