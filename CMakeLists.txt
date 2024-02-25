@@ -6,8 +6,10 @@ add_executable( simulation
 src/glad/glad.c
 src/glad/glad.h
 src/main.cpp
-src/Classes/Object.h
-src/Classes/Object.cpp
+src/classes/Object.h
+src/classes/Object.cpp
+src/classes/ObjectShapes.h
+src/classes/ObjectShapes.cpp
 )
 target_include_directories( simulation PRIVATE
   src

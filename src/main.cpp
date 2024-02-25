@@ -7,27 +7,9 @@
 #include <iterator>
 #include <memory>
 
-#include "Classes/Object.h"
+#include "classes/Object.h"
+#include "classes/ObjectShapes.h"
 
-class Square :public Object 
-{
-public: 
-    Square() :Object(true, false, 10, 4, 0.5, 0, 0.9) {
-    }
-};
-
-class Floor: public Object 
-{
-public:
-    Floor():Object(true, true, 1000, 4, 2, 0, -1) {        
-    }
-};
-class Ball :public Object
-{
-public:
-    Ball() :Object(true, false, 1, 50, 0.1, -0.5, 0.9) {
-    }
-};
 int Width = 800;
 int Height = 600;
 float KoefScreen = static_cast<float>(Width) / Height;
@@ -62,12 +44,13 @@ int main() {
     }       
     glScalef(1/KoefScreen, 1, 1);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); 
-    Floor floor;
-    std::unique_ptr<Object> squarePtr(new Square());
-    Ball ball;
+    
     int fpsCounter = 0;
     double lastTime = glfwGetTime();
     glfwSwapInterval(1);
+    //
+    Circle ball(0, 0, 0.0, 0.5, 0.5);
+    //
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);        
@@ -78,10 +61,6 @@ int main() {
         glfwPollEvents();
         lastTime = currentTime;       
         ++fpsCounter;       
-        if (currentTime > 2)
-        {
-            squarePtr.reset();
-        }
     }
     std::cout << fpsCounter << std::endl;
     std::cout << fpsCounter / glfwGetTime();
