@@ -1,7 +1,6 @@
+#pragma once
 #ifndef SIMULATION_CLASSES_OBJECT_H_
 #define SIMULATION_CLASSES_OBJECT_H_
-
-#pragma once
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
