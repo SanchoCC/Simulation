@@ -21,10 +21,20 @@ void Object::Move(double deltaTime) {
 }
 void Object::ObjectsMain(double deltaTime)
 {
-    for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
+    for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {      
         (*it)->GravityAcceleration(deltaTime);
         (*it)->Move(deltaTime);
         (*it)->Render();
+        for (auto innerit = ObjectsList.begin(); innerit != ObjectsList.end(); ++innerit) {
+            if ((*it)->CheckCollision(*innerit)) {
+                //
+                (*it)->VelocityY *= 0;
+                (*it)->VelocityY += 500;
+                (*innerit)->VelocityY *= 0;
+                (*innerit)->VelocityY += 500;
+                //
+            }
+        }
     }
 }
 Object::Color::Color() {

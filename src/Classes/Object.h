@@ -12,18 +12,19 @@
 #include <list>
 #include <vector>
 #include <memory>
+#include <algorithm>
+#include <iostream>
 
 class Object {
 public:
 	Object(bool Collision, bool Static, float PositionX, float PositionY);
 
 	virtual ~Object();
-	
-	std::vector<glm::vec2> Angles;
 
+	std::vector<std::pair<float, float>> Angles;
+	bool IsRectangle = false;
 protected:
-	static std::list<std::shared_ptr<Object>> ObjectsList;
-
+	static std::list<std::shared_ptr<Object>> ObjectsList;	
 	bool Collision;
 	bool Static;
 
@@ -49,6 +50,7 @@ private:
 	void GravityAcceleration(double deltaTime);
 	void Move(double deltaTime);
 	virtual void Render() = 0;
+	virtual bool CheckCollision(std::shared_ptr <Object> Other) = 0;
 public:
 	static void ObjectsMain(double deltaTime);
 };

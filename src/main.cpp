@@ -45,8 +45,9 @@ int main() {
     double lastTime = glfwGetTime();
     glfwSwapInterval(1);
     //
-    Circle ball(true, false, 0, 0.5f, 0.5f);
-    Rectangle floor(true, true, 0, -0.8f, 1, 2.0f);
+
+    Rectangle floor(true, true, 0, -0.8f, 1.0f, 2.0f);
+    Rectangle floo2r(true, false, 0, 1.0f, 1.0f, 1.0f);
     //
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
