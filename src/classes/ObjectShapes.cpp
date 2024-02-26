@@ -1,7 +1,6 @@
 #include "ObjectShapes.h"
 
-Circle::Circle(bool Collision, bool Static, float PositionX, float PositionY, float Radius) :Object(Collision, Static, PositionX, PositionY)
-{
+Circle::Circle(bool Collision, bool Static, float PositionX, float PositionY, float Radius) :Object(Collision, Static, PositionX, PositionY) {
     this->Radius = Radius;
     ObjectsList.push_back(std::make_shared<Circle>(*this));
 }
@@ -18,8 +17,7 @@ void Circle::Render() {
     }
     glEnd();
 }
-Rectangle::Rectangle(bool Collision, bool Static, float PositionX, float PositionY, float Height, float Width) :Object(Collision, Static, PositionX, PositionY)
-{
+Rectangle::Rectangle(bool Collision, bool Static, float PositionX, float PositionY, float Height, float Width) :Object(Collision, Static, PositionX, PositionY) {
     this->IsRectangle = true;
     this->Height = Height;
     this->Width = Width;
@@ -40,7 +38,7 @@ void Rectangle::Render() {
     glEnd();
 }
 bool Rectangle::CheckCollision(std::shared_ptr <Object> Other) {
-    if (IsRectangle && Other->IsRectangle) {
+    if (Other->IsRectangle) {
         auto MinThis = *std::min_element(Angles.cbegin(), Angles.cend(), [](const auto& lhs, const auto& rhs) {
             return lhs.first < rhs.first;
             });
@@ -52,7 +50,7 @@ bool Rectangle::CheckCollision(std::shared_ptr <Object> Other) {
             });
         auto MaxOther = *std::max_element(Other->Angles.cbegin(), Other->Angles.cend(), [](const auto& lhs, const auto& rhs) {
             return lhs.first < rhs.first;
-            });
+            });        
         if (MinThis.first > MinOther.first && MinThis.first < MaxOther.first || MaxThis.first < MaxOther.first && MaxThis.first>MinOther.first) {
             MinThis = *std::min_element(Angles.cbegin(), Angles.cend(), [](const auto& lhs, const auto& rhs) {
                 return lhs.second < rhs.second;
@@ -65,19 +63,16 @@ bool Rectangle::CheckCollision(std::shared_ptr <Object> Other) {
                 });
             MaxOther = *std::max_element(Other->Angles.cbegin(), Other->Angles.cend(), [](const auto& lhs, const auto& rhs) {
                 return lhs.second < rhs.second;
-                });
+                });           
             if (MinThis.second > MinOther.second && MinThis.second < MaxOther.second || MaxThis.second < MaxOther.second && MaxThis.second>MinOther.second) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
-        }
-        else {
+        } else {
             return false;
         }
-    }
-    else {
+    } else {
        return false;
     }
 }
