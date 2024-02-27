@@ -66,13 +66,8 @@ bool Rectangle::CheckCollision(std::shared_ptr <Object> Other) {
                 });           
             if (MinThis.second > MinOther.second && MinThis.second < MaxOther.second || MaxThis.second < MaxOther.second && MaxThis.second>MinOther.second) {
                 return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    } else {
-       return false;
-    }
+            } 
+        } 
+    } 
+    return false;
 }
