@@ -47,7 +47,9 @@ int main() {
     //
 
     Rectangle floor(true, true, 0, -0.8f, 1.0f, 2.0f);
-    Rectangle floo2r(true, false, 0, 1.0f, 1.0f, 1.0f);
+    Rectangle floo2r(true, false, 0, 0.5f, 1.0f/2, 1.0f/2);
+    Rectangle fl89oo2r(true, false, -0.5, 0.0f, 2.0f / 2, 1.0f / 2);
+    Circle dadad(true, false, 1.0f, 0, 1.0f/5);
     //
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
