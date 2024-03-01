@@ -15,8 +15,8 @@ void Object::GravityAcceleration(double deltaTime) {
 }
 void Object::Move(double deltaTime) {
     if (!Static) {        
-        PositionX += (VelocityX*0.001) * deltaTime;
-        PositionY += (VelocityY*0.001) * deltaTime;
+        PositionX += (VelocityX*0.001f) * deltaTime;
+        PositionY += (VelocityY*0.001f) * deltaTime;
     }
 }
 void Object::ObjectsMain(double deltaTime)
@@ -29,8 +29,9 @@ void Object::ObjectsMain(double deltaTime)
             if (innerit == it) {
                 continue;
             }
-            if ((*it)->CheckCollision(*innerit)) {            
-                    (*it)->VelocityY *= -0.5;
+            else if ((*it)->CheckCollision(*innerit)) {
+               (*it)->Move(-deltaTime);
+               (*it)->VelocityY *= -0.65f;
             }
         }
     }

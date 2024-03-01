@@ -43,8 +43,9 @@ int main() {
     double lastTime = glfwGetTime();
     glfwSwapInterval(1);
     //
-    Rectangle floor(true, true, 0, -0.8f, 1.0f, 2.0f);
-    Rectangle box(true, false, 0, 0.5f, 1.0f/2, 1.0f/2);
+    Rectangle floor(true, true, 0, -1.0f, 1.0f, 3.0f);
+    Rectangle box(true, false, 0, 0.5f, 0.5f, 0.5f);
+    Rectangle box2(true, false, 0.3f, 2.5f, 0.6f, 0.5f);
     //
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
@@ -56,9 +57,8 @@ int main() {
         glfwPollEvents();
         lastTime = currentTime;       
         ++fpsCounter;       
-    }
-    std::cout << fpsCounter << std::endl;
-    std::cout << fpsCounter / glfwGetTime();
+    }    
+    std::cout << "FPS:\t" << fpsCounter / glfwGetTime();
     glfwTerminate(); 
     return 0;
 }
