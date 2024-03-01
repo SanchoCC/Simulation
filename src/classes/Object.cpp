@@ -14,23 +14,23 @@ void Object::GravityAcceleration(double deltaTime) {
     VelocityY -= 9.8;
 }
 void Object::Move(double deltaTime) {
-    if (!Static) {
+    if (!Static) {        
         PositionX += (VelocityX*0.001) * deltaTime;
         PositionY += (VelocityY*0.001) * deltaTime;
     }
 }
 void Object::ObjectsMain(double deltaTime)
 {
-    for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {      
+    for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
         (*it)->GravityAcceleration(deltaTime);
         (*it)->Move(deltaTime);
         (*it)->Render();
         for (auto innerit = ObjectsList.begin(); innerit != ObjectsList.end(); ++innerit) {
-            if ((*it)->CheckCollision(*innerit)) {
-                //
-                (*it)->VelocityY += 1000;
-                (*innerit)->VelocityY += 1000;
-                //
+            if (innerit == it) {
+                continue;
+            }
+            if ((*it)->CheckCollision(*innerit)) {            
+                    (*it)->VelocityY *= -0.5;
             }
         }
     }
@@ -53,5 +53,12 @@ void Object::Color::SetColor(float Red, float Green, float Blue) {
     this->Red = Red;
     this->Green = Green;
     this->Blue = Blue;
+}
+bool Object::GetIsRectangle()
+{
+    return this->IsRectangle;
+}
+double Object::GetRotationAngle() {
+    return this->RotationAngle;
 }
 

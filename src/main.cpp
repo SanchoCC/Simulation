@@ -20,11 +20,9 @@ int main() {
         std::cerr << "glfwInit error" << std::endl;
         return -1;
     }
-
     // OpenGL (4.6)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-
     GLFWwindow* window = glfwCreateWindow(Width, Height, "Hello, OpenGL!", nullptr, nullptr);
     if (!window) {
         std::cerr << "glfwCreateWindow error" << std::endl;
@@ -45,11 +43,8 @@ int main() {
     double lastTime = glfwGetTime();
     glfwSwapInterval(1);
     //
-
     Rectangle floor(true, true, 0, -0.8f, 1.0f, 2.0f);
-    Rectangle floo2r(true, false, 0, 0.5f, 1.0f/2, 1.0f/2);
-    Rectangle fl89oo2r(true, false, -0.5, 0.0f, 2.0f / 2, 1.0f / 2);
-    Circle dadad(true, false, 1.0f, 0, 1.0f/5);
+    Rectangle box(true, false, 0, 0.5f, 1.0f/2, 1.0f/2);
     //
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.8f, 0.8f, 0.8f, 1.0f);

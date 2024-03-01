@@ -5,6 +5,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -14,25 +16,27 @@
 #include <memory>
 #include <algorithm>
 #include <iostream>
+#include <iostream>
 
 class Object {
 public:
 	Object(bool Collision, bool Static, float PositionX, float PositionY);
-
 	virtual ~Object();
 
-	std::vector<std::pair<float, float>> Angles;
-	bool IsRectangle = false;
+	static void ObjectsMain(double deltaTime);
+
+	std::vector<std::pair<float, float>> Angles;	
 protected:
-	static std::list<std::shared_ptr<Object>> ObjectsList;	
+	static std::list<std::shared_ptr<Object>> ObjectsList;
+
 	bool Collision;
 	bool Static;
-
-	double VelocityX = 0;
-	double VelocityY = 0;
-	double Mass = 0;		
-	double RotationAngle = 0;
-
+	bool IsRectangle = false;	
+	
+	float Mass = 0;
+	float VelocityX = 0;
+	float VelocityY = 0;
+	float RotationAngle = 0;
 	float PositionX = 0;
 	float PositionY = 0;
 
@@ -45,14 +49,17 @@ protected:
 		float Green;
 		float Blue;
 	};
+public:
 	Color Color;
 private:
 	void GravityAcceleration(double deltaTime);
 	void Move(double deltaTime);
+
 	virtual void Render() = 0;
-	virtual bool CheckCollision(std::shared_ptr <Object> Other) = 0;
+	virtual bool CheckCollision(const std::shared_ptr <Object>& Other) = 0;
 public:
-	static void ObjectsMain(double deltaTime);
+	bool GetIsRectangle();
+	double GetRotationAngle();
 };
 
 #endif // !SIMULATION_CLASSES_OBJECT_H_

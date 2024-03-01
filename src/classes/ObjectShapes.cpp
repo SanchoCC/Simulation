@@ -26,19 +26,28 @@ Rectangle::Rectangle(bool Collision, bool Static, float PositionX, float Positio
 }
 void Rectangle::Render() {
     Angles.clear();
+    std::vector<std::pair<float, float>> OriginalAngles = {
+        std::make_pair(-Width / 2, Height / 2),
+        std::make_pair(Width / 2, Height / 2),
+        std::make_pair(Width / 2, -Height / 2),
+        std::make_pair(-Width / 2, -Height / 2)
+    };
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::rotate(model, glm::radians(-RotationAngle), glm::vec3(0.0f, 0.0f, 1.0f));
+    for (const auto& it : OriginalAngles) {
+        glm::vec4 vertex = glm::vec4(it.first, it.second, 0.0f, 1.0f);
+        vertex = model * vertex;
+        Angles.push_back(std::make_pair(vertex.x+PositionX, vertex.y+PositionY));
+    }
     glColor3f(Color.Red, Color.Green, Color.Blue);
     glBegin(GL_POLYGON);
-    Angles.push_back(std::make_pair(-Width / 2 + PositionX, Height / 2 + PositionY));
-    Angles.push_back(std::make_pair(Width / 2 + PositionX, Height / 2 + PositionY));
-    Angles.push_back(std::make_pair(Width / 2 + PositionX, -Height / 2 + PositionY));
-    Angles.push_back(std::make_pair(-Width / 2 + PositionX, -Height / 2 + PositionY));
-    for (auto it : Angles) {
+    for (const auto& it : Angles) {
         glVertex2f(it.first, it.second);
     }
     glEnd();
 }
-bool Rectangle::CheckCollision(std::shared_ptr <Object> Other) {
-    if (Other->IsRectangle) {
+bool Rectangle::CheckCollision(const std::shared_ptr <Object>& Other) {
+    if (Other->GetIsRectangle()) {
         auto MinThis = *std::min_element(Angles.cbegin(), Angles.cend(), [](const auto& lhs, const auto& rhs) {
             return lhs.first < rhs.first;
             });
@@ -51,7 +60,7 @@ bool Rectangle::CheckCollision(std::shared_ptr <Object> Other) {
         auto MaxOther = *std::max_element(Other->Angles.cbegin(), Other->Angles.cend(), [](const auto& lhs, const auto& rhs) {
             return lhs.first < rhs.first;
             });        
-        if (MinThis.first > MinOther.first && MinThis.first < MaxOther.first || MaxThis.first < MaxOther.first && MaxThis.first>MinOther.first) {
+        if (MinThis.first >= MinOther.first && MinThis.first <= MaxOther.first || MaxThis.first <= MaxOther.first && MaxThis.first >= MinOther.first) {
             MinThis = *std::min_element(Angles.cbegin(), Angles.cend(), [](const auto& lhs, const auto& rhs) {
                 return lhs.second < rhs.second;
                 });
@@ -64,7 +73,7 @@ bool Rectangle::CheckCollision(std::shared_ptr <Object> Other) {
             MaxOther = *std::max_element(Other->Angles.cbegin(), Other->Angles.cend(), [](const auto& lhs, const auto& rhs) {
                 return lhs.second < rhs.second;
                 });           
-            if (MinThis.second > MinOther.second && MinThis.second < MaxOther.second || MaxThis.second < MaxOther.second && MaxThis.second>MinOther.second) {
+            if (MinThis.second >= MinOther.second && MinThis.second <= MaxOther.second || MaxThis.second <= MaxOther.second && MaxThis.second >= MinOther.second) {
                 return true;
             } 
         } 
