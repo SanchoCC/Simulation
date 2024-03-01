@@ -15,8 +15,6 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
-#include <iostream>
-#include <iostream>
 
 class Object {
 public:
