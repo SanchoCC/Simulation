@@ -9,6 +9,7 @@
 int Width = 800;
 int Height = 600;
 float KoefScreen = static_cast<float>(Width) / Height;
+int fpsCounter = 0;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -37,9 +38,7 @@ int main() {
         return -1;
     }       
     glScalef(1/KoefScreen, 1, 1);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); 
-    
-    int fpsCounter = 0;
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);     
     double lastTime = glfwGetTime();
     glfwSwapInterval(1);
     //

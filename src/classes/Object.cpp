@@ -29,7 +29,7 @@ void Object::ObjectsMain(double deltaTime)
             if (innerit == it) {
                 continue;
             }
-            else if ((*it)->CheckCollision(*innerit)) {
+            if ((*it)->CheckCollision(*innerit)) {
                (*it)->Move(-deltaTime);
                (*it)->VelocityY *= -0.65f;
             }
