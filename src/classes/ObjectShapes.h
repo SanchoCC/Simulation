@@ -10,7 +10,7 @@ public:
     Circle(bool collision, bool statical, float position_x, float position_y, float radius);
 private:
     void Render() override;
-    bool CheckCollision(const std::shared_ptr <Object>& Other) const override { return false; };
+    bool CheckCollision(const std::shared_ptr <Object>& Other) override { return false; };
     void CollisionEffect(const std::shared_ptr <Object>& other, double deltaTime) override {};
 private: 
     float radius_;
