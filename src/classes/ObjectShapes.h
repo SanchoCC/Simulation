@@ -11,7 +11,7 @@ public:
 private:
     void Render() override;
     bool CheckCollision(const std::shared_ptr <Object>& Other) override { return false; };
-    void CollisionEffect(const std::shared_ptr <Object>& other, double deltaTime) override {};
+    void CollisionEffect(std::shared_ptr <Object>& other, double deltaTime) override {};
 private: 
     float radius_;
     const int kCircleSides = 360;
@@ -23,7 +23,7 @@ public:
 private:
     void Render() override;
     bool CheckCollision(const std::shared_ptr <Object>& other) override;
-    void CollisionEffect(const std::shared_ptr <Object>& other, double deltaTime) override;
+    void CollisionEffect(std::shared_ptr <Object>& other, double deltaTime) override;
 private:        
     float width_;
     float height_;

@@ -18,6 +18,10 @@ void Object::Move(double deltaTime) {
         position_x_ += (velocity_x_*0.001f) * deltaTime;
         position_y_ += (velocity_y_*0.001f) * deltaTime;
     }
+    else {
+        velocity_x_ = 0;
+        velocity_y_ = 0;
+    }
 }
 void Object::ObjectsMain(double deltaTime)
 {
@@ -56,7 +60,7 @@ void Object::Color::SetColor(float red, float green, float blue) {
 bool Object::GetIsRectangle() const {
     return this->is_rectangle_;
 }
-double Object::GetRotationAngle() const {
+float Object::GetRotationAngle() const {
     return this->rotation_angle_;
 }
 float Object::GetMaxAngleX() const {
@@ -74,5 +78,20 @@ float Object::GetMaxAngleY() const {
 float Object::GetMinAngleY() const {
     auto min = *std::min_element(angles_.cbegin(), angles_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
     return min.second;
+}
+float Object::GetMass() const {
+    return mass_;
+}
+float Object::GetVelocityX() const {
+    return velocity_x_;
+}
+float Object::GetVelocityY() const {
+    return velocity_y_;
+}
+void Object::SetVelocityX(float velocity_x) {
+    this->velocity_x_ = velocity_x;
+}
+void Object::SetVelocityY(float velocity_y) {
+    this->velocity_y_ = velocity_y;
 }
 

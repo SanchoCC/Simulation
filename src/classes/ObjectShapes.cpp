@@ -25,6 +25,7 @@ Rectangle::Rectangle(bool collision, bool statical, float position_x, float posi
     objects_list_.push_back(std::make_shared<Rectangle>(*this));
 }
 void Rectangle::Render() {
+    this->mass_ = (width_ * height_) * density_;
     angles_.clear();
     std::vector<std::pair<float, float>> original_angles_ = {
         std::make_pair(-width_ / 2, height_ / 2),
@@ -64,6 +65,16 @@ bool Rectangle::CheckCollision(const std::shared_ptr <Object>& other) {
     } 
     return false;
 }
-void Rectangle::CollisionEffect(const std::shared_ptr <Object>& other, double deltaTime) {
+void Rectangle::CollisionEffect(std::shared_ptr <Object>& other, double deltaTime) {
     this->Move(-deltaTime);
+    float this_mass = this->mass_;
+    float other_mass = other->GetMass();
+    float this_velocity_x = velocity_x_;
+    float other_velocity_x = other->GetVelocityX();
+    float this_velocity_y = velocity_y_;
+    float other_velocity_y = other->GetVelocityY();    
+    this->SetVelocityX(-((this_mass - other_mass) * this_velocity_x + (2*other_mass*other_velocity_x))/(this_mass * other_mass));
+    other->SetVelocityX(((other_mass - this_mass) * other_velocity_x + (2 * this_mass * this_velocity_x)) / (this_mass * other_mass));
+    this->SetVelocityY((((this_mass - other_mass) * this_velocity_y + (2 * other_mass * other_velocity_y)) / (this_mass * other_mass)));
+    other->SetVelocityY((((other_mass - this_mass) * other_velocity_y + (2 * this_mass * this_velocity_y)) / (this_mass * other_mass)));
 }

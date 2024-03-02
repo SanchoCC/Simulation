@@ -31,7 +31,8 @@ protected:
 	bool statical_;
 	bool is_rectangle_ = false;	
 
-	float mass_ = 0;
+	float density_ = 700;
+	float mass_ = 1;
 	float velocity_x_ = 0;
 	float velocity_y_ = 0;
 	float rotation_angle_ = 0;
@@ -56,15 +57,23 @@ private:
 
 	virtual void Render() = 0;
 	virtual bool CheckCollision(const std::shared_ptr <Object>& other) = 0;
-	virtual void CollisionEffect(const std::shared_ptr <Object>& other, double deltaTime) = 0;
+	virtual void CollisionEffect(std::shared_ptr <Object>& other, double deltaTime) = 0;
 public:
 	bool GetIsRectangle() const;
-	double GetRotationAngle() const;
+
+	float GetRotationAngle() const;
 	
 	float GetMaxAngleX() const;
 	float GetMinAngleX() const;
 	float GetMaxAngleY() const;
 	float GetMinAngleY() const;
+
+	float GetMass() const;
+
+	float GetVelocityX() const;
+	float GetVelocityY() const;
+	void SetVelocityX(float velocity_x); 
+	void SetVelocityY(float velocity_y);
 };
 
 #endif // !SIMULATION_CLASSES_OBJECT_H_
