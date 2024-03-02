@@ -7,24 +7,26 @@
 class Circle :public Object
 {
 public:
-    Circle(bool Collision, bool Static, float PositionX, float PositionY, float Radius);
+    Circle(bool collision, bool statical, float position_x, float position_y, float radius);
 private:
     void Render() override;
-    bool CheckCollision(const std::shared_ptr <Object>& Other) override { return false; };
+    bool CheckCollision(const std::shared_ptr <Object>& Other) const override { return false; };
+    void CollisionEffect(const std::shared_ptr <Object>& other, double deltaTime) override {};
 private: 
-    float Radius;
+    float radius_;
     const int kCircleSides = 360;
 };
 class Rectangle:public Object
 {
 public:
-    Rectangle(bool Collision, bool Static, float PositionX, float PositionY, float Height, float Width);
+    Rectangle(bool collision, bool statical, float position_x, float position_y, float width, float height);
 private:
     void Render() override;
-    bool CheckCollision(const std::shared_ptr <Object>& Other) override;
-private:    
-    float Height; 
-    float Width;
+    bool CheckCollision(const std::shared_ptr <Object>& other) override;
+    void CollisionEffect(const std::shared_ptr <Object>& other, double deltaTime) override;
+private:        
+    float width_;
+    float height_;
 };
 
 #endif //SIMULATION_CLASSES_OBJECTSHAPES_H_

@@ -18,46 +18,53 @@
 
 class Object {
 public:
-	Object(bool Collision, bool Static, float PositionX, float PositionY);
+	Object(bool collision, bool statical, float position_x, float position_y);
 	virtual ~Object();
 
 	static void ObjectsMain(double deltaTime);
-
-	std::vector<std::pair<float, float>> Angles;	
+		
 protected:
-	static std::list<std::shared_ptr<Object>> ObjectsList;
+	static std::list<std::shared_ptr<Object>> objects_list_;
+	std::vector<std::pair<float, float>> angles_;
 
-	bool Collision;
-	bool Static;
-	bool IsRectangle = false;	
-	
-	float Mass = 0;
-	float VelocityX = 0;
-	float VelocityY = 0;
-	float RotationAngle = 0;
-	float PositionX = 0;
-	float PositionY = 0;
+	bool collision_;
+	bool statical_;
+	bool is_rectangle_ = false;	
+
+	float mass_ = 0;
+	float velocity_x_ = 0;
+	float velocity_y_ = 0;
+	float rotation_angle_ = 0;
+	float position_x_ = 0;
+	float position_y_ = 0;
 
 	struct Color {
 		Color();
-		Color(float Red, float Green, float Blue);
+		Color(float red, float green, float blue);
 		void SetRandomColor();
-		void SetColor(float Red, float Green, float Blue);
-		float Red;
-		float Green;
-		float Blue;
+		void SetColor(float red, float green, float blue);
+		float red_;
+		float green_;
+		float blue_;
 	};
 public:
-	Color Color;
+	Color color_;
+protected:
+	void Move(double deltaTime);
 private:
 	void GravityAcceleration(double deltaTime);
-	void Move(double deltaTime);
 
 	virtual void Render() = 0;
-	virtual bool CheckCollision(const std::shared_ptr <Object>& Other) = 0;
+	virtual bool CheckCollision(const std::shared_ptr <Object>& other) = 0;
+	virtual void CollisionEffect(const std::shared_ptr <Object>& other, double deltaTime) = 0;
 public:
-	bool GetIsRectangle();
-	double GetRotationAngle();
+	bool GetIsRectangle() const;
+	double GetRotationAngle() const;
+	
+	float GetMaxAngleX() const;
+	float GetMinAngleX() const;
+	float GetMaxAngleY() const;
+	float GetMinAngleY() const;
 };
 
 #endif // !SIMULATION_CLASSES_OBJECT_H_

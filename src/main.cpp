@@ -42,7 +42,7 @@ int main() {
     double lastTime = glfwGetTime();
     glfwSwapInterval(1);
     //
-    Rectangle floor(true, true, 0, -1.0f, 1.0f, 3.0f);
+    Rectangle floor(true, true, 0, -1.0f, 3.0f, 1.0f);
     Rectangle box(true, false, 0, 0.5f, 0.5f, 0.5f);
     Rectangle box2(true, false, 0.3f, 2.5f, 0.6f, 0.5f);
     //
