@@ -1,12 +1,13 @@
 #include "Object.h"
 
 std::list<std::shared_ptr<Object>> Object::objects_list_;
+std::list<std::shared_ptr<Object>> Object::objects_list_2;
 
 Object::Object(bool collision, bool statical, float position_x, float position_y) { 
     this->collision_ = collision;
     this->statical_ = statical;
     this->position_x_ = position_x;
-    this->position_y_ = position_y;  
+    this->position_y_ = position_y;     
 }
 Object::~Object() {   
 }
@@ -27,12 +28,12 @@ void Object::ObjectsMain(double deltaTime)
 {
     for (auto it = objects_list_.begin(); it != objects_list_.end(); ++it) {
         (*it)->GravityAcceleration(deltaTime);
-        (*it)->Move(deltaTime);        
+        (*it)->Move(deltaTime);
         for (auto innerit = objects_list_.begin(); innerit != objects_list_.end(); ++innerit) {
             if (innerit == it) {
                 continue;
-            } else if ((*it)->CheckCollision(*innerit)) {
-                (*it)->CollisionEffect(*innerit, deltaTime);
+            } else if ((*it)->CheckCollision(innerit->get())) {
+                (*it)->CollisionEffect(innerit->get(), deltaTime);
             }
         }
         (*it)->Render();

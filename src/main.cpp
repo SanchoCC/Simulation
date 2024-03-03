@@ -5,6 +5,7 @@
 #include "classes/ObjectShapes.h"
 
 #include <iostream>
+#include <memory>
 
 int Width = 800;
 int Height = 600;
@@ -44,7 +45,10 @@ int main() {
     //
     Rectangle floor(true, true, 0, -1.0f, 3.0f, 1.0f);
     Rectangle box(true, false, 0, 0.5f, 0.5f, 0.5f);
-    Rectangle box2(true, false, 0.3f, 2.5f, 1.0f, 0.5f);
+    Rectangle box2(true, false, 0.3f, 1.5f, 1.0f, 0.5f);
+
+    floor->SetMass(100000000);
+    box->SetVelocityY(1000);
     //
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.8f, 0.8f, 0.8f, 1.0f);

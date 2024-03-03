@@ -2,7 +2,6 @@
 
 Circle::Circle(bool collision, bool statical, float position_x, float position_y, float radius) :Object(collision, statical, position_x, position_y) {
     this->radius_ = radius;
-    objects_list_.push_back(std::make_shared<Circle>(*this));
 }
 
 void Circle::Render() {
@@ -21,11 +20,13 @@ Rectangle::Rectangle(bool collision, bool statical, float position_x, float posi
     this->is_rectangle_ = true;
     this->width_ = width;
     this->height_ = height;   
-    this->Render();
-    objects_list_.push_back(std::make_shared<Rectangle>(*this));
-}
-void Rectangle::Render() {
     this->mass_ = (width_ * height_) * density_;
+    this->Render();  
+    shared_this_ = (std::make_shared<Rectangle>(*this));
+    objects_list_.push_back(shared_this_);
+    objects_list_2.push_back(shared_this_);
+}
+void Rectangle::Render() {   
     angles_.clear();
     std::vector<std::pair<float, float>> original_angles_ = {
         std::make_pair(-width_ / 2, height_ / 2),
@@ -47,7 +48,7 @@ void Rectangle::Render() {
     }
     glEnd();
 }
-bool Rectangle::CheckCollision(const std::shared_ptr <Object>& other) {
+bool Rectangle::CheckCollision(const Object* other) {
     if (other->GetIsRectangle()) {
         float min_this_x = this->GetMinAngleX();
         float min_other_x = other->GetMinAngleX();
@@ -65,16 +66,19 @@ bool Rectangle::CheckCollision(const std::shared_ptr <Object>& other) {
     } 
     return false;
 }
-void Rectangle::CollisionEffect(std::shared_ptr <Object>& other, double deltaTime) {
+void Rectangle::CollisionEffect(Object* other, double deltaTime) {
     this->Move(-deltaTime);
+    other->Move(-deltaTime);
     float this_mass = this->mass_;
     float other_mass = other->GetMass();
     float this_velocity_x = velocity_x_;
     float other_velocity_x = other->GetVelocityX();
     float this_velocity_y = velocity_y_;
     float other_velocity_y = other->GetVelocityY();    
-    this->SetVelocityX(-((this_mass - other_mass) * this_velocity_x + (2*other_mass*other_velocity_x))/(this_mass * other_mass));
-    other->SetVelocityX(((other_mass - this_mass) * other_velocity_x + (2 * this_mass * this_velocity_x)) / (this_mass * other_mass));
-    this->SetVelocityY((((this_mass - other_mass) * this_velocity_y + (2 * other_mass * other_velocity_y)) / (this_mass * other_mass)));
-    other->SetVelocityY((((other_mass - this_mass) * other_velocity_y + (2 * this_mass * this_velocity_y)) / (this_mass * other_mass)));
+    this->SetVelocityX(((this_mass - other_mass) * this_velocity_x + 2 * other_mass * other_velocity_x) / (this_mass + other_mass));
+    other->SetVelocityX(((other_mass - this_mass) * other_velocity_x + 2 * this_mass * this_velocity_x) / (this_mass + other_mass));
+    this->SetVelocityY(((this_mass - other_mass) * this_velocity_y + 2 * other_mass * other_velocity_y) / (this_mass + other_mass));
+    other->SetVelocityY(((other_mass - this_mass) * other_velocity_y + 2 * this_mass * this_velocity_y) / (this_mass + other_mass));
+    this->Move(deltaTime);
+    other->Move(deltaTime);
 }

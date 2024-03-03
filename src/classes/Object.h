@@ -22,9 +22,14 @@ public:
 	virtual ~Object();
 
 	static void ObjectsMain(double deltaTime);
+
+	std::shared_ptr <Object> operator->() {
+		return shared_this_;
+	}
 		
 protected:
 	static std::list<std::shared_ptr<Object>> objects_list_;
+	static std::list<std::shared_ptr<Object>> objects_list_2;
 	std::vector<std::pair<float, float>> angles_;
 
 	bool collision_;
@@ -39,6 +44,8 @@ protected:
 	float position_x_ = 0;
 	float position_y_ = 0;
 
+	std::shared_ptr <Object> shared_this_;
+
 	struct Color {
 		Color();
 		Color(float red, float green, float blue);
@@ -50,14 +57,15 @@ protected:
 	};
 public:
 	Color color_;
-protected:
 	void Move(double deltaTime);
+protected:
+	
 private:
 	void GravityAcceleration(double deltaTime);
 
 	virtual void Render() = 0;
-	virtual bool CheckCollision(const std::shared_ptr <Object>& other) = 0;
-	virtual void CollisionEffect(std::shared_ptr <Object>& other, double deltaTime) = 0;
+	virtual bool CheckCollision(const Object* other) = 0;
+	virtual void CollisionEffect(Object* other, double deltaTime) = 0;
 public:
 	bool GetIsRectangle() const;
 
@@ -69,6 +77,7 @@ public:
 	float GetMinAngleY() const;
 
 	float GetMass() const;
+	void SetMass(float mass) { this->mass_ = mass; }
 
 	float GetVelocityX() const;
 	float GetVelocityY() const;
