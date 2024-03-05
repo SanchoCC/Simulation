@@ -14,8 +14,6 @@ typedef struct {
     double v;       // a fraction between 0 and 1
 } hsv;
 
-static hsv   rgb2hsv(rgb in);
-static rgb   hsv2rgb(hsv in);
 
 rgb hsvToRgb(hsv in)
 {
@@ -119,7 +117,7 @@ Object::Color::Color(float red, float green, float blue) {
 void Object::Color::SetRandomColor() {
     std::random_device rd;
     std::mt19937 rng(rd());
-    std::uniform_real_distribution<float> hue_dist(0.0f, 360.0f); 
+    std::uniform_real_distribution<float> hue_dist(0.0f, 360.0f); //angle
     std::uniform_real_distribution<float> sat_dist(0.3f, 0.5f);
     std::uniform_real_distribution<float> val_dist(0.9f, 1);
 
