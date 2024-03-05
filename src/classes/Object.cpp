@@ -1,65 +1,103 @@
 #include "Object.h"
 
-std::list<std::shared_ptr<Object>> Object::ObjectsList;
+std::list<std::shared_ptr<Object>> Object::objects_list_;
 
-Object::Object(bool Collision, bool Static, float PositionX, float PositionY) { 
-    this->Collision = Collision;
-    this->Static = Static;
-    this->PositionX = PositionX;
-    this->PositionY = PositionY;  
+Object::Object(bool collision, bool statical, float position_x, float position_y) {
+    this->collision_ = collision;
+    this->statical_ = statical;
+    this->position_x_ = position_x;
+    this->position_y_ = position_y;
 }
 Object::~Object() {
 }
-void Object::GravityAcceleration(double deltaTime) {
-    VelocityY -= 9.8;
-}
-void Object::Move(double deltaTime) {
-    if (!Static) {        
-        PositionX += (VelocityX*0.001f) * deltaTime;
-        PositionY += (VelocityY*0.001f) * deltaTime;
-    }
-}
-void Object::ObjectsMain(double deltaTime)
-{
-    for (auto it = ObjectsList.begin(); it != ObjectsList.end(); ++it) {
+void Object::ObjectsMain(double deltaTime) {
+    for (auto it = objects_list_.begin(); it != objects_list_.end(); ++it) {
         (*it)->GravityAcceleration(deltaTime);
         (*it)->Move(deltaTime);
-        (*it)->Render();
-        for (auto innerit = ObjectsList.begin(); innerit != ObjectsList.end(); ++innerit) {
+        for (auto innerit = objects_list_.begin(); innerit != objects_list_.end(); ++innerit) {
             if (innerit == it) {
                 continue;
             }
-            if ((*it)->CheckCollision(*innerit)) {
-               (*it)->Move(-deltaTime);
-               (*it)->VelocityY *= -0.65f;
+            else if ((*it)->CheckCollision(*innerit)) {
+                (*it)->CollisionEffect(*innerit, deltaTime);
             }
         }
+        (*it)->Render();
+    }
+}
+void Object::GravityAcceleration(double deltaTime) {
+    velocity_y_ -= 9.8f;
+}
+void Object::Move(double deltaTime) {
+    if (!statical_) {
+        position_x_ += (velocity_x_ * 0.001f) * deltaTime;
+        position_y_ += (velocity_y_ * 0.001f) * deltaTime;
+        UpdateAngles();
+    }
+    else {
+        velocity_x_ = 0;
+        velocity_y_ = -9.8;
     }
 }
 Object::Color::Color() {
     SetRandomColor();
 }
-Object::Color::Color(float Red, float Green, float Blue) {
-    SetColor(Red, Green, Blue);
+Object::Color::Color(float red, float green, float blue) {
+    SetColor(red, green, blue);
 }
 void Object::Color::SetRandomColor() {
     std::random_device rd;
     std::mt19937 rng(rd());
     std::uniform_real_distribution<float> color_dist(0.0f, 1.0f);
-    this->Red = color_dist(rng);
-    this->Green = color_dist(rng);
-    this->Blue = color_dist(rng);
+    this->red_ = color_dist(rng);
+    this->green_ = color_dist(rng);
+    this->blue_ = color_dist(rng);
 }
-void Object::Color::SetColor(float Red, float Green, float Blue) {
-    this->Red = Red;
-    this->Green = Green;
-    this->Blue = Blue;
+void Object::Color::SetColor(float red, float green, float blue) {
+    this->red_ = red;
+    this->green_ = green;
+    this->blue_ = blue;
 }
-bool Object::GetIsRectangle()
-{
-    return this->IsRectangle;
+bool Object::GetIsRectangle() const {
+    return this->is_rectangle_;
 }
-double Object::GetRotationAngle() {
-    return this->RotationAngle;
+float Object::GetRotationAngle() const {
+    return this->rotation_angle_;
 }
-
+float Object::GetMaxAngleX() const {
+    auto max = *std::max_element(angles_.cbegin(), angles_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });
+    return max.first;
+}
+float Object::GetMinAngleX() const {
+    auto min = *std::min_element(angles_.cbegin(), angles_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });
+    return min.first;
+}
+float Object::GetMaxAngleY() const {
+    auto max = *std::max_element(angles_.cbegin(), angles_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
+    return max.second;
+}
+float Object::GetMinAngleY() const {
+    auto min = *std::min_element(angles_.cbegin(), angles_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
+    return min.second;
+}
+float Object::GetMass() const {
+    return mass_;
+}
+float Object::GetVelocityX() const {
+    return velocity_x_;
+}
+float Object::GetVelocityY() const {
+    return velocity_y_;
+}
+void Object::SetVelocityX(float velocity_x) {
+    this->velocity_x_ = velocity_x;
+}
+void Object::SetVelocityY(float velocity_y) {
+    this->velocity_y_ = velocity_y;
+}
+float Object::GetTension() const {
+    return this->tension_;
+}
+void Object::SetTension(float tension) {
+    this->tension_ = tension;
+}
