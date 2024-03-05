@@ -7,8 +7,8 @@
 #include <iostream>
 #include <memory>
 
-int Width = 800;
-int Height = 600;
+int Width = 1920;
+int Height = 1080;
 float KoefScreen = static_cast<float>(Width) / Height;
 int fpsCounter = 0;
 
@@ -42,12 +42,12 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);        
     //
     Rectangle floor(true, true, 0, -1.3f, 3.0f, 1.0f); 
-    Rectangle floor1(true, false, 0, 3.5f, 3.0f, 1.0f);
+    
     Rectangle box0(true, false, 0, 0.5f, 0.5f, 0.5f);
-    Rectangle box1(true, false, -1, 0.5f, 0.5f, 0.5f);
-    Rectangle box2(true, false, 0, 1.5f, 0.5f, 0.5f);
-    Rectangle box3(true, false, 1, 0.5f, 0.5f, 0.5f);
-    Rectangle box4(true, false, 0, 2.5f, 0.5f, 0.5f);
+    Rectangle box1(true, false, -1, 0.35f, 0.5f, 0.5f);
+    Rectangle box2(true, false, 0, -1.5f, 0.3f, 1);
+    Rectangle box3(true, false, 1, 0.5f, 0.1, 0.5f);
+    
 
     floor->SetMass(99999999999.0f);
     floor->SetTension(0.4f);
