@@ -15,7 +15,7 @@ target_include_directories( simulation PRIVATE
   src
   include
 )
-# Set StartUp Project
+# Set StartUp Projectw
 set_property( DIRECTORY PROPERTY VS_STARTUP_PROJECT "simulation" )
 
 add_subdirectory(libs/glfw)

@@ -1,2 +1,3 @@
 # ignore ANY directory named "build"
 **/build
+.vs
