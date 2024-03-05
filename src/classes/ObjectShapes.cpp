@@ -20,13 +20,21 @@ Rectangle::Rectangle(bool collision, bool statical, float position_x, float posi
     this->is_rectangle_ = true;
     this->width_ = width;
     this->height_ = height;   
-    this->mass_ = (width_ * height_) * density_;
-    this->Render();  
+    this->mass_ = (width_ * height_) * density_;  
+    this->UpdateAngles();
+    this->Render();
     shared_this_ = (std::make_shared<Rectangle>(*this));
     objects_list_.push_back(shared_this_);
-    objects_list_2.push_back(shared_this_);
 }
-void Rectangle::Render() {   
+void Rectangle::Render() {       
+    glColor3f(color_.red_, color_.green_, color_.blue_);
+    glBegin(GL_POLYGON);
+    for (const auto& it : angles_) {
+        glVertex2f(it.first, it.second);
+    }
+    glEnd();
+}
+void Rectangle::UpdateAngles() {
     angles_.clear();
     std::vector<std::pair<float, float>> original_angles_ = {
         std::make_pair(-width_ / 2, height_ / 2),
@@ -39,16 +47,10 @@ void Rectangle::Render() {
     for (const auto& it : original_angles_) {
         glm::vec4 vertex = glm::vec4(it.first, it.second, 0.0f, 1.0f);
         vertex = model * vertex;
-        angles_.push_back(std::make_pair(vertex.x+position_x_, vertex.y+position_y_));
+        angles_.push_back(std::make_pair(vertex.x + position_x_, vertex.y + position_y_));
     }
-    glColor3f(color_.red_, color_.green_, color_.blue_);
-    glBegin(GL_POLYGON);
-    for (const auto& it : angles_) {
-        glVertex2f(it.first, it.second);
-    }
-    glEnd();
 }
-bool Rectangle::CheckCollision(const Object* other) {
+bool Rectangle::CheckCollision(const std::shared_ptr<Object> other) {
     if (other->GetIsRectangle()) {
         float min_this_x = this->GetMinAngleX();
         float min_other_x = other->GetMinAngleX();
@@ -66,19 +68,24 @@ bool Rectangle::CheckCollision(const Object* other) {
     } 
     return false;
 }
-void Rectangle::CollisionEffect(Object* other, double deltaTime) {
-    this->Move(-deltaTime);
-    other->Move(-deltaTime);
-    float this_mass = this->mass_;
+void Rectangle::CollisionEffect(std::shared_ptr<Object> other, double deltaTime) {
+    int counter = 0;
+    while (CheckCollision(other)) {
+        this->Move(-deltaTime*0.1f);
+        other->Move(-deltaTime*0.1f);  
+        ++counter;
+        if (counter == 10) {
+            break;
+        }
+    }
+    float this_mass = this->GetMass();
     float other_mass = other->GetMass();
-    float this_velocity_x = velocity_x_;
+    float this_velocity_x = this->GetVelocityX();
     float other_velocity_x = other->GetVelocityX();
-    float this_velocity_y = velocity_y_;
+    float this_velocity_y = this->GetVelocityY();
     float other_velocity_y = other->GetVelocityY();    
     this->SetVelocityX(((this_mass - other_mass) * this_velocity_x + 2 * other_mass * other_velocity_x) / (this_mass + other_mass));
     other->SetVelocityX(((other_mass - this_mass) * other_velocity_x + 2 * this_mass * this_velocity_x) / (this_mass + other_mass));
-    this->SetVelocityY(((this_mass - other_mass) * this_velocity_y + 2 * other_mass * other_velocity_y) / (this_mass + other_mass));
-    other->SetVelocityY(((other_mass - this_mass) * other_velocity_y + 2 * this_mass * this_velocity_y) / (this_mass + other_mass));
-    this->Move(deltaTime);
-    other->Move(deltaTime);
+    this->SetVelocityY((((this_mass - other_mass) * this_velocity_y + 2 * other_mass * other_velocity_y) / (this_mass + other_mass)) * (0.5f * (this->GetTension() + other->GetTension())));
+    other->SetVelocityY((((other_mass - this_mass) * other_velocity_y + 2 * this_mass * this_velocity_y) / (this_mass + other_mass)) * (0.5f * (this->GetTension() + other->GetTension())));
 }

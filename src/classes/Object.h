@@ -15,7 +15,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
-
+#include <unordered_set>
 class Object {
 public:
 	Object(bool collision, bool statical, float position_x, float position_y);
@@ -26,16 +26,15 @@ public:
 	std::shared_ptr <Object> operator->() {
 		return shared_this_;
 	}
-		
 protected:
 	static std::list<std::shared_ptr<Object>> objects_list_;
-	static std::list<std::shared_ptr<Object>> objects_list_2;
 	std::vector<std::pair<float, float>> angles_;
-
+	
 	bool collision_;
 	bool statical_;
 	bool is_rectangle_ = false;	
 
+	float tension_ = 0.95f;
 	float density_ = 700;
 	float mass_ = 1;
 	float velocity_x_ = 0;
@@ -43,7 +42,7 @@ protected:
 	float rotation_angle_ = 0;
 	float position_x_ = 0;
 	float position_y_ = 0;
-
+	
 	std::shared_ptr <Object> shared_this_;
 
 	struct Color {
@@ -56,21 +55,20 @@ protected:
 		float blue_;
 	};
 public:
-	Color color_;
-	void Move(double deltaTime);
-protected:
-	
+	Color color_;	
 private:
 	void GravityAcceleration(double deltaTime);
-
 	virtual void Render() = 0;
-	virtual bool CheckCollision(const Object* other) = 0;
-	virtual void CollisionEffect(Object* other, double deltaTime) = 0;
+	virtual bool CheckCollision(const std::shared_ptr<Object> other) = 0;
+	virtual void CollisionEffect(std::shared_ptr<Object> other, double deltaTime) = 0;
+	virtual void UpdateAngles() = 0;
 public:
+	void Move(double deltaTime);
+
 	bool GetIsRectangle() const;
 
 	float GetRotationAngle() const;
-	
+
 	float GetMaxAngleX() const;
 	float GetMinAngleX() const;
 	float GetMaxAngleY() const;
@@ -83,6 +81,9 @@ public:
 	float GetVelocityY() const;
 	void SetVelocityX(float velocity_x); 
 	void SetVelocityY(float velocity_y);
+
+	float GetTension() const;
+	void SetTension(float tension);
 };
 
 #endif // !SIMULATION_CLASSES_OBJECT_H_

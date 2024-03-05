@@ -9,8 +9,9 @@ public:
     Circle(bool collision, bool statical, float position_x, float position_y, float radius);
 private:
     void Render() override;
-    bool CheckCollision(const Object* Other) override { return false; };
-    void CollisionEffect(Object* other, double deltaTime) override {};
+    bool CheckCollision(const std::shared_ptr<Object> other) override { return false; };
+    void CollisionEffect(std::shared_ptr<Object> other, double deltaTime) override {};
+    void UpdateAngles() override {};
 private: 
     float radius_;
     const int kCircleSides = 360;
@@ -20,8 +21,9 @@ public:
     Rectangle(bool collision, bool statical, float position_x, float position_y, float width, float height);
 private:
     void Render() override;
-    bool CheckCollision(const Object* other) override;
-    void CollisionEffect(Object* other, double deltaTime) override;
+    bool CheckCollision(const std::shared_ptr<Object> other) override;
+    void CollisionEffect(std::shared_ptr<Object> other, double deltaTime) override;
+    void UpdateAngles() override;
 private:        
     float width_;
     float height_;

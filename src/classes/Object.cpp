@@ -1,7 +1,6 @@
 #include "Object.h"
 
 std::list<std::shared_ptr<Object>> Object::objects_list_;
-std::list<std::shared_ptr<Object>> Object::objects_list_2;
 
 Object::Object(bool collision, bool statical, float position_x, float position_y) { 
     this->collision_ = collision;
@@ -11,33 +10,32 @@ Object::Object(bool collision, bool statical, float position_x, float position_y
 }
 Object::~Object() {   
 }
-void Object::GravityAcceleration(double deltaTime) {
-    velocity_y_ -= 9.8;
-}
-void Object::Move(double deltaTime) {
-    if (!statical_) {        
-        position_x_ += (velocity_x_*0.001f) * deltaTime;
-        position_y_ += (velocity_y_*0.001f) * deltaTime;
-    }
-    else {
-        velocity_x_ = 0;
-        velocity_y_ = 0;
-    }
-}
-void Object::ObjectsMain(double deltaTime)
-{
-    for (auto it = objects_list_.begin(); it != objects_list_.end(); ++it) {
+void Object::ObjectsMain(double deltaTime) {
+    for (auto it = objects_list_.begin(); it != objects_list_.end(); ++it) {        
         (*it)->GravityAcceleration(deltaTime);
         (*it)->Move(deltaTime);
         for (auto innerit = objects_list_.begin(); innerit != objects_list_.end(); ++innerit) {
             if (innerit == it) {
                 continue;
-            } else if ((*it)->CheckCollision(innerit->get())) {
-                (*it)->CollisionEffect(innerit->get(), deltaTime);
+            } else if ((*it)->CheckCollision(*innerit)) {
+                (*it)->CollisionEffect(*innerit, deltaTime);
             }
-        }
+        }        
         (*it)->Render();
     }
+}
+void Object::GravityAcceleration(double deltaTime) {
+    velocity_y_ -= 9.8f;
+}
+void Object::Move(double deltaTime) {
+    if (!statical_) {        
+        position_x_ += (velocity_x_*0.001f) * deltaTime;
+        position_y_ += (velocity_y_*0.001f) * deltaTime;
+        UpdateAngles();
+    } else {
+        velocity_x_ = 0;
+        velocity_y_ = -9.8;
+    }    
 }
 Object::Color::Color() {
     SetRandomColor();
@@ -94,5 +92,11 @@ void Object::SetVelocityX(float velocity_x) {
 }
 void Object::SetVelocityY(float velocity_y) {
     this->velocity_y_ = velocity_y;
+}
+float Object::GetTension() const {
+    return this->tension_;
+}
+void Object::SetTension(float tension) {
+    this->tension_ = tension;
 }
 

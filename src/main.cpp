@@ -39,25 +39,37 @@ int main() {
         return -1;
     }       
     glScalef(1/KoefScreen, 1, 1);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);     
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);        
+    //
+    Rectangle floor(true, true, 0, -1.3f, 3.0f, 1.0f); 
+    Rectangle floor1(true, false, 0, 3.5f, 3.0f, 1.0f);
+    Rectangle box0(true, false, 0, 0.5f, 0.5f, 0.5f);
+    Rectangle box1(true, false, -1, 0.5f, 0.5f, 0.5f);
+    Rectangle box2(true, false, 0, 1.5f, 0.5f, 0.5f);
+    Rectangle box3(true, false, 1, 0.5f, 0.5f, 0.5f);
+    Rectangle box4(true, false, 0, 2.5f, 0.5f, 0.5f);
+
+    floor->SetMass(99999999999.0f);
+    floor->SetTension(0.4f);
+    box0->SetVelocityY(-100);
+    box1->SetVelocityY(250);
+    box3->SetVelocityY(-500);
+    //
     double lastTime = glfwGetTime();
     glfwSwapInterval(1);
-    //
-    Rectangle floor(true, true, 0, -1.0f, 3.0f, 1.0f);
-    Rectangle box(true, false, 0, 0.5f, 0.5f, 0.5f);
-    Rectangle box2(true, false, 0.3f, 1.5f, 1.0f, 0.5f);
 
-    floor->SetMass(100000000);
-    box->SetVelocityY(1000);
-    //
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);        
+        glClear(GL_COLOR_BUFFER_BIT);  
+
         double currentTime = glfwGetTime();
         double deltaTime = currentTime - lastTime;      
+
         Object::ObjectsMain(deltaTime);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
+
         lastTime = currentTime;       
         ++fpsCounter;       
     }    
