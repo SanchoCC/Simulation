@@ -2,6 +2,77 @@
 
 std::list<std::shared_ptr<Object>> Object::objects_list_;
 
+typedef struct {
+    double r;       // a fraction between 0 and 1
+    double g;       // a fraction between 0 and 1
+    double b;       // a fraction between 0 and 1
+} rgb;
+
+typedef struct {
+    double h;       // angle in degrees
+    double s;       // a fraction between 0 and 1
+    double v;       // a fraction between 0 and 1
+} hsv;
+
+
+rgb hsvToRgb(hsv in)
+{
+    double      hh, p, q, t, ff;
+    long        i;
+    rgb         out;
+
+    if (in.s <= 0.0) {       // < is bogus, just shuts up warnings
+        out.r = in.v;
+        out.g = in.v;
+        out.b = in.v;
+        return out;
+    }
+    hh = in.h;
+    if (hh >= 360.0) hh = 0.0;
+    hh /= 60.0;
+    i = (long)hh;
+    ff = hh - i;
+    p = in.v * (1.0 - in.s);
+    q = in.v * (1.0 - (in.s * ff));
+    t = in.v * (1.0 - (in.s * (1.0 - ff)));
+
+    switch (i) {
+        case 0:
+        out.r = in.v;
+        out.g = t;
+        out.b = p;
+        break;
+        case 1:
+        out.r = q;
+        out.g = in.v;
+        out.b = p;
+        break;
+        case 2:
+        out.r = p;
+        out.g = in.v;
+        out.b = t;
+        break;
+
+        case 3:
+        out.r = p;
+        out.g = q;
+        out.b = in.v;
+        break;
+        case 4:
+        out.r = t;
+        out.g = p;
+        out.b = in.v;
+        break;
+        case 5:
+        default:
+        out.r = in.v;
+        out.g = p;
+        out.b = q;
+        break;
+    }
+    return out;
+}
+
 Object::Object(bool collision, bool statical, float position_x, float position_y) { 
     this->collision_ = collision;
     this->statical_ = statical;
@@ -46,11 +117,28 @@ Object::Color::Color(float red, float green, float blue) {
 void Object::Color::SetRandomColor() {
     std::random_device rd;
     std::mt19937 rng(rd());
-    std::uniform_real_distribution<float> color_dist(0.0f, 1.0f);
-    this->red_ = color_dist(rng);
-    this->green_ = color_dist(rng);
-    this->blue_ = color_dist(rng);
+    std::uniform_real_distribution<float> hue_dist(0.0f, 360.0f); //angle
+    std::uniform_real_distribution<float> sat_dist(0.3f, 0.5f);
+    std::uniform_real_distribution<float> val_dist(0.9f, 1);
+
+    float hue = hue_dist(rng);
+    float saturation = sat_dist(rng);
+    float value = val_dist(rng);
+
+    hsv input;
+    rgb output;
+
+    input.h = hue;
+    input.s = saturation;
+    input.v = value;
+    
+    output = hsvToRgb(input);
+
+    this->red_ = output.r;
+    this->green_ = output.g;
+    this->blue_ = output.b;
 }
+
 void Object::Color::SetColor(float red, float green, float blue) {
     this->red_ = red;
     this->green_ = green;
@@ -99,4 +187,3 @@ float Object::GetTension() const {
 void Object::SetTension(float tension) {
     this->tension_ = tension;
 }
-

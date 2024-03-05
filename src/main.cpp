@@ -7,10 +7,11 @@
 #include <iostream>
 #include <memory>
 
-int Width = 800;
-int Height = 600;
+int Width = 1700;
+int Height = 900;
 float KoefScreen = static_cast<float>(Width) / Height;
 int fpsCounter = 0;
+bool fullScreen = false;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -23,9 +24,16 @@ int main() {
         return -1;
     }
     // OpenGL (3.1)
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    GLFWwindow* window = glfwCreateWindow(Width, Height, "Hello, OpenGL!", nullptr, nullptr);
+    GLFWwindow* window;
+    if (fullScreen) {
+        glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+        window = glfwCreateWindow(mode->width, mode->height, "Hello, OpenGL!", monitor, nullptr);
+    }
+    else {
+        window = glfwCreateWindow(Width, Height, "Hello, OpenGL!", nullptr, nullptr);
+    }
     if (!window) {
         std::cerr << "glfwCreateWindow error" << std::endl;
         glfwTerminate();
@@ -42,12 +50,15 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);        
     //
     Rectangle floor(true, true, 0, -1.3f, 3.0f, 1.0f); 
-    Rectangle floor1(true, false, 0, 3.5f, 3.0f, 1.0f);
+    
     Rectangle box0(true, false, 0, 0.5f, 0.5f, 0.5f);
-    Rectangle box1(true, false, -1, 0.5f, 0.5f, 0.5f);
-    Rectangle box2(true, false, 0, 1.5f, 0.5f, 0.5f);
-    Rectangle box3(true, false, 1, 0.5f, 0.5f, 0.5f);
-    Rectangle box4(true, false, 0, 2.5f, 0.5f, 0.5f);
+    Rectangle box1(true, false, -1, 0.35f, 0.5f, 0.5f);
+    Rectangle box2(true, false, 0, -1.5f, 0.3f, 1);
+    Rectangle box3(true, false, 1, 0.3f, -0.2, 0.5f);
+    Rectangle box4(true, false, -0.5, -0.4f, 0.3f, 0.5f);
+    Rectangle box5(true, false, -2, 1, 0.1f, 0.1f);
+    
+    
 
     floor->SetMass(99999999999.0f);
     floor->SetTension(0.4f);
@@ -59,7 +70,7 @@ int main() {
     glfwSwapInterval(1);
 
     while (!glfwWindowShouldClose(window)) {
-        glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);  
 
         double currentTime = glfwGetTime();

@@ -54,6 +54,7 @@ protected:
 		float green_;
 		float blue_;
 	};
+
 public:
 	Color color_;	
 private:
@@ -62,6 +63,7 @@ private:
 	virtual bool CheckCollision(const std::shared_ptr<Object> other) = 0;
 	virtual void CollisionEffect(std::shared_ptr<Object> other, double deltaTime) = 0;
 	virtual void UpdateAngles() = 0;
+	
 public:
 	void Move(double deltaTime);
 
@@ -84,6 +86,7 @@ public:
 
 	float GetTension() const;
 	void SetTension(float tension);
+	
 };
 
 #endif // !SIMULATION_CLASSES_OBJECT_H_
