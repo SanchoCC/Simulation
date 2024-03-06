@@ -1,10 +1,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "classes/Object.h"
-#include "classes/ObjectShapes.h"
-
 #include <iostream>
+
+#include "classes/object.h"
+#include "classes/object_shapes.h"
 
 int Width = 800;
 int Height = 600;

@@ -6,11 +6,12 @@ add_executable( simulation
 src/glad/glad.c
 src/glad/glad.h
 src/main.cpp
-src/classes/Object.h
-src/classes/Object.cpp
-src/classes/ObjectShapes.h
-src/classes/ObjectShapes.cpp
+src/classes/object.h
+src/classes/object.cc
+src/classes/object_shapes.h
+src/classes/object_shapes.cc
 )
+target_compile_features(simulation PRIVATE cxx_std_17)
 target_include_directories( simulation PRIVATE
   src
   include

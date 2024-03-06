@@ -1,4 +1,4 @@
-#include "ObjectShapes.h"
+#include "object_shapes.h"
 
 Circle::Circle(bool collision, bool statical, float position_x, float position_y, float radius) :Object(collision, statical, position_x, position_y) {
     this->radius_ = radius;

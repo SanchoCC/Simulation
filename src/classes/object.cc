@@ -1,4 +1,4 @@
-#include "Object.h"
+#include "object.h"
 
 std::list<std::shared_ptr<Object>> Object::objects_list_;
 

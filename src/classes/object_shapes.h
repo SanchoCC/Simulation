@@ -2,7 +2,7 @@
 #ifndef SIMULATION_CLASSES_OBJECTSHAPES_H_
 #define SIMULATION_CLASSES_OBJECTSHAPES_H_
 
-#include "Object.h"
+#include "object.h"
 
 class Circle : public Object {
 public:
