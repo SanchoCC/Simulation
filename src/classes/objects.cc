@@ -26,6 +26,7 @@ void Object::ObjectsMain(double deltaTime) {
 }
 void Object::GravityAcceleration(double deltaTime) {
     velocity_y_ -= 9.8f;
+    velocity_x_ += 5;
 }
 void Object::Move(double deltaTime) {
     if (!statical_) {        
@@ -46,7 +47,7 @@ Object::Color::Color(float red, float green, float blue) {
 void Object::Color::SetRandomColor() {
     std::random_device rd;
     std::mt19937 rng(rd());
-    std::uniform_real_distribution<float> color_dist(0.0f, 1.0f);
+    std::uniform_real_distribution<float> color_dist(0.5f, 1.0f);
     this->red_ = color_dist(rng);
     this->green_ = color_dist(rng);
     this->blue_ = color_dist(rng);

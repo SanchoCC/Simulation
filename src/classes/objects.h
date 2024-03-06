@@ -3,10 +3,7 @@
 #define SIMULATION_CLASSES_OBJECT_H_
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -15,7 +12,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
-#include <unordered_set>
+
 class Object {
 public:
 	Object(bool collision, bool statical, float position_x, float position_y);
@@ -34,7 +31,7 @@ protected:
 	bool statical_;
 	bool is_rectangle_ = false;	
 
-	float tension_ = 0.95f;
+	float tension_ = 0.9f;
 	float density_ = 700;
 	float mass_ = 1;
 	float velocity_x_ = 0;

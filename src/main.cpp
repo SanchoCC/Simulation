@@ -5,7 +5,6 @@
 #include "classes/ObjectShapes.h"
 
 #include <iostream>
-#include <memory>
 
 int Width = 800;
 int Height = 600;
@@ -42,7 +41,6 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);        
     //
     Rectangle floor(true, true, 0, -1.3f, 3.0f, 1.0f); 
-    Rectangle floor1(true, false, 0, 3.5f, 3.0f, 1.0f);
     Rectangle box0(true, false, 0, 0.5f, 0.5f, 0.5f);
     Rectangle box1(true, false, -1, 0.5f, 0.5f, 0.5f);
     Rectangle box2(true, false, 0, 1.5f, 0.5f, 0.5f);
@@ -59,7 +57,7 @@ int main() {
     glfwSwapInterval(1);
 
     while (!glfwWindowShouldClose(window)) {
-        glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
+        glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);  
 
         double currentTime = glfwGetTime();

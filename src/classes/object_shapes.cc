@@ -84,8 +84,8 @@ void Rectangle::CollisionEffect(std::shared_ptr<Object> other, double deltaTime)
     float other_velocity_x = other->GetVelocityX();
     float this_velocity_y = this->GetVelocityY();
     float other_velocity_y = other->GetVelocityY();    
-    this->SetVelocityX(((this_mass - other_mass) * this_velocity_x + 2 * other_mass * other_velocity_x) / (this_mass + other_mass));
-    other->SetVelocityX(((other_mass - this_mass) * other_velocity_x + 2 * this_mass * this_velocity_x) / (this_mass + other_mass));
+    this->SetVelocityX(((((this_mass - other_mass) * this_velocity_x + 2 * other_mass * other_velocity_x) / (this_mass + other_mass)) * (0.5f * (this->GetTension() + other->GetTension()))* -1 ));
+    other->SetVelocityX(((((other_mass - this_mass) * other_velocity_x + 2 * this_mass * this_velocity_x) / (this_mass + other_mass)) * (0.5f * (this->GetTension() + other->GetTension()))*-1));
     this->SetVelocityY((((this_mass - other_mass) * this_velocity_y + 2 * other_mass * other_velocity_y) / (this_mass + other_mass)) * (0.5f * (this->GetTension() + other->GetTension())));
     other->SetVelocityY((((other_mass - this_mass) * other_velocity_y + 2 * this_mass * this_velocity_y) / (this_mass + other_mass)) * (0.5f * (this->GetTension() + other->GetTension())));
 }
