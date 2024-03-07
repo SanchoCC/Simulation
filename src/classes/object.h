@@ -22,7 +22,7 @@ enum class ShapeType {
 
 class Object {
  public:
-	Object(bool collision, bool statical, float position_x, float position_y);
+	Object(bool statical, float position_x, float position_y);
 	virtual ~Object();
 
 	std::shared_ptr <Object> operator->() {
@@ -65,7 +65,7 @@ class Object {
 	std::vector<std::pair<float, float>> vertices_;
 	bool collision_;
 	bool statical_;
-	float tension_ = 0.8f;
+	float tension_ = 0.9f;
 	float density_ = 700;
 	float mass_ = 1;
 	float velocity_x_ = 0;

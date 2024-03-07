@@ -2,8 +2,7 @@
 
 std::list<std::shared_ptr<Object>> Object::objects_list_;
 
-Object::Object(bool collision, bool statical, float position_x, float position_y) { 
-    this->collision_ = collision;
+Object::Object(bool statical, float position_x, float position_y) { 
     this->statical_ = statical;
     this->position_x_ = position_x;
     this->position_y_ = position_y;     

@@ -1,6 +1,6 @@
 #include "object_shapes.h"
 
-Circle::Circle(bool collision, bool statical, float position_x, float position_y, float radius) :Object(collision, statical, position_x, position_y) {
+Circle::Circle(bool statical, float position_x, float position_y, float radius) : Object(statical, position_x, position_y) {
     this->radius_ = radius;
 }
 ShapeType Circle::GetType() const {
@@ -26,7 +26,7 @@ float Circle::GetRadius() {
     return radius_;
 }
 
-Rectangle::Rectangle(bool collision, bool statical, float position_x, float position_y, float width, float height) :Object(collision, statical, position_x, position_y) {
+Rectangle::Rectangle(bool statical, float position_x, float position_y, float width, float height) : Object(statical, position_x, position_y) {
     this->width_ = width;
     this->height_ = height;   
     this->mass_ = (width_ * height_) * density_;  

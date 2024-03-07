@@ -9,7 +9,7 @@
 
 int width = 1280;
 int height = 720;
-bool full_screen = true;
+bool full_screen = false;
 float koef_screen = static_cast<float>(width) / height;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -53,15 +53,15 @@ int main() {
 
     ObjectHandler object_handler;
     //
-    Rectangle floor(true, true, 0, -1.3f, 3.0f, 1.0f); 
-    Rectangle box0(true, false, 0, 0.5f, 0.5f, 0.5f);
-    Rectangle box1(true, false, -1, 0.5f, 0.5f, 0.5f);
-    Rectangle box2(true, false, 0, 1.5f, 0.5f, 0.5f);
-    Rectangle box3(true, false, 1, 0.5f, 0.5f, 0.5f);
-    Rectangle box4(true, false, 0, 2.5f, 0.5f, 0.5f);
+    Rectangle floor(true, 0, -1.3f, 3.0f, 1.0f); 
+    Rectangle box0(false, 0, 0.5f, 0.5f, 0.5f);
+    Rectangle box1(false, -1, 0.5f, 0.5f, 0.5f);
+    Rectangle box2(false, 0, 1.5f, 0.5f, 0.5f);
+    Rectangle box3(false, 1, 0.5f, 0.5f, 0.5f);
+    Rectangle box4(false, 0, 2.5f, 0.5f, 0.5f);
 
     floor->SetMass(99999999999.0f);
-    floor->SetTension(0.4f);
+    floor->SetTension(0.2f);
     box0->SetVelocityY(100);
     box1->SetVelocityY(250);
     box2->SetVelocityY(-4000);
