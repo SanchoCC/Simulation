@@ -2,6 +2,11 @@
 
 Circle::Circle(bool statical, float position_x, float position_y, float radius) : Object(statical, position_x, position_y) {
     this->radius_ = radius;
+    this->mass_ = M_PI * radius * radius * density_;
+    this->UpdateVertices();
+    this->Render();
+    shared_this_ = (std::make_shared<Circle>(*this));
+    objects_list_.push_back(shared_this_);
 }
 ShapeType Circle::GetType() const {
     return ShapeType::kCircle;

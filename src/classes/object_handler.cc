@@ -23,15 +23,14 @@ bool ObjectHandler::CheckCollision(Object* first, Object* second) {
         bool collision_x = max_first.first >= min_second.first && min_first.first <= max_second.first;
         bool collision_y = max_first.second >= min_second.second && min_first.second <= max_second.second;
         return collision_x && collision_y;
-    } else if (first->GetType() == ShapeType::kCircle && second->GetType() == ShapeType::kCircle) {
-        return true;
-    }   
-}
-float ObjectHandler::CalculateNewVelocity(float mass_self, float velocity_self, float mass_other, float velocity_other, float tension_self, float tension_other) {
-    return (((mass_self - mass_other) * velocity_self + 2 * mass_other * velocity_other) / (mass_self + mass_other)) * (0.5f * (tension_self + tension_other)) * -1;
+    }
+    else if (first->GetType() == ShapeType::kCircle && second->GetType() == ShapeType::kCircle) {
+        return (glm::distance(first->GetPositionVec2(), second->GetPositionVec2())) <= first->GetRadius() + second->GetRadius();
+    }
+    return false;
 }
 
-void ObjectHandler::HandleCollision(Object* first, Object* second, float delta_time) {
+void ObjectHandler::HandleCollision(Object* first, Object* second, double delta_time) {
     first->Move(-delta_time);
     second->Move(-delta_time);
     float first_mass = first->GetMass();
@@ -40,8 +39,8 @@ void ObjectHandler::HandleCollision(Object* first, Object* second, float delta_t
     float second_velocity_x = second->GetVelocityX();
     float first_velocity_y = first->GetVelocityY();
     float second_velocity_y = second->GetVelocityY();
-    first->SetVelocityX(((((first_mass - second_mass) * first_velocity_x + 2 * second_mass * second_velocity_x) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())) * -1));
-    second->SetVelocityX(((((second_mass - first_mass) * second_velocity_x + 2 * first_mass * first_velocity_x) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())) * -1));
+    first->SetVelocityX((((first_mass - second_mass) * first_velocity_x + 2 * second_mass * second_velocity_x) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));
     first->SetVelocityY((((first_mass - second_mass) * first_velocity_y + 2 * second_mass * second_velocity_y) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));
+    second->SetVelocityX((((second_mass - first_mass) * second_velocity_x + 2 * first_mass * first_velocity_x) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));
     second->SetVelocityY((((second_mass - first_mass) * second_velocity_y + 2 * first_mass * first_velocity_y) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));
 }

@@ -15,8 +15,8 @@ void Object::GravityAcceleration(double delta_time) {
 }
 void Object::Move(double delta_time) {
     if (!statical_) {        
-        position_x_ += (velocity_x_*0.001f) * delta_time;
-        position_y_ += (velocity_y_*0.001f) * delta_time;
+        position_x_ += (velocity_x_ * 0.001f) * delta_time;
+        position_y_ += (velocity_y_ * 0.001f) * delta_time;
         UpdateVertices();
     } else {
         velocity_x_ = 0;
@@ -62,5 +62,8 @@ float Object::GetTension() const {
 }
 void Object::SetTension(float tension) {
     this->tension_ = tension;
+}
+glm::vec2 Object::GetPositionVec2() {
+    return { position_x_, position_y_ };
 }
 
