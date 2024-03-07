@@ -2,8 +2,7 @@
 
 std::list<std::shared_ptr<Object>> Object::objects_list_;
 
-Object::Object(bool collision, bool statical, float position_x, float position_y) { 
-    this->collision_ = collision;
+Object::Object(bool statical, float position_x, float position_y) { 
     this->statical_ = statical;
     this->position_x_ = position_x;
     this->position_y_ = position_y;     
@@ -16,8 +15,8 @@ void Object::GravityAcceleration(double delta_time) {
 }
 void Object::Move(double delta_time) {
     if (!statical_) {        
-        position_x_ += (velocity_x_*0.001f) * delta_time;
-        position_y_ += (velocity_y_*0.001f) * delta_time;
+        position_x_ += (velocity_x_ * 0.001f) * delta_time;
+        position_y_ += (velocity_y_ * 0.001f) * delta_time;
         UpdateVertices();
     } else {
         velocity_x_ = 0;
@@ -63,5 +62,8 @@ float Object::GetTension() const {
 }
 void Object::SetTension(float tension) {
     this->tension_ = tension;
+}
+glm::vec2 Object::GetPositionVec2() {
+    return { position_x_, position_y_ };
 }
 

@@ -9,8 +9,7 @@ class ObjectHandler {
 
  private:
 	bool CheckCollision(Object* first, Object* second);
-	void HandleCollision(Object* first, Object* second, float delta_time);
-	float CalculateNewVelocity(float mass_self, float velocity_self, float mass_other, float velocity_other, float tension_self, float tension_other);
+	void HandleCollision(Object* first, Object* second, double delta_time);
 };
 
 #endif //SIMULATION_CLASSES_OBJECT_HANDLER_H_

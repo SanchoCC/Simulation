@@ -22,7 +22,7 @@ enum class ShapeType {
 
 class Object {
  public:
-	Object(bool collision, bool statical, float position_x, float position_y);
+	Object(bool statical, float position_x, float position_y);
 	virtual ~Object();
 
 	std::shared_ptr <Object> operator->() {
@@ -53,9 +53,11 @@ class Object {
 	void SetVelocityY(float velocity_y);
 
 	float GetTension() const;
-	void SetTension(float tension);
+	void SetTension(float tension);	
 
 	virtual float GetRadius() = 0;
+
+	glm::vec2 GetPositionVec2();
 
  protected:
 	virtual void UpdateVertices() = 0;
@@ -63,11 +65,10 @@ class Object {
 	std::shared_ptr <Object> shared_this_;
 	static std::list<std::shared_ptr<Object>> objects_list_;
 	std::vector<std::pair<float, float>> vertices_;
-	bool collision_;
 	bool statical_;
 	float tension_ = 0.8f;
 	float density_ = 700;
-	float mass_ = 1;
+	float mass_ = 1000;
 	float velocity_x_ = 0;
 	float velocity_y_ = 0;
 	float rotation_angle_ = 0;

@@ -6,7 +6,7 @@
 
 class Circle : public Object {
  public:
-    Circle(bool collision, bool statical, float position_x, float position_y, float radius);
+    Circle(bool statical, float position_x, float position_y, float radius);
     ShapeType GetType() const override;
 
     void Render() override;
@@ -22,7 +22,7 @@ class Circle : public Object {
 };
 class Rectangle : public Object {
  public:
-    Rectangle(bool collision, bool statical, float position_x, float position_y, float width, float height);
+    Rectangle(bool statical, float position_x, float position_y, float width, float height);
     ShapeType GetType() const override;
 
     void Render() override;
