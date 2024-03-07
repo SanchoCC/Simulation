@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
-project(simulation)
+project(Simulation)
 
 # Create Project
 add_executable( simulation 
 src/glad/glad.c
 src/glad/glad.h
-src/main.cpp
+src/main.cc
 src/classes/object.h
 src/classes/object.cc
 src/classes/object_shapes.h
