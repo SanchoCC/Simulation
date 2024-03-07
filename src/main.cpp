@@ -5,11 +5,12 @@
 
 #include "classes/object.h"
 #include "classes/object_shapes.h"
+#include "classes/object_handler.h"
 
-int Width = 800;
-int Height = 600;
-float KoefScreen = static_cast<float>(Width) / Height;
-int fpsCounter = 0;
+int width = 1280;
+int height = 720;
+bool full_screen = true;
+float koef_screen = static_cast<float>(width) / height;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -24,7 +25,16 @@ int main() {
     // OpenGL (3.1)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    GLFWwindow* window = glfwCreateWindow(Width, Height, "Hello, OpenGL!", nullptr, nullptr);
+    GLFWwindow* window;
+    if (full_screen) {
+        glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+        window = glfwCreateWindow(mode->width, mode->height, "Hello, OpenGL!", monitor, nullptr);
+    }
+    else {
+        window = glfwCreateWindow(width, height, "Hello, OpenGL!", nullptr, nullptr);
+    }
     if (!window) {
         std::cerr << "glfwCreateWindow error" << std::endl;
         glfwTerminate();
@@ -37,8 +47,11 @@ int main() {
         glfwTerminate();
         return -1;
     }       
-    glScalef(1/KoefScreen, 1, 1);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);        
+    glScalef(1/koef_screen, 1, 1);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSwapInterval(1);
+
+    ObjectHandler object_handler;
     //
     Rectangle floor(true, true, 0, -1.3f, 3.0f, 1.0f); 
     Rectangle box0(true, false, 0, 0.5f, 0.5f, 0.5f);
@@ -49,26 +62,27 @@ int main() {
 
     floor->SetMass(99999999999.0f);
     floor->SetTension(0.4f);
-    box0->SetVelocityY(-100);
+    box0->SetVelocityY(100);
     box1->SetVelocityY(250);
-    box3->SetVelocityY(-500);
+    box2->SetVelocityY(-4000);
+    box3->SetVelocityY(500);
     //
-    double lastTime = glfwGetTime();
-    glfwSwapInterval(1);
+    double last_time = glfwGetTime();
+    int fpsCounter = 0;
 
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);  
 
-        double currentTime = glfwGetTime();
-        double deltaTime = currentTime - lastTime;      
+        double current_time = glfwGetTime();
+        double delta_time = current_time - last_time;      
 
-        Object::ObjectsMain(deltaTime);
+        object_handler.MainCycle(Object::GetObjectsList(), delta_time);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
 
-        lastTime = currentTime;       
+        last_time = current_time;       
         ++fpsCounter;       
     }    
     std::cout << "FPS:\t" << fpsCounter / glfwGetTime();

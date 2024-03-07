@@ -10,77 +10,41 @@ Object::Object(bool collision, bool statical, float position_x, float position_y
 }
 Object::~Object() {   
 }
-void Object::ObjectsMain(double deltaTime) {
-    for (auto it = objects_list_.begin(); it != objects_list_.end(); ++it) {        
-        (*it)->GravityAcceleration(deltaTime);
-        (*it)->Move(deltaTime);
-        for (auto innerit = objects_list_.begin(); innerit != objects_list_.end(); ++innerit) {
-            if (innerit == it) {
-                continue;
-            } else if ((*it)->CheckCollision(*innerit)) {
-                (*it)->CollisionEffect(*innerit, deltaTime);
-            }
-        }        
-        (*it)->Render();
-    }
-}
-void Object::GravityAcceleration(double deltaTime) {
+void Object::GravityAcceleration(double delta_time) {
     velocity_y_ -= 9.8f;
-    velocity_x_ += 5;
+    velocity_x_ += 0;
 }
-void Object::Move(double deltaTime) {
+void Object::Move(double delta_time) {
     if (!statical_) {        
-        position_x_ += (velocity_x_*0.001f) * deltaTime;
-        position_y_ += (velocity_y_*0.001f) * deltaTime;
-        UpdateAngles();
+        position_x_ += (velocity_x_*0.001f) * delta_time;
+        position_y_ += (velocity_y_*0.001f) * delta_time;
+        UpdateVertices();
     } else {
         velocity_x_ = 0;
-        velocity_y_ = -9.8;
+        velocity_y_ = 0;
     }    
 }
-Object::Color::Color() {
-    SetRandomColor();
+std::list <std::shared_ptr<Object>>& Object::GetObjectsList() { 
+    return objects_list_; 
 }
-Object::Color::Color(float red, float green, float blue) {
-    SetColor(red, green, blue);
+std::pair <float, float> Object::GetMaxVertices() const {
+    auto max_x = *std::max_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });   
+    auto max_y = *std::max_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
+    return std::make_pair(max_x.first, max_y.second);
 }
-void Object::Color::SetRandomColor() {
-    std::random_device rd;
-    std::mt19937 rng(rd());
-    std::uniform_real_distribution<float> color_dist(0.5f, 1.0f);
-    this->red_ = color_dist(rng);
-    this->green_ = color_dist(rng);
-    this->blue_ = color_dist(rng);
-}
-void Object::Color::SetColor(float red, float green, float blue) {
-    this->red_ = red;
-    this->green_ = green;
-    this->blue_ = blue;
-}
-bool Object::GetIsRectangle() const {
-    return this->is_rectangle_;
+std::pair <float, float> Object::GetMinVertices() const {
+    auto min_x = *std::min_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });   
+    auto min_y = *std::min_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
+    return std::make_pair(min_x.first, min_y.second);
 }
 float Object::GetRotationAngle() const {
     return this->rotation_angle_;
 }
-float Object::GetMaxAngleX() const {
-    auto max = *std::max_element(angles_.cbegin(), angles_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });   
-    return max.first;
-}
-float Object::GetMinAngleX() const {
-    auto min = *std::min_element(angles_.cbegin(), angles_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });   
-    return min.first;
-}
-float Object::GetMaxAngleY() const {
-    auto max = *std::max_element(angles_.cbegin(), angles_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
-    return max.second;
-}
-float Object::GetMinAngleY() const {
-    auto min = *std::min_element(angles_.cbegin(), angles_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
-    return min.second;
-}
 float Object::GetMass() const {
     return mass_;
+}
+void Object::SetMass(float mass) {
+    this->mass_ = mass;
 }
 float Object::GetVelocityX() const {
     return velocity_x_;
