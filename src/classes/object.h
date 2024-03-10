@@ -43,6 +43,7 @@ class Object {
 	std::pair <float, float> GetMinVertices() const;
 
 	float GetRotationAngle() const;
+	void SetRotationAngle(float rotation_angle);
 
 	float GetMass() const;
 	void SetMass(float mass);
@@ -59,6 +60,8 @@ class Object {
 
 	glm::vec2 GetPositionVec2();
 
+	std::vector <std::pair<float, float>> GetVertices() const;
+
  protected:
 	virtual void UpdateVertices() = 0;
 
@@ -66,7 +69,7 @@ class Object {
 	static std::list<std::shared_ptr<Object>> objects_list_;
 	std::vector<std::pair<float, float>> vertices_;
 	bool statical_;
-	float tension_ = 0.8f;
+	float tension_ = 0.9f;
 	float density_ = 700;
 	float mass_ = 1000;
 	float velocity_x_ = 0;
