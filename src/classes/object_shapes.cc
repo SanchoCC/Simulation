@@ -8,17 +8,20 @@ Circle::Circle(bool statical, float position_x, float position_y, float radius) 
     shared_this_ = (std::make_shared<Circle>(*this));
     objects_list_.push_back(shared_this_);
 }
+
 ShapeType Circle::GetType() const {
     return ShapeType::kCircle;
 }
+
 void Circle::Render() {
     glColor3f(color_.red_, color_.green_, color_.blue_);
     glBegin(GL_POLYGON);
     for (const auto& it : vertices_) {
         glVertex2f(it.first, it.second);
     }
-    glEnd();  
+    glEnd();
 }
+
 void Circle::UpdateVertices() {
     vertices_.clear();
     int sides = kCircleSides * radius_;
@@ -27,23 +30,26 @@ void Circle::UpdateVertices() {
         vertices_.push_back(std::make_pair(radius_ * cosf(theta) + position_x_, radius_ * sinf(theta) + position_y_));
     }
 }
+
 float Circle::GetRadius() {
     return radius_;
 }
 
 Rectangle::Rectangle(bool statical, float position_x, float position_y, float width, float height) : Object(statical, position_x, position_y) {
     this->width_ = width;
-    this->height_ = height;   
-    this->mass_ = (width_ * height_) * density_;  
+    this->height_ = height;
+    this->mass_ = (width_ * height_) * density_;
     this->UpdateVertices();
     this->Render();
     shared_this_ = (std::make_shared<Rectangle>(*this));
     objects_list_.push_back(shared_this_);
 }
+
 ShapeType Rectangle::GetType() const {
     return ShapeType::kRectangle;
 }
-void Rectangle::Render() {       
+
+void Rectangle::Render() {
     glColor3f(color_.red_, color_.green_, color_.blue_);
     glBegin(GL_POLYGON);
     for (const auto& it : vertices_) {
@@ -51,6 +57,7 @@ void Rectangle::Render() {
     }
     glEnd();
 }
+
 void Rectangle::UpdateVertices() {
     vertices_.clear();
     std::vector<std::pair<float, float>> original_vertices_ = {
@@ -67,6 +74,7 @@ void Rectangle::UpdateVertices() {
         vertices_.push_back(std::make_pair(vertex.x + position_x_, vertex.y + position_y_));
     }
 }
+
 float Rectangle::GetRadius() {
     return sqrt(width_ * width_ + height_ * height_);
 }
