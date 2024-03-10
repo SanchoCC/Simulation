@@ -55,8 +55,8 @@ int main() {
     //
     Rectangle floor(true, 0, -1.3f, 3.0f, 1.0f); 
 
-    Rectangle box0(false, 0, 0.5f, 0.5f, 0.5f);
-    Rectangle box2(false, 0, 1.5f, 0.5f, 0.5f);
+    Rectangle box0(false, 0, 0.2f, 0.5f, 0.5f);
+    Rectangle box2(false, 0.2, 1.5f, 0.5f, 0.5f);
     Rectangle box3(false, 1, 0.5f, 0.5f, 0.5f);
     Rectangle box4(false, 0, 2.5f, 0.5f, 0.5f);
 

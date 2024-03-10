@@ -26,15 +26,15 @@ void Object::Move(double delta_time) {
 std::list <std::shared_ptr<Object>>& Object::GetObjectsList() { 
     return objects_list_; 
 }
-std::pair <float, float> Object::GetMaxVertices() const {
-    auto max_x = *std::max_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });   
-    auto max_y = *std::max_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
-    return std::make_pair(max_x.first, max_y.second);
+std::pair<float, float> Object::GetMaxVertices() const {
+    auto max_x = std::max_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });
+    auto max_y = std::max_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
+    return std::make_pair(max_x->first, max_y->second);
 }
-std::pair <float, float> Object::GetMinVertices() const {
-    auto min_x = *std::min_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });   
-    auto min_y = *std::min_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
-    return std::make_pair(min_x.first, min_y.second);
+std::pair<float, float> Object::GetMinVertices() const {
+    auto min_x = std::min_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });
+    auto min_y = std::min_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
+    return std::make_pair(min_x->first, min_y->second);
 }
 float Object::GetRotationAngle() const {
     return this->rotation_angle_;

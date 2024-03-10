@@ -19,7 +19,7 @@ bool ObjectHandler::CheckCollision(Object* first, Object* second) {
         std::pair <float, float> min_first = first->GetMinVertices();
         std::pair <float, float> min_second = second->GetMinVertices();
         std::pair <float, float> max_first = first->GetMaxVertices();
-        std::pair <float, float> max_second = second->GetMinVertices();
+        std::pair <float, float> max_second = second->GetMaxVertices();
         bool collision_x = max_first.first >= min_second.first && min_first.first <= max_second.first;
         bool collision_y = max_first.second >= min_second.second && min_first.second <= max_second.second;
         return collision_x && collision_y;
