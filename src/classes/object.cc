@@ -36,8 +36,14 @@ std::pair<float, float> Object::GetMinVertices() const {
     auto min_y = std::min_element(vertices_.cbegin(), vertices_.cend(), [](const auto& lhs, const auto& rhs) { return lhs.second < rhs.second; });
     return std::make_pair(min_x->first, min_y->second);
 }
+std::vector <std::pair<float, float>> Object::GetVertices() const {
+    return vertices_;
+}
 float Object::GetRotationAngle() const {
     return this->rotation_angle_;
+}
+void Object::SetRotationAngle(float rotation_angle) {
+    rotation_angle_ = rotation_angle;
 }
 float Object::GetMass() const {
     return mass_;
