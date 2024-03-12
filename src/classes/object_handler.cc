@@ -42,7 +42,7 @@ void ObjectHandler::HandleCollision(Object* first, Object* second, double delta_
     first->SetVelocityX((((first_mass - second_mass) * first_velocity_x + 2 * second_mass * second_velocity_x) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));
     first->SetVelocityY((((first_mass - second_mass) * first_velocity_y + 2 * second_mass * second_velocity_y) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));
     second->SetVelocityX((((second_mass - first_mass) * second_velocity_x + 2 * first_mass * first_velocity_x) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));
-    second->SetVelocityY((((second_mass - first_mass) * second_velocity_y + 2 * first_mass * first_velocity_y) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension()))); 
+    second->SetVelocityY((((second_mass - first_mass) * second_velocity_y + 2 * first_mass * first_velocity_y) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));
 }
 
 bool ObjectHandler::SATCollision(const std::vector<std::pair<float, float>>& vertices1, const std::vector<std::pair<float, float>>& vertices2) {
