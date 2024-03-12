@@ -18,12 +18,12 @@ void ObjectHandler::MainCycle(std::list<std::shared_ptr<Object>>& object_list, d
 }
 
 bool ObjectHandler::CheckCollision(Object* first, Object* second) {
-    if (first->GetType() == ShapeType::kRectangle && second->GetType() == ShapeType::kRectangle) {
+    if (first->GetType() == ShapeType::kRectangle || second->GetType() == ShapeType::kRectangle) {
         return SATCollision(first->GetVertices(), second->GetVertices());
     } else if (first->GetType() == ShapeType::kCircle && second->GetType() == ShapeType::kCircle) {
-        float distance = glm::distance(first->GetPositionVec2(), second->GetPositionVec2());
-        float sum_radius = first->GetRadius() + second->GetRadius();
-        return distance <= sum_radius;
+            float distance = glm::distance(first->GetPositionVec2(), second->GetPositionVec2());
+            float sum_radius = first->GetRadius() + second->GetRadius();
+            return distance <= sum_radius;
     }
     return false;
 }
