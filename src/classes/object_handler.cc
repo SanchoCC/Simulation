@@ -18,13 +18,13 @@ void ObjectHandler::MainCycle(std::list<std::shared_ptr<Object>>& object_list, d
 }
 
 bool ObjectHandler::CheckCollision(Object* first, Object* second) {
-    if (first->GetType() == ShapeType::kRectangle && second->GetType() == ShapeType::kRectangle) {
+    if (first->GetType() == ShapeType::kRectangle || second->GetType() == ShapeType::kRectangle) {
         return SATCollision(first->GetVertices(), second->GetVertices());
     } else if (first->GetType() == ShapeType::kCircle && second->GetType() == ShapeType::kCircle) {
-        float distance = glm::distance(first->GetPositionVec2(), second->GetPositionVec2());
-        float sum_radius = first->GetRadius() + second->GetRadius();
-        return distance <= sum_radius;
-    }
+            float distance = glm::distance(first->GetPositionVec2(), second->GetPositionVec2());
+            float sum_radius = first->GetRadius() + second->GetRadius();
+            return distance <= sum_radius;
+        }   
     return false;
 }
 
@@ -42,7 +42,7 @@ void ObjectHandler::HandleCollision(Object* first, Object* second, double delta_
     first->SetVelocityX((((first_mass - second_mass) * first_velocity_x + 2 * second_mass * second_velocity_x) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));
     first->SetVelocityY((((first_mass - second_mass) * first_velocity_y + 2 * second_mass * second_velocity_y) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));
     second->SetVelocityX((((second_mass - first_mass) * second_velocity_x + 2 * first_mass * first_velocity_x) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));
-    second->SetVelocityY((((second_mass - first_mass) * second_velocity_y + 2 * first_mass * first_velocity_y) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));
+    second->SetVelocityY((((second_mass - first_mass) * second_velocity_y + 2 * first_mass * first_velocity_y) / (first_mass + second_mass)) * (0.5f * (first->GetTension() + second->GetTension())));   
 }
 
 bool ObjectHandler::SATCollision(const std::vector<std::pair<float, float>>& vertices1, const std::vector<std::pair<float, float>>& vertices2) {

@@ -65,7 +65,7 @@ int main() {
     Rectangle box3(false, 1, 0.5f, 0.5f, 0.5f);
     Rectangle box4(false, 0, 2.5f, 0.1f, 0.5f);
 
-    Circle circle1(true, -0.7f, -0.3, 0.3f);
+    Circle circle1(true, -0.2f, -0.3, 0.3f);
     Circle circle2(false, -0.7f, 1.0f, 0.3f);
 
     floor->SetMass(99999999999.0f);
