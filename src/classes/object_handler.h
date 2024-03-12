@@ -14,7 +14,7 @@ public:
 private:
     bool CheckCollision(Object* first, Object* second);
     void HandleCollision(Object* first, Object* second, double delta_time);
-    bool ObjectHandler::SATCollision(const std::vector<std::pair<float, float>>& vertices1, const std::vector<std::pair<float, float>>& vertices2);
+    bool SATCollision(const std::vector<std::pair<float, float>>& vertices1, const std::vector<std::pair<float, float>>& vertices2);
 };
 
 #endif // SIMULATION_CLASSES_OBJECT_HANDLER_H_
