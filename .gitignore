@@ -1,3 +1,2 @@
 # ignore ANY directory named "build"
 **/build
-**/*.html
