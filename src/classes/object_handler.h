@@ -9,12 +9,17 @@
 
 class ObjectHandler {
 public:
-    void MainCycle(std::list<std::shared_ptr<Object>>& object_list, double delta_time);
+    void MainCycle(std::list<std::shared_ptr<Object>>& object_list, float delta_time);
 
 private:
-    bool CheckCollision(Object* first, Object* second);
-    void HandleCollision(Object* first, Object* second, double delta_time);
-    bool SATCollision(const std::vector<std::pair<float, float>>& vertices1, const std::vector<std::pair<float, float>>& vertices2);
+    void Accelerate(Object* object, float acceleration_x, float acceleration_y, float delta_time );
+    void Move(Object*, float delta_time);
+    bool CheckCollision(Object* first, Object* second) const;
+    float SATCollision(Object* first, Object* second) const;
+    void HandleCollision(Object* first, Object* second, float delta_time);   
+    void SeparateObjects(Object* first, Object* second, float penetration_depth, float delta_time);
+
+    const float kGravity = -0.98f;
 };
 
 #endif // SIMULATION_CLASSES_OBJECT_HANDLER_H_

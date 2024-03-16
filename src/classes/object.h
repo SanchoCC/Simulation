@@ -28,10 +28,6 @@ class Object {
 	std::shared_ptr <Object> operator->() {
 		return shared_this_;
 	}
-	
-	void GravityAcceleration(double delta_time);
-
-	void Move(double delta_time);
 
 	virtual void Render() = 0;
 
@@ -48,35 +44,38 @@ class Object {
 	float GetMass() const;
 	void SetMass(float mass);
 
-	float GetVelocityX() const;
-	void SetVelocityX(float velocity_x);
-	float GetVelocityY() const;
-	void SetVelocityY(float velocity_y);
+	std::pair<float, float> GetVelocity() const;
+	void AddVelocity(float velocity_x, float velocity_y);
+	void SetVelocity(float velocity_x, float velocity_y);
 
-	float GetTension() const;
-	void SetTension(float tension);	
+	float GetRestitution() const;
+	void SetRestitution(float restitution);	
 
 	virtual float GetRadius() = 0;
 
-	glm::vec2 GetPositionVec2();
+	std::pair<float, float> GetPosition();
+	void AddPosition(float position_x, float position_y);
+	void SetPosition(float position_x, float position_y);
 
 	std::vector <std::pair<float, float>> GetVertices() const;
+
+	bool GetStatical();
 
  protected:
 	virtual void UpdateVertices() = 0;
 
 	std::shared_ptr <Object> shared_this_;
 	static std::list<std::shared_ptr<Object>> objects_list_;
+	std::pair<float, float> position_{0, 0};
+	std::pair<float, float> velocity_{0, 0};
+	std::pair<float, float> impulse_{0, 0};
 	std::vector<std::pair<float, float>> vertices_;
-	bool statical_;
-	float tension_ = 0.9f;
+	bool statical_ = false;
+	float restitution_ = 0.5f;
 	float density_ = 700;
 	float mass_ = 1000;
-	float velocity_x_ = 0;
-	float velocity_y_ = 0;
 	float rotation_angle_ = 0;
-	float position_x_ = 0;
-	float position_y_ = 0;
+	
 	Color color_;
 };
 

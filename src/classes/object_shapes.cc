@@ -27,7 +27,7 @@ void Circle::UpdateVertices() {
     int sides = kCircleSides * radius_;
     for (int i = 0; i < sides; ++i) {
         float theta = 2.0f * M_PI * i / sides - (M_PI / 4 + (rotation_angle_ / 180 * M_PI));
-        vertices_.push_back(std::make_pair(radius_ * cosf(theta) + position_x_, radius_ * sinf(theta) + position_y_));
+        vertices_.push_back(std::make_pair(radius_ * cosf(theta) + position_.first, radius_ * sinf(theta) + position_.second));
     }
 }
 
@@ -71,7 +71,7 @@ void Rectangle::UpdateVertices() {
     for (const auto& it : original_vertices_) {
         glm::vec4 vertex = glm::vec4(it.first, it.second, 0.0f, 1.0f);
         vertex = model * vertex;
-        vertices_.push_back(std::make_pair(vertex.x + position_x_, vertex.y + position_y_));
+        vertices_.push_back(std::make_pair(vertex.x + position_.first, vertex.y + position_.second));
     }
 }
 

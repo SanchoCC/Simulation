@@ -58,36 +58,42 @@ int main() {
 
     ObjectHandler object_handler;
 
-    Rectangle floor(true, 0, -1.3f, 3.0f, 1.0f);
+    //
 
-    Rectangle box0(false, 0, 0.5f, 0.3f, 0.3f);
-    Rectangle box2(false, 0.1, 1.5f, 0.5f, 0.5f);
-    Rectangle box3(false, 1, 0.5f, 0.5f, 0.5f);
+    
+    Rectangle box3(false, 1.0f, 0.5f, 0.5f, 0.5f);
     Rectangle box4(false, 0, 2.5f, 0.1f, 0.5f);
+    Rectangle box0(false, 0, 0.5f, 0.3f, 0.3f);
+    Rectangle box2(false, 0.1, 1.2f, 0.5f, 0.5f);
+    
+   
+    Circle circle2(false, -0.7f, 0.5f, 0.3f);
 
-    Circle circle1(true, -0.2f, -0.3, 0.3f);
-    Circle circle2(false, -0.7f, 1.0f, 0.3f);
+    Rectangle floor(true, 0, -5.8f, 100.0f, 10.0f);
 
     floor->SetMass(99999999999.0f);
-    floor->SetTension(0.2f);
+    floor->SetRestitution(0.1f);
 
-    box0->SetVelocityY(500);
-    box2->SetRotationAngle(3);
-    box2->SetVelocityY(-400);
-    box3->SetVelocityY(500);
+    box0->SetVelocity(-0.1, 0);
+    box2->SetRotationAngle(25);
+    box2->SetVelocity(0, 0);
+    box3->SetVelocity(-0.5f, -0.5f);
 
-    circle1->SetMass(99999999999.0f);
-    circle2->SetVelocityY(-200);
+    circle2->SetVelocity(1.2f, 0.3f);
 
-    double last_time = glfwGetTime();
-    int fpsCounter = 0;
+    //
 
-    while (!glfwWindowShouldClose(window)) {
+    int fps_counter = 0;
+
+    float last_time = static_cast<float>(glfwGetTime());
+
+    while (!glfwWindowShouldClose(window)) {        
+
         glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        double current_time = glfwGetTime();
-        double delta_time = current_time - last_time;
+        float current_time = static_cast<float>(glfwGetTime());
+        float delta_time = current_time - last_time;
 
         object_handler.MainCycle(Object::GetObjectsList(), delta_time);
 
@@ -95,10 +101,10 @@ int main() {
         glfwPollEvents();
 
         last_time = current_time;
-        ++fpsCounter;
+        ++fps_counter;
     }
 
-    std::cout << "FPS:\t" << fpsCounter / glfwGetTime();
+    std::cout << "FPS:\t" << fps_counter / glfwGetTime();
     glfwTerminate();
     return 0;
 }
