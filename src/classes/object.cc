@@ -4,27 +4,11 @@ std::list<std::shared_ptr<Object>> Object::objects_list_;
 
 Object::Object(bool statical, float position_x, float position_y) {
     this->statical_ = statical;
-    this->position_x_ = position_x;
-    this->position_y_ = position_y;
+    this->position_.first = position_x;
+    this->position_.second = position_y;
 }
 
 Object::~Object() {}
-
-void Object::GravityAcceleration(double delta_time) {
-    velocity_y_ -= 9.8f;
-    velocity_x_ += 0;
-}
-
-void Object::Move(double delta_time) {
-    if (!statical_) {
-        position_x_ += (velocity_x_ * 0.001f) * delta_time;
-        position_y_ += (velocity_y_ * 0.001f) * delta_time;
-        UpdateVertices();
-    } else {
-        velocity_x_ = 0;
-        velocity_y_ = 0;
-    }
-}
 
 std::list<std::shared_ptr<Object>>& Object::GetObjectsList() {
     return objects_list_;
@@ -47,7 +31,7 @@ std::vector<std::pair<float, float>> Object::GetVertices() const {
 }
 
 float Object::GetRotationAngle() const {
-    return this->rotation_angle_;
+    return rotation_angle_;
 }
 
 void Object::SetRotationAngle(float rotation_angle) {
@@ -59,33 +43,44 @@ float Object::GetMass() const {
 }
 
 void Object::SetMass(float mass) {
-    this->mass_ = mass;
+    mass_ = mass;
 }
 
-float Object::GetVelocityX() const {
-    return velocity_x_;
+std::pair <float,float> Object::GetVelocity() const {
+    return velocity_;
 }
 
-float Object::GetVelocityY() const {
-    return velocity_y_;
+void Object::AddVelocity(float velocity_x, float velocity_y) {
+    velocity_.first += velocity_x;
+    velocity_.second += velocity_y;
 }
 
-void Object::SetVelocityX(float velocity_x) {
-    this->velocity_x_ = velocity_x;
+void Object::SetVelocity(float velocity_x, float velocity_y) {
+    velocity_.first = velocity_x;
+    velocity_.second = velocity_y;
 }
 
-void Object::SetVelocityY(float velocity_y) {
-    this->velocity_y_ = velocity_y;
+float Object::GetRestitution() const {
+    return restitution_;
 }
 
-float Object::GetTension() const {
-    return this->tension_;
+void Object::SetRestitution(float restitution) {
+    restitution_ = restitution;
 }
 
-void Object::SetTension(float tension) {
-    this->tension_ = tension;
+std::pair <float,float> Object::GetPosition() {
+    return position_;
 }
-
-glm::vec2 Object::GetPositionVec2() {
-    return { position_x_, position_y_ };
+void Object::AddPosition(float position_x, float position_y) {
+    position_.first += position_x;
+    position_.second += position_y;
+    UpdateVertices();
+}
+void Object::SetPosition(float position_x, float position_y) {
+    position_.first = position_x;
+    position_.second = position_y;
+    UpdateVertices();
+}
+bool Object::GetStatical() {
+    return statical_;
 }
