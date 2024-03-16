@@ -24,7 +24,14 @@ void Circle::Render() {
 
 void Circle::UpdateVertices() {
     vertices_.clear();
-    int sides = kCircleSides * radius_;
+    
+    float koef = 1.0f; 
+    if (radius_ < 1.0f) {
+        koef = radius_;
+    } else {
+        koef += std::logf(radius_) / std::logf(100.0f);
+    }
+    int sides = kCircleSides * (koef+kMinSidesKoef);
     for (int i = 0; i < sides; ++i) {
         float theta = 2.0f * M_PI * i / sides - (M_PI / 4 + (rotation_angle_ / 180 * M_PI));
         vertices_.push_back(std::make_pair(radius_ * cosf(theta) + position_.first, radius_ * sinf(theta) + position_.second));

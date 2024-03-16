@@ -19,6 +19,7 @@ class Circle : public Object {
  private: 
     float radius_;
     const int kCircleSides = 360;
+    const float kMinSidesKoef = 0.01;
 };
 class Rectangle : public Object {
  public:

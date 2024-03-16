@@ -17,7 +17,7 @@ private:
     bool CheckCollision(Object* first, Object* second) const;
     float SATCollision(Object* first, Object* second) const;
     void HandleCollision(Object* first, Object* second, float delta_time);   
-    void SeparateObjects(Object* first, Object* second, float penetration_depth, float delta_time);
+    void SeparateObjects(Object* first, Object* second, float penetration_depth);
 
     const float kGravity = -0.98f;
 };

@@ -124,8 +124,8 @@ void ObjectHandler::HandleCollision(Object* first, Object* second, float delta_t
     std::pair<float, float> velocity2 = second->GetVelocity();    
     float penetration_depth = SATCollision(first, second);
 
-    if (penetration_depth > 0.001f) {
-        SeparateObjects(first, second, penetration_depth, delta_time);
+    if (penetration_depth > 0.0005f) {
+        SeparateObjects(first, second, penetration_depth);
     }
     if (first->GetStatical() || second->GetStatical()) {
         Move(first, -delta_time);
@@ -163,7 +163,7 @@ void ObjectHandler::HandleCollision(Object* first, Object* second, float delta_t
     }
 }
 
-void ObjectHandler::SeparateObjects(Object* first, Object* second, float penetration_depth, float delta_time) {
+void ObjectHandler::SeparateObjects(Object* first, Object* second, float penetration_depth) {
     glm::vec2 normal = glm::normalize(glm::vec2(second->GetPosition().first - first->GetPosition().first, second->GetPosition().second - first->GetPosition().second));
     float separation_distance = penetration_depth;
     if (!first->GetStatical()) {
