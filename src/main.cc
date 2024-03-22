@@ -8,7 +8,7 @@
 
 int width = 1280;
 int height = 720;
-bool full_screen = false;
+bool full_screen = true;
 float koef_screen = static_cast<float>(width) / height;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -75,7 +75,8 @@ int main() {
     floor->SetRestitution(0.1f);
 
     box0->SetVelocity(-0.1, 0);
-    box2->SetRotationAngle(25);
+    box2->SetRotationAngle(5);
+    box2->SetAngularVelocity(45);
     box2->SetVelocity(0, 0);
     box3->SetVelocity(-0.5f, -0.5f);
 

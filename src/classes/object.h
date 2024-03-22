@@ -39,6 +39,7 @@ class Object {
 	std::pair <float, float> GetMinVertices() const;
 
 	float GetRotationAngle() const;
+	void AddRotationAngle(float rotation_angle);
 	void SetRotationAngle(float rotation_angle);
 
 	float GetMass() const;
@@ -61,6 +62,10 @@ class Object {
 
 	bool GetStatical();
 
+	float GetAngularVelocity() const;
+	void AddAngularVelocity(float angular_velocity);
+	void SetAngularVelocity(float angular_velocity);
+
  protected:
 	virtual void UpdateVertices() = 0;
 
@@ -75,7 +80,8 @@ class Object {
 	float density_ = 700;
 	float mass_ = 1000;
 	float rotation_angle_ = 0;
-	
+	float angular_velocity_ = 0;
+
 	Color color_;
 };
 

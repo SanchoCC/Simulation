@@ -13,6 +13,7 @@ void ObjectHandler::MainCycle(std::list<std::shared_ptr<Object>>& object_list, f
         }
         Accelerate(first, 0, kGravity, delta_time);
         Move(first, delta_time);
+        Rotate(first, delta_time);
         first->Render();
     }
 }
@@ -21,7 +22,15 @@ void ObjectHandler::Move(Object* object, float delta_time) {
     if (object->GetStatical()) {
         object->SetVelocity(0, 0);
     } else {
-        object->AddPosition(object->GetVelocity().first * delta_time, object->GetVelocity().second * delta_time);       
+        object->AddPosition(object->GetVelocity().first * delta_time, object->GetVelocity().second * delta_time);
+    }
+}
+void ObjectHandler::Rotate(Object* object, float delta_time) {
+    if (object->GetStatical()) {
+        object->SetAngularVelocity(0);
+    }
+    else {
+        object->AddRotationAngle(object->GetAngularVelocity() * delta_time);
     }
 }
 
@@ -54,6 +63,21 @@ float ObjectHandler::SATCollision(Object* first, Object* second) const {
         return axes;
     };
 
+    auto projectVertices = [](const std::vector<std::pair<float, float>>& vertices, const glm::vec2& axis) {
+        float minProjection = glm::dot(glm::vec2(vertices[0].first, vertices[0].second), axis);
+        float maxProjection = minProjection;
+        for (size_t i = 1; i < vertices.size(); ++i) {
+            float projection = glm::dot(glm::vec2(vertices[i].first, vertices[i].second), axis);
+            if (projection < minProjection) {
+                minProjection = projection;
+            }
+            else if (projection > maxProjection) {
+                maxProjection = projection;
+            }
+        }
+        return std::make_pair(minProjection, maxProjection);
+    };
+
     auto vertices1 = first->GetVertices();
     auto vertices2 = second->GetVertices();
     std::vector<glm::vec2> axes1 = calculateAxes(vertices1);
@@ -62,22 +86,8 @@ float ObjectHandler::SATCollision(Object* first, Object* second) const {
     float minOverlap = std::numeric_limits<float>::max();
 
     for (const auto& axis : axes1) {
-        float min1 = std::numeric_limits<float>::max();
-        float max1 = std::numeric_limits<float>::min();
-        float min2 = std::numeric_limits<float>::max();
-        float max2 = std::numeric_limits<float>::min();
-
-        for (const auto& vertex : vertices1) {
-            float projection = glm::dot(glm::vec2(vertex.first, vertex.second), axis);
-            min1 = std::min(min1, projection);
-            max1 = std::max(max1, projection);
-        }
-
-        for (const auto& vertex : vertices2) {
-            float projection = glm::dot(glm::vec2(vertex.first, vertex.second), axis);
-            min2 = std::min(min2, projection);
-            max2 = std::max(max2, projection);
-        }
+        auto [min1, max1] = projectVertices(vertices1, axis);
+        auto [min2, max2] = projectVertices(vertices2, axis);
 
         float overlap = glm::min(max1, max2) - glm::max(min1, min2);
         if (overlap < 0) {
@@ -88,25 +98,11 @@ float ObjectHandler::SATCollision(Object* first, Object* second) const {
     }
 
     for (const auto& axis : axes2) {
-        float min1 = std::numeric_limits<float>::max();
-        float max1 = std::numeric_limits<float>::min();
-        float min2 = std::numeric_limits<float>::max();
-        float max2 = std::numeric_limits<float>::min();
-
-        for (const auto& vertex : vertices1) {
-            float projection = glm::dot(glm::vec2(vertex.first, vertex.second), axis);
-            min1 = std::min(min1, projection);
-            max1 = std::max(max1, projection);
-        }
-
-        for (const auto& vertex : vertices2) {
-            float projection = glm::dot(glm::vec2(vertex.first, vertex.second), axis);
-            min2 = std::min(min2, projection);
-            max2 = std::max(max2, projection);
-        }
+        auto [min1, max1] = projectVertices(vertices1, axis);
+        auto [min2, max2] = projectVertices(vertices2, axis);
 
         float overlap = glm::min(max1, max2) - glm::max(min1, min2);
-        if (overlap < 0) {         
+        if (overlap < 0) {
             return 0.0f;
         }
 
@@ -115,6 +111,7 @@ float ObjectHandler::SATCollision(Object* first, Object* second) const {
 
     return minOverlap;
 }
+
 
 void ObjectHandler::HandleCollision(Object* first, Object* second, float delta_time) {
 

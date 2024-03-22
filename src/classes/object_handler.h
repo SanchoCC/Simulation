@@ -13,7 +13,9 @@ public:
 
 private:
     void Accelerate(Object* object, float acceleration_x, float acceleration_y, float delta_time );
-    void Move(Object*, float delta_time);
+    void Move(Object* object, float delta_time);
+    void Rotate(Object* object, float delta_time);
+
     bool CheckCollision(Object* first, Object* second) const;
     float SATCollision(Object* first, Object* second) const;
     void HandleCollision(Object* first, Object* second, float delta_time);   

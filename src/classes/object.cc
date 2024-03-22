@@ -33,7 +33,9 @@ std::vector<std::pair<float, float>> Object::GetVertices() const {
 float Object::GetRotationAngle() const {
     return rotation_angle_;
 }
-
+void Object::AddRotationAngle(float rotation_angle) {
+    rotation_angle_ += rotation_angle;
+}
 void Object::SetRotationAngle(float rotation_angle) {
     rotation_angle_ = rotation_angle;
 }
@@ -71,16 +73,31 @@ void Object::SetRestitution(float restitution) {
 std::pair <float,float> Object::GetPosition() {
     return position_;
 }
+
 void Object::AddPosition(float position_x, float position_y) {
     position_.first += position_x;
     position_.second += position_y;
     UpdateVertices();
 }
+
 void Object::SetPosition(float position_x, float position_y) {
     position_.first = position_x;
     position_.second = position_y;
     UpdateVertices();
 }
+
 bool Object::GetStatical() {
     return statical_;
+}
+
+float Object::GetAngularVelocity() const {
+    return angular_velocity_;
+}
+
+void Object::AddAngularVelocity(float angular_velocity) {
+    angular_velocity_ += angular_velocity;
+}
+
+void Object::SetAngularVelocity(float angular_velocity) {
+    angular_velocity_ = angular_velocity;
 }
