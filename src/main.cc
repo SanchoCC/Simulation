@@ -68,7 +68,7 @@ int main() {
     Circle circle4(1, 0.0, 0.45, 0.2);
     circle0->SetAngularVelocity(-6.0);
     circle1->SetVelocity(glm::vec2(0.7, 0));
-    circle3->SetAngularVelocity(8.0);
+    circle3->SetAngularVelocity(14.0);
     //
 
     int fps_counter = 0;
