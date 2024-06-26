@@ -14,6 +14,8 @@ src/classes/object_handler.h
 src/classes/object_handler.cc
 src/classes/color.h
 src/classes/color.cc
+src/classes/math_defines.h
+src/classes/math_defines.cc
 )
 target_compile_features(simulation PRIVATE cxx_std_17)
 target_include_directories( simulation PRIVATE
