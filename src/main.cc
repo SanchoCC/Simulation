@@ -1,6 +1,7 @@
+#include <iostream>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
 
 #include "classes/object.h"
 #include "classes/object_shapes.h"
@@ -8,7 +9,7 @@
 
 int width = 1280;
 int height = 720;
-bool full_screen = true;
+bool full_screen = false;
 float koef_screen = static_cast<float>(width) / height;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -58,30 +59,16 @@ int main() {
 
     ObjectHandler object_handler;
 
-    //
-
-    
-    Rectangle box3(false, 1.0f, 0.5f, 0.5f, 0.5f);
-    Rectangle box4(false, 0, 2.5f, 0.1f, 0.5f);
-    Rectangle box0(false, 0, 0.5f, 0.3f, 0.3f);
-    Rectangle box2(false, 0.1, 1.2f, 0.5f, 0.5f);
-    
-   
-    Circle circle2(false, -0.7f, 0.5f, 0.3f);
-
-    Rectangle floor(true, 0, -5.8f, 100.0f, 10.0f);
-
-    floor->SetMass(99999999999.0f);
-    floor->SetRestitution(0.1f);
-
-    box0->SetVelocity(-0.1, 0);
-    box2->SetRotationAngle(5);
-    box2->SetAngularVelocity(45);
-    box2->SetVelocity(0, 0);
-    box3->SetVelocity(-0.5f, -0.5f);
-
-    circle2->SetVelocity(1.2f, 0.3f);
-
+    //   
+    Rectangle floor(1, 0, -5.8f, 10.0f, 11.0f);
+    Circle circle0(0, -0.5, 0.5, 0.2);
+    Circle circle1(0, -1.3, 0.4, 0.3);
+    Circle circle2(0, 0.7, 0.5, 0.2);
+    Circle circle3(0, 1.3, 0.2, 0.15);
+    Circle circle4(1, 0.0, 0.45, 0.2);
+    circle0->SetAngularVelocity(-6.0);
+    circle1->SetVelocity(glm::vec2(0.7, 0));
+    circle3->SetAngularVelocity(8.0);
     //
 
     int fps_counter = 0;
@@ -90,12 +77,11 @@ int main() {
 
     while (!glfwWindowShouldClose(window)) {        
 
-        glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         float current_time = static_cast<float>(glfwGetTime());
         float delta_time = current_time - last_time;
-
         object_handler.MainCycle(Object::GetObjectsList(), delta_time);
 
         glfwSwapBuffers(window);

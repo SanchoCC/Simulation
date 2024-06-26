@@ -9,26 +9,22 @@ class Circle : public Object {
     Circle(bool statical, float position_x, float position_y, float radius);
     ShapeType GetType() const override;
 
-    void Render() override;
-
-    float GetRadius() override;
+    float GetRadius() const;
 
  protected:
      void UpdateVertices() override;
 
  private: 
     float radius_;
-    const int kCircleSides = 360;
-    const float kMinSidesKoef = 0.01;
+    const int kCircleSides = 180;
+    const float kMinSidesKoef = 0.01f;
 };
 class Rectangle : public Object {
  public:
     Rectangle(bool statical, float position_x, float position_y, float width, float height);
     ShapeType GetType() const override;
-
-    void Render() override;
-    float GetRadius() override;
-
+    float GetWidth() const;
+    float GetHeight() const;
  protected:
     void UpdateVertices() override;
 
