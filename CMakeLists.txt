@@ -16,6 +16,8 @@ src/classes/color.h
 src/classes/color.cc
 src/classes/math_defines.h
 src/classes/math_defines.cc
+src/classes/settings.h
+src/classes/settings.cc
 )
 target_compile_features(simulation PRIVATE cxx_std_17)
 target_include_directories( simulation PRIVATE

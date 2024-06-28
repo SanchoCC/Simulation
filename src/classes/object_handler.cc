@@ -8,18 +8,25 @@
 #include "math_defines.h"
 #include "object_shapes.h"
 
-bool once = true;
-void ObjectHandler::MainCycle(std::list<std::shared_ptr<Object>>& object_list, float delta_time) {
-    for (auto it = object_list.begin(); it != object_list.end(); ++it) {
-        auto object1 = it->get(); 
+ObjectHandler& ObjectHandler::GetInstance() {
+    static ObjectHandler instance;
+
+    return instance;
+}
+
+ObjectHandler::ObjectHandler() {}
+
+void ObjectHandler::MainCycle(std::list<Object*>& object_list, float delta_time) {
+    for (auto it = object_list.begin(); it != object_list.end(); ++it) { 
+        auto object1 = *it;
         Rotate(object1, delta_time);
         Move(object1, delta_time);
-        Accelerate(object1, glm::vec2 {0.0f, kGravity}, delta_time);
+        Accelerate(object1, glm::vec2 {0.0f, gravity_}, delta_time);
         for (auto inner_it = object_list.begin(); inner_it != object_list.end(); ++inner_it) {
             if (inner_it == it) {
                 continue;
-            }            
-            auto object2 = inner_it->get();                        
+            }    
+            auto& object2 = *inner_it;
             CollisionResult collision_result = CheckCollision(object1, object2);
             if (collision_result.contacts.size() > 0) {
                 HandleCollision(object1, object2, collision_result, delta_time);
@@ -61,7 +68,7 @@ void ObjectHandler::ApplyImpulse(Object* object, glm::vec2 impulse, glm::vec2 co
     object->AddAngularVelocity(object->GetInvertedInertia() * sim::Cross2D(contact_vector, impulse));
 }
 
-CollisionResult ObjectHandler::CheckCollision(Object* object1, Object* object2) const {
+CollisionResult ObjectHandler::CheckCollision(const Object* object1, const Object* object2) const {
     if (object1->GetType() == ShapeType::kRectangle && object2->GetType() == ShapeType::kRectangle) {
         return SATCollision(object1, object2);
     } else if (object1->GetType() == ShapeType::kCircle && object2->GetType() == ShapeType::kCircle) {
@@ -74,7 +81,7 @@ CollisionResult ObjectHandler::CheckCollision(Object* object1, Object* object2) 
     return {};
 }
 
-CollisionResult ObjectHandler::SATCollision(Object* object1, Object* object2) const {
+CollisionResult ObjectHandler::SATCollision(const Object* object1, const Object* object2) const {
     CollisionResult collision_result;
     auto calculateAxes = [](const std::vector<glm::vec2>& vertices) {
         std::vector<glm::vec2> axes;
@@ -163,10 +170,10 @@ CollisionResult ObjectHandler::SATCollision(Object* object1, Object* object2) co
     return collision_result;
 }
 
-CollisionResult ObjectHandler::CircleCircle(Object* object1, Object* object2) const {
+CollisionResult ObjectHandler::CircleCircle(const Object* object1, const Object* object2) const {
     CollisionResult result{};
-    Circle* circle1 = dynamic_cast<Circle*> (object1);
-    Circle* circle2 = dynamic_cast<Circle*> (object2);
+    Circle* circle1 = dynamic_cast<Circle*> (const_cast<Object*>(object1));
+    Circle* circle2 = dynamic_cast<Circle*> (const_cast<Object*>(object2));
     glm::vec2 normal = object2->GetPosition() - object1->GetPosition();
 
     float distance_pow2 = glm::dot(normal, normal);
@@ -190,12 +197,11 @@ CollisionResult ObjectHandler::CircleCircle(Object* object1, Object* object2) co
     return result;
 }
 
-CollisionResult ObjectHandler::CircleRectangle(Object* object1, Object* object2) const {
+CollisionResult ObjectHandler::CircleRectangle(const Object* object1, const Object* object2) const {
     CollisionResult result{};
 
-    Circle* circle = dynamic_cast<Circle*>(object1);
-    Rectangle* rectangle = dynamic_cast<Rectangle*>(object2);
-    if (!circle || !rectangle) return result;
+    Circle* circle = dynamic_cast<Circle*>(const_cast<Object*>(object1));
+    Rectangle* rectangle = dynamic_cast<Rectangle*>(const_cast<Object*>(object2));
 
     glm::vec4 circle_position(circle->GetPosition(), 0.0f, 1.0f);
     glm::vec4 rectangle_position(rectangle->GetPosition(), 0.0f, 1.0f);

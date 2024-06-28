@@ -1,4 +1,3 @@
-#pragma once
 #ifndef SIMULATION_CLASSES_COLOR_H_
 #define SIMULATION_CLASSES_COLOR_H_
 struct Color {

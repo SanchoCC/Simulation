@@ -1,4 +1,3 @@
-#pragma once
 #ifndef SIMULATION_CLASSES_OBJECT_H_
 #define SIMULATION_CLASSES_OBJECT_H_
 
@@ -9,6 +8,7 @@
 #include <glm/glm.hpp>
 
 #include "color.h"
+#include "settings.h"
 
 enum class ShapeType {
 	kRectangle,
@@ -20,13 +20,9 @@ class Object {
 	Object(bool statical, float position_x, float position_y);
 	virtual ~Object();
 
-	std::shared_ptr <Object> operator->() {
-		return shared_this_;
-	}
-	std::vector<glm::vec2> normals_;
 	void Render();
 
-	static std::list <std::shared_ptr<Object>>& GetObjectsList();
+	static std::list <Object*>& GetObjectsList();
 
 	virtual ShapeType GetType() const = 0;	
 
@@ -47,7 +43,7 @@ class Object {
 	float GetRestitution() const;
 	void SetRestitution(float restitution);	
 
-	glm::vec2 GetPosition();
+	glm::vec2 GetPosition() const;
 	void AddPosition(glm::vec2 position);
 	void SetPosition(glm::vec2 position);
 
@@ -62,14 +58,14 @@ class Object {
  protected:
 	virtual void UpdateVertices() = 0;
 
-	std::shared_ptr <Object> shared_this_;
-	static std::list<std::shared_ptr<Object>> objects_list_;
+	static std::list<Object*> objects_list_;
 	glm::vec2 position_{0, 0};
 	glm::vec2 velocity_{0, 0};
 	std::vector<glm::vec2> vertices_;
+	std::vector<glm::vec2> normals_;
 	
 	bool statical_ = false;
-	float restitution_ = 0.5f;
+	float restitution_ = Settings::GetInstance().world_parameters_.restitution;
 	float density_ = 0.6f;
 	float mass_ = 0;
 	float inverted_mass_ = 0; 
