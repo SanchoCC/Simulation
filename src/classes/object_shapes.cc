@@ -18,9 +18,10 @@ Circle::Circle(bool statical, float position_x, float position_y, float radius) 
     }
     UpdateVertices();
     Render();
-    shared_this_ = (std::make_shared<Circle>(*this));
-    objects_list_.push_back(shared_this_);
+    objects_list_.push_back(this);
 }
+
+Circle::~Circle() = default;
 
 ShapeType Circle::GetType() const {
     return ShapeType::kCircle;
@@ -59,9 +60,10 @@ Rectangle::Rectangle(bool statical, float position_x, float position_y, float wi
     }    
     UpdateVertices();
     Render();
-    shared_this_ = (std::make_shared<Rectangle>(*this));
-    objects_list_.push_back(shared_this_);
+    objects_list_.push_back(this);
 }
+
+Rectangle::~Rectangle() = default;
 
 ShapeType Rectangle::GetType() const {
     return ShapeType::kRectangle;

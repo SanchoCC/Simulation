@@ -7,7 +7,7 @@
 #include <math.h>
 #include <algorithm>
 
-std::list<std::shared_ptr<Object>> Object::objects_list_;
+std::list<Object*> Object::objects_list_;
 
 Object::Object(bool statical, float position_x, float position_y) {
     this->statical_ = statical;
@@ -15,7 +15,7 @@ Object::Object(bool statical, float position_x, float position_y) {
     this->position_.y = position_y;
 }
 
-Object::~Object() {}
+Object::~Object() = default;
 
 void Object::Render() {
     glColor3f(color_.red_, color_.green_, color_.blue_);
@@ -24,22 +24,19 @@ void Object::Render() {
         glVertex2f(it.x, it.y);
     }
     glEnd();
-    glColor3f(100, 0, 0);
-    /*glBegin(GL_LINES);
-    for (const auto& it : normals_) {
-        glVertex2f(position_.x, position_.y);
-        glVertex2f(it.x, it.y);
-    }*/
-    glBegin(GL_TRIANGLES);
-    {
-        glVertex2f(position_.x, position_.y);
-        glVertex2f(vertices_[0].x, vertices_[0].y);
-        glVertex2f(vertices_[1].x, vertices_[1].y);
+    if (GetType() == ShapeType::kCircle) {
+        glColor3f(color_.red_ / 1.5f, color_.green_ / 1.5f, color_.blue_ / 1.5f);
+        glBegin(GL_TRIANGLES);
+        {
+            glVertex2f(position_.x, position_.y);
+            glVertex2f(vertices_[0].x, vertices_[0].y);
+            glVertex2f(vertices_[1].x, vertices_[1].y);
+        }
+        glEnd();
     }
-    glEnd();
 }
 
-std::list<std::shared_ptr<Object>>& Object::GetObjectsList() {
+std::list<Object*>& Object::GetObjectsList() {
     return objects_list_;
 }
 
@@ -98,7 +95,7 @@ void Object::SetRestitution(float restitution) {
     restitution_ = restitution;
 }
 
-glm::vec2 Object::GetPosition() {
+glm::vec2 Object::GetPosition() const {
     return position_;
 }
 

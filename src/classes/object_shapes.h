@@ -1,4 +1,3 @@
-#pragma once
 #ifndef SIMULATION_CLASSES_OBJECTSHAPES_H_
 #define SIMULATION_CLASSES_OBJECTSHAPES_H_
 
@@ -7,14 +6,12 @@
 class Circle : public Object {
  public:
     Circle(bool statical, float position_x, float position_y, float radius);
+    ~Circle();
     ShapeType GetType() const override;
-
     float GetRadius() const;
-
- protected:
-     void UpdateVertices() override;
-
  private: 
+    void UpdateVertices() override;
+    
     float radius_;
     const int kCircleSides = 180;
     const float kMinSidesKoef = 0.01f;
@@ -22,13 +19,13 @@ class Circle : public Object {
 class Rectangle : public Object {
  public:
     Rectangle(bool statical, float position_x, float position_y, float width, float height);
+    ~Rectangle();
     ShapeType GetType() const override;
     float GetWidth() const;
     float GetHeight() const;
- protected:
+ private: 
     void UpdateVertices() override;
 
- private:        
     float width_;
     float height_;
 };
