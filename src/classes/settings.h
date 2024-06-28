@@ -16,7 +16,7 @@ public:
 	};
 	struct WorldParameters {
 		float gravity = -0.98f;
-		float restitution = 1.5f;
+		float restitution = 0.5f;
 	};
 
 	Screen screen_;
