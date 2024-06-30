@@ -35,7 +35,7 @@ private:
     CollisionResult SATCollision(const Object* object1, const Object* object2) const;
     CollisionResult CircleCircle(const Object* object1, const Object* object2) const;
     CollisionResult CircleRectangle(const Object* object1, const Object* object2) const;
-    void HandleCollision(Object* object1, Object* object2, CollisionResult collision_result, float delta_time);
+    void HandleCollision(Object* object1, Object* object2, CollisionResult collision_result);
 
     /*glm::vec2 FindSupportVertex(Object* object, glm::vec2 direction);*/
     
