@@ -19,9 +19,9 @@ ObjectHandler::ObjectHandler() {}
 void ObjectHandler::MainCycle(std::list<Object*>& object_list, float delta_time) {
     for (auto it = object_list.begin(); it != object_list.end(); ++it) { 
         auto object1 = *it;
-        Rotate(object1, delta_time);
-        Move(object1, delta_time);
         Accelerate(object1, glm::vec2 {0.0f, gravity_}, delta_time);
+        Rotate(object1, delta_time);
+        Move(object1, delta_time);        
         for (auto inner_it = object_list.begin(); inner_it != object_list.end(); ++inner_it) {
             if (inner_it == it) {
                 continue;
@@ -29,7 +29,7 @@ void ObjectHandler::MainCycle(std::list<Object*>& object_list, float delta_time)
             auto& object2 = *inner_it;
             CollisionResult collision_result = CheckCollision(object1, object2);
             if (collision_result.contacts.size() > 0) {
-                HandleCollision(object1, object2, collision_result, delta_time);
+                HandleCollision(object1, object2, collision_result);
                 SeparateObjects(object1, object2, collision_result);
             }
         }           
@@ -64,8 +64,10 @@ void ObjectHandler::Accelerate(Object* object, glm::vec2 acceleration, float del
 }
 
 void ObjectHandler::ApplyImpulse(Object* object, glm::vec2 impulse, glm::vec2 contact_vector) {
-    object->AddVelocity(object->GetInvertedMass() * impulse);
-    object->AddAngularVelocity(object->GetInvertedInertia() * sim::Cross2D(contact_vector, impulse));
+    if (!object->GetStatical()) {
+        object->AddVelocity(object->GetInvertedMass() * impulse);
+        object->AddAngularVelocity(object->GetInvertedInertia() * sim::Cross2D(contact_vector, impulse));
+    }
 }
 
 CollisionResult ObjectHandler::CheckCollision(const Object* object1, const Object* object2) const {
@@ -272,7 +274,7 @@ CollisionResult ObjectHandler::CircleRectangle(const Object* object1, const Obje
     return result;
 }
 
-void ObjectHandler::HandleCollision(Object* object1, Object* object2, CollisionResult collision_result, float delta_time) {
+void ObjectHandler::HandleCollision(Object* object1, Object* object2, CollisionResult collision_result) {
 
     if (object1->GetStatical() && object2->GetStatical()) {
         return;
@@ -344,13 +346,13 @@ void ObjectHandler::HandleCollision(Object* object1, Object* object2, CollisionR
 }
 
 void ObjectHandler::SeparateObjects(Object* object1, Object* object2, CollisionResult collision_result) {
-    glm::vec2 normal = glm::normalize(object2->GetPosition() - object1->GetPosition());
+    glm::vec2 normal = glm::normalize(collision_result.normal);
     float separation_distance = collision_result.penetration;
     if (!object1->GetStatical()) {
-        object1->AddPosition(0.5f * separation_distance * -normal);
+        object1->AddPosition(separation_distance * -normal);
     }
     if (!object2->GetStatical()) {
-        object2->AddPosition(0.5f * separation_distance * normal);
+        object2->AddPosition(separation_distance * normal);
     }
 }
 
