@@ -8,6 +8,11 @@ Restitution = 1.0f
 
 ![2024-06-30 15-31-46](https://github.com/SanchoCC/Simulation/assets/134946556/872e7f01-f585-40a7-840c-561abf137bd6)
 
+With gravity: 
+
+![2024-06-30 22-15-29](https://github.com/SanchoCC/Simulation/assets/134946556/8f646a48-caa5-4528-8b56-086dc8966a3d)
+
+
 # Previous stages:
 ![2024-03-16 13-02-35](https://github.com/SanchoCC/Simulation/assets/134946556/cf5ad6a4-4613-4992-857c-f2ac0e55f33e)
 ![2024-03-12 19-20-16](https://github.com/SanchoCC/Simulation/assets/134946556/added6e0-29fd-4d36-b63e-a035aafdef69)
