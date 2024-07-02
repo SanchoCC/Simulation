@@ -9,12 +9,11 @@
 #include "classes/settings.h"
 #include "classes/glfw_callback.h"
 
-int width = Settings::GetInstance().screen_.width;
-int height = Settings::GetInstance().screen_.height;
 bool fullscreen = Settings::GetInstance().screen_.fullscreen;
-bool vsync = Settings::GetInstance().screen_.vsync;
 
-float koef_screen = static_cast<float>(width) / height;
+
+
+bool vsync = Settings::GetInstance().screen_.vsync;
 
 int main() {
 	// GLFW
@@ -34,8 +33,11 @@ int main() {
 		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 		window = glfwCreateWindow(mode->width, mode->height, "Simulation", monitor, nullptr);
 		Settings::GetInstance().screen_.width = mode->width;
-		Settings::GetInstance().screen_.height = mode->height;
+		Settings::GetInstance().screen_.height = mode->height;		
+		Settings::GetInstance().screen_.koef_screen = static_cast<float>(mode->width) / mode->height;
 	} else {
+		int width = Settings::GetInstance().screen_.width;
+		int height = Settings::GetInstance().screen_.height;
 		window = glfwCreateWindow(width, height, "Simulation", nullptr, nullptr);
 	}
 
@@ -54,7 +56,7 @@ int main() {
 		return -1;
 	}
 
-	glScalef(1 / koef_screen, 1, 1);
+	glScalef(1 / Settings::GetInstance().screen_.koef_screen, 1, 1);
 
 	glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
 	glfwSetScrollCallback(window, ScrollCallback);
@@ -99,12 +101,12 @@ int main() {
 
 #ifdef CASE3
 
-	Rectangle floor(1, 0, -5.8f, 10.0f, 11.0f);
-	Circle circle0(0, -3, 0.7, 0.4);
+	Rectangle floor(1, 0, -1.0f, 6.0f, 2.0f);
+	Circle circle0(0, -2, 0.7, 0.4);
 	Circle circle1(0, -0.5, 0.3, 0.3);
 	Circle circle2(0, 0.7, 0.5, 0.2);
 	Circle circle3(0, 1.7, 0.2, 0.1);
-	circle0.SetAngularVelocity(-5.0);
+	circle0.SetAngularVelocity(-7.0);
 	circle2.SetAngularVelocity(4.0);
 	circle1.SetVelocity(glm::vec2(0.0, 0));
 	circle3.SetAngularVelocity(8.0);

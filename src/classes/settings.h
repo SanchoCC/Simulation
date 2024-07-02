@@ -10,6 +10,7 @@ public:
 	struct Screen {
 		int width = 1280;
 		int height = 720;
+		float koef_screen = static_cast<float>(width) / height;
 		bool fullscreen = false;
 		bool vsync = true;
 	};
