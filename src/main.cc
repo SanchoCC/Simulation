@@ -32,9 +32,11 @@ int main() {
 		glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-		window = glfwCreateWindow(mode->width, mode->height, "Hello, OpenGL!", monitor, nullptr);
+		window = glfwCreateWindow(mode->width, mode->height, "Simulation", monitor, nullptr);
+		Settings::GetInstance().screen_.width = mode->width;
+		Settings::GetInstance().screen_.height = mode->height;
 	} else {
-		window = glfwCreateWindow(width, height, "Hello, OpenGL!", nullptr, nullptr);
+		window = glfwCreateWindow(width, height, "Simulation", nullptr, nullptr);
 	}
 
 	if (!window) {
@@ -53,11 +55,14 @@ int main() {
 	}
 
 	glScalef(1 / koef_screen, 1, 1);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwSetScrollCallback(window, scroll_callback);
+
+	glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
+	glfwSetScrollCallback(window, ScrollCallback);
+
 	glfwSwapInterval(vsync);
 
-#define CASE2
+
+#define CASE3
 
 #ifdef CASE1
 
@@ -115,8 +120,11 @@ int main() {
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		EdgePan(window);
+
 		float current_time = static_cast<float>(glfwGetTime());
 		float delta_time = current_time - last_time;
+		Settings::GetInstance().state_.delta_time = delta_time;
 		ObjectHandler::GetInstance().MainCycle(Object::GetObjectsList(), delta_time);
 
 		glfwSwapBuffers(window);

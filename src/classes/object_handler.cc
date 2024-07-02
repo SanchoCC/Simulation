@@ -8,6 +8,7 @@
 #include "math_defines.h"
 #include "object_shapes.h"
 
+
 ObjectHandler& ObjectHandler::GetInstance() {
 	static ObjectHandler instance;
 
@@ -17,7 +18,7 @@ ObjectHandler& ObjectHandler::GetInstance() {
 ObjectHandler::ObjectHandler() {}
 
 void ObjectHandler::MainCycle(std::list<Object*>& object_list,
-	float delta_time) {
+float delta_time) {
 	for (auto it = object_list.begin(); it != object_list.end(); ++it) {
 		auto object1 = *it;
 		Accelerate(object1, glm::vec2{0.0f, gravity_}, delta_time);

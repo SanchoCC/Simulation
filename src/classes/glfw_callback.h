@@ -4,7 +4,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
+void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+void EdgePan(GLFWwindow* window);
 
 #endif //SIMULATION_CLASSES_GLFW_CALLBACK_H_
