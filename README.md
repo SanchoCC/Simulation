@@ -17,9 +17,11 @@
 
 ![2024-06-30 22-15-29](https://github.com/SanchoCC/Simulation/assets/134946556/8f646a48-caa5-4528-8b56-086dc8966a3d)
 
-## Added SAT
+## Better resolving of collision
 
 ![2024-03-16 13-02-35](https://github.com/SanchoCC/Simulation/assets/134946556/cf5ad6a4-4613-4992-857c-f2ac0e55f33e)
+
+## Added SAT
 ![2024-03-12 19-20-16](https://github.com/SanchoCC/Simulation/assets/134946556/added6e0-29fd-4d36-b63e-a035aafdef69)
 
 
