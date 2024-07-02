@@ -1,8 +1,7 @@
 #ifndef SIMULATION_CLASSES_SETTINGS_H_
 #define SIMULATION_CLASSES_SETTINGS_H_
 
-class Settings
-{
+class Settings {
 public:
 	static Settings& GetInstance();
 	Settings(Settings const&) = delete;
@@ -23,7 +22,7 @@ public:
 	WorldParameters world_parameters_;
 
 private:
-	Settings();	
+	Settings();
 };
 
-#endif //SIMULATION_CLASSES_SETTINGS_H_
+#endif  // SIMULATION_CLASSES_SETTINGS_H_
