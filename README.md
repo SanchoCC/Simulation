@@ -1,8 +1,11 @@
 # Current stage: 
+## Added changing of simulation speed
+![2024-07-03 16-53-15](https://github.com/SanchoCC/Simulation/assets/134946556/f03379f6-723f-46a8-8cdc-36ee83e00577)
+
+# Previous stages: 
 ## Added scroll callback and edge pan
 ![2024-07-02 23-00-53](https://github.com/SanchoCC/Simulation/assets/134946556/238fbbf1-ba35-41c1-a4bd-3389a7f77994)
 
-# Previous stages: 
 ## Added resolve of collision for Circle + Circle and Circle + Rectangle
 ### No gravity cases: 
 
