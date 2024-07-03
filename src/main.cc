@@ -116,10 +116,11 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		float current_time = static_cast<float>(glfwGetTime());
 		float delta_time = current_time - last_time;
-		
-		ObjectHandler::GetInstance().MainCycle(Object::GetObjectsList(), delta_time);
 
 		EdgePan(window, delta_time);
+		CheckSimulationSpeed(window, delta_time);
+		
+		ObjectHandler::GetInstance().MainCycle(Object::GetObjectsList(), delta_time);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
