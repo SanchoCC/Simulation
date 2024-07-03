@@ -11,20 +11,16 @@ public:
 		int width = 1280;
 		int height = 720;
 		float koef_screen = static_cast<float>(width) / height;
-		bool fullscreen = false;
+		bool fullscreen = true;
 		bool vsync = true;
 	};
 	struct WorldParameters {
 		float gravity = -0.98f;
 		float restitution = 0.5f;
 	};
-	struct State {
-		float delta_time = 0.0;
-	};
 
 	Screen screen_;
 	WorldParameters world_parameters_;
-	State state_;
 
 private:
 	Settings();

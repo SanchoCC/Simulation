@@ -6,6 +6,7 @@
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
-void EdgePan(GLFWwindow* window);
+void CheckSimulationSpeed(GLFWwindow* window, float& delta_time);
+void EdgePan(GLFWwindow* window, float delta_time);
 
 #endif //SIMULATION_CLASSES_GLFW_CALLBACK_H_

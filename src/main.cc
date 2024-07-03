@@ -9,11 +9,7 @@
 #include "classes/settings.h"
 #include "classes/glfw_callback.h"
 
-bool fullscreen = Settings::GetInstance().screen_.fullscreen;
-
-
-
-bool vsync = Settings::GetInstance().screen_.vsync;
+#define CASE3
 
 int main() {
 	// GLFW
@@ -27,13 +23,13 @@ int main() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
 	GLFWwindow* window;
-	if (fullscreen) {
+	if (Settings::GetInstance().screen_.fullscreen) {
 		glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 		window = glfwCreateWindow(mode->width, mode->height, "Simulation", monitor, nullptr);
 		Settings::GetInstance().screen_.width = mode->width;
-		Settings::GetInstance().screen_.height = mode->height;		
+		Settings::GetInstance().screen_.height = mode->height;
 		Settings::GetInstance().screen_.koef_screen = static_cast<float>(mode->width) / mode->height;
 	} else {
 		int width = Settings::GetInstance().screen_.width;
@@ -61,10 +57,7 @@ int main() {
 	glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
 	glfwSetScrollCallback(window, ScrollCallback);
 
-	glfwSwapInterval(vsync);
-
-
-#define CASE3
+	glfwSwapInterval(Settings::GetInstance().screen_.vsync);
 
 #ifdef CASE1
 
@@ -101,7 +94,7 @@ int main() {
 
 #ifdef CASE3
 
-	Rectangle floor(1, 0, -1.0f, 6.0f, 2.0f);
+	Rectangle floor(1, 0, -1.5f, 6.0f, 2.0f);
 	Circle circle0(0, -2, 0.7, 0.4);
 	Circle circle1(0, -0.5, 0.3, 0.3);
 	Circle circle2(0, 0.7, 0.5, 0.2);
@@ -121,12 +114,12 @@ int main() {
 
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		EdgePan(window);
-
 		float current_time = static_cast<float>(glfwGetTime());
 		float delta_time = current_time - last_time;
-		Settings::GetInstance().state_.delta_time = delta_time;
+
+		EdgePan(window, delta_time);
+		CheckSimulationSpeed(window, delta_time);
+		
 		ObjectHandler::GetInstance().MainCycle(Object::GetObjectsList(), delta_time);
 
 		glfwSwapBuffers(window);
