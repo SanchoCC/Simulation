@@ -17,21 +17,13 @@ Object::Object(bool statical, float position_x, float position_y) {
 
 Object::~Object() = default;
 
-void Object::Render() {
+void Object::Render() const {
 	glColor3f(color_.red_, color_.green_, color_.blue_);
 	glBegin(GL_POLYGON);
 	for (const auto& it : vertices_) {
 		glVertex2f(it.x, it.y);
 	}
 	glEnd();
-	if (GetType() == ShapeType::kCircle) {
-		glColor3f(color_.red_ / 1.5f, color_.green_ / 1.5f, color_.blue_ / 1.5f);
-		glBegin(GL_TRIANGLES);
-		glVertex2f(position_.x, position_.y);
-		glVertex2f(vertices_[0].x, vertices_[0].y);
-		glVertex2f(vertices_[1].x, vertices_[1].y);
-		glEnd();
-	}
 }
 
 std::list<Object*>& Object::GetObjectsList() {

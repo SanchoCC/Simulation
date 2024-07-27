@@ -18,9 +18,10 @@ enum class ShapeType {
 class Object {
  public:
 	Object(bool statical, float position_x, float position_y);
+	Object() {};
 	virtual ~Object();
 
-	void Render();
+	virtual void Render() const;
 
 	static std::list <Object*>& GetObjectsList();
 
@@ -55,26 +56,32 @@ class Object {
 	float GetAngularVelocity() const;
 	void AddAngularVelocity(float angular_velocity);
 	void SetAngularVelocity(float angular_velocity);
- protected:
-	virtual void UpdateVertices() = 0;
-
+ protected:	
 	static std::list<Object*> objects_list_;
+
 	glm::vec2 position_{0, 0};
-	glm::vec2 velocity_{0, 0};
+	
 	std::vector<glm::vec2> vertices_;
 	std::vector<glm::vec2> normals_;
 	
 	bool statical_ = false;
-	float restitution_ = Settings::GetInstance().world_parameters_.restitution;
+	
 	float density_ = 0.6f;
 	float mass_ = 0;
 	float inverted_mass_ = 0; 
 	float inertia_ = 0;
 	float inverted_inertia_ = 0;
 	float rotation_angle_ = 0;
-	float angular_velocity_ = 0;
-
+	
 	Color color_;
+
+ private:
+	virtual void UpdateVertices() = 0;
+
+	float restitution_ = Settings::GetInstance().world_parameters_.restitution;
+
+	glm::vec2 velocity_{ 0, 0 };
+	float angular_velocity_ = 0;
 };
 
 #endif // !SIMULATION_CLASSES_OBJECT_H_
