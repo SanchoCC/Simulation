@@ -1,48 +1,35 @@
 #include "object_shapes.h"
 
-#include <glad/glad.h>
-#include <glm/gtc/matrix_transform.hpp>
-
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <memory>
+#include <random>
+
+#include <glad/glad.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 Circle::Circle(bool statical, float position_x, float position_y, float radius) : Object(statical, position_x, position_y) {
 	radius_ = radius;
-	if (statical_) {
-		mass_ = inverted_mass_ = inertia_ = inverted_inertia_ = 0.0f;
-	} else {
-		mass_ = M_PI * radius * radius * density_;
-		inverted_mass_ = 1.0f / mass_;
-		inertia_ = 0.5f * mass_ * radius_;
-		inverted_inertia_ = 1.0f / inertia_;
-	}
+	CalculateMass();
 	UpdateVertices();
 	Render();
 	objects_list_.push_back(this);
 }
+
 Circle::Circle() {
+	std::random_device rd;
+	std::mt19937 rng(rd());
+	std::uniform_real_distribution<float> radius_dist(0.05f, 0.2f);
 	statical_ = 0;
 	position_ = glm::vec2(0, 1);
-	radius_ = 0.1f;
-	if (statical_) {
-		mass_ = inverted_mass_ = inertia_ = inverted_inertia_ = 0.0f;
-	} else {
-		mass_ = M_PI * radius_ * radius_ * density_;
-		inverted_mass_ = 1.0f / mass_;
-		inertia_ = 0.5f * mass_ * radius_;
-		inverted_inertia_ = 1.0f / inertia_;
-	}
+	radius_ = radius_dist(rng);
+	CalculateMass();
 	UpdateVertices();
 	Render();
 	objects_list_.push_back(this);
 }
 
 Circle::~Circle() = default;
-
-ShapeType Circle::GetType() const {
-	return ShapeType::kCircle;
-}
 
 void Circle::Render() const {
 	Object::Render();
@@ -53,6 +40,21 @@ void Circle::Render() const {
 	glVertex2f(vertices_[0].x, vertices_[0].y);
 	glVertex2f(vertices_[1].x, vertices_[1].y);
 	glEnd();
+}
+
+ShapeType Circle::GetType() const {
+	return ShapeType::kCircle;
+}
+
+void Circle::CalculateMass() {
+	if (statical_) {
+		mass_ = inverted_mass_ = inertia_ = inverted_inertia_ = 0.0f;
+	} else {
+		mass_ = M_PI * radius_ * radius_ * density_;
+		inverted_mass_ = 1.0f / mass_;
+		inertia_ = 0.5f * mass_ * radius_;
+		inverted_inertia_ = 1.0f / inertia_;
+	}
 }
 
 void Circle::UpdateVertices() {
@@ -78,14 +80,7 @@ float Circle::GetRadius() const {
 Rectangle::Rectangle(bool statical, float position_x, float position_y, float width, float height) : Object(statical, position_x, position_y) {
 	width_ = width;
 	height_ = height;
-	if (statical_) {
-		mass_ = inverted_mass_ = inertia_ = inverted_inertia_ = 0.0f;
-	} else {
-		mass_ = (width_ * height_) * density_;
-		inverted_mass_ = 1.0f / mass_;
-		inertia_ = 1.0f / 12.0f * mass_ * (width * width + height * height);
-		inverted_inertia_ = 1.0f / inertia_;
-	}
+	CalculateMass();
 	UpdateVertices();
 	Render();
 	objects_list_.push_back(this);
@@ -95,6 +90,17 @@ Rectangle::~Rectangle() = default;
 
 ShapeType Rectangle::GetType() const {
 	return ShapeType::kRectangle;
+}
+
+void Rectangle::CalculateMass() {
+	if (statical_) {
+		mass_ = inverted_mass_ = inertia_ = inverted_inertia_ = 0.0f;
+	} else {
+		mass_ = (width_ * height_) * density_;
+		inverted_mass_ = 1.0f / mass_;
+		inertia_ = 1.0f / 12.0f * mass_ * (width_ * width_ + height_ * height_);
+		inverted_inertia_ = 1.0f / inertia_;
+	}
 }
 
 float Rectangle::GetWidth() const {
