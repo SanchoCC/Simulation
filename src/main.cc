@@ -116,10 +116,9 @@ int main() {
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		float current_time = static_cast<float>(glfwGetTime());
-		float delta_time = current_time - last_time;
-		delta_time *= Settings::GetInstance().world_parameters_.simulation_speed;
-
+		float delta_time = current_time - last_time;		
 		EdgePan(window, delta_time);
+		delta_time *= Settings::GetInstance().world_parameters_.simulation_speed;
 		Inputs::GetInstance().CheckInputs(window, delta_time);		
 		ObjectHandler::GetInstance().MainCycle(Object::GetObjectsList(), delta_time);
 
