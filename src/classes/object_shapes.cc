@@ -1,10 +1,11 @@
 #include "object_shapes.h"
 
+#include <glad/glad.h>
+#include <glm/gtc/matrix_transform.hpp>
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <memory>
-
-#include <glm/gtc/matrix_transform.hpp>
 
 Circle::Circle(bool statical, float position_x, float position_y, float radius) : Object(statical, position_x, position_y) {
 	radius_ = radius;
@@ -20,11 +21,38 @@ Circle::Circle(bool statical, float position_x, float position_y, float radius) 
 	Render();
 	objects_list_.push_back(this);
 }
+Circle::Circle() {
+	statical_ = 0;
+	position_ = glm::vec2(0, 1);
+	radius_ = 0.1f;
+	if (statical_) {
+		mass_ = inverted_mass_ = inertia_ = inverted_inertia_ = 0.0f;
+	} else {
+		mass_ = M_PI * radius_ * radius_ * density_;
+		inverted_mass_ = 1.0f / mass_;
+		inertia_ = 0.5f * mass_ * radius_;
+		inverted_inertia_ = 1.0f / inertia_;
+	}
+	UpdateVertices();
+	Render();
+	objects_list_.push_back(this);
+}
 
 Circle::~Circle() = default;
 
 ShapeType Circle::GetType() const {
 	return ShapeType::kCircle;
+}
+
+void Circle::Render() const {
+	Object::Render();
+
+	glColor3f(color_.red_ / 1.5f, color_.green_ / 1.5f, color_.blue_ / 1.5f);
+	glBegin(GL_TRIANGLES);
+	glVertex2f(position_.x, position_.y);
+	glVertex2f(vertices_[0].x, vertices_[0].y);
+	glVertex2f(vertices_[1].x, vertices_[1].y);
+	glEnd();
 }
 
 void Circle::UpdateVertices() {

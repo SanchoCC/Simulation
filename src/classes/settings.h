@@ -8,15 +8,16 @@ public:
 	void operator=(Settings const&) = delete;
 
 	struct Screen {
-		int width = 1280;
-		int height = 720;
+		int width = 1366;
+		int height = 768;
 		float koef_screen = static_cast<float>(width) / height;
-		bool fullscreen = true;
+		bool fullscreen = false;
 		bool vsync = true;
 	};
 	struct WorldParameters {
 		float gravity = -0.98f;
 		float restitution = 0.5f;
+		float simulation_speed = 1.f;
 	};
 
 	Screen screen_;

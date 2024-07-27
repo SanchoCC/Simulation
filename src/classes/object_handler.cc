@@ -18,11 +18,12 @@ ObjectHandler::ObjectHandler() {}
 
 void ObjectHandler::MainCycle(std::list<Object*>& object_list,
 float delta_time) {
-	for (auto it = object_list.begin(); it != object_list.end(); ++it) {
+	for (auto& it = object_list.begin(); it != object_list.end(); ++it) {		
 		auto object1 = *it;
+		object1->Render();
 		Accelerate(object1, glm::vec2{0.0f, gravity_}, delta_time);
 		Rotate(object1, delta_time);
-		Move(object1, delta_time);
+		Move(object1, delta_time);		
 		for (auto inner_it = object_list.begin(); inner_it != object_list.end();
 			++inner_it) {
 			if (inner_it == it) {
@@ -35,7 +36,6 @@ float delta_time) {
 				SeparateObjects(object1, object2, collision_result);
 			}
 		}
-		object1->Render();
 	}
 }
 
@@ -190,8 +190,8 @@ CollisionResult ObjectHandler::SATCollision(const Object* object1,
 CollisionResult ObjectHandler::CircleCircle(const Object* object1,
 	const Object* object2) const {
 	CollisionResult result{};
-	Circle* circle1 = dynamic_cast<Circle*>(const_cast<Object*>(object1));
-	Circle* circle2 = dynamic_cast<Circle*>(const_cast<Object*>(object2));
+	Circle* circle1 = static_cast<Circle*>(const_cast<Object*>(object1));
+	Circle* circle2 = static_cast<Circle*>(const_cast<Object*>(object2));
 	glm::vec2 normal = object2->GetPosition() - object1->GetPosition();
 
 	float distance_pow2 = glm::dot(normal, normal);
@@ -220,8 +220,8 @@ CollisionResult ObjectHandler::CircleRectangle(const Object* object1,
 	const Object* object2) const {
 	CollisionResult result{};
 
-	Circle* circle = dynamic_cast<Circle*>(const_cast<Object*>(object1));
-	Rectangle* rectangle = dynamic_cast<Rectangle*>(const_cast<Object*>(object2));
+	Circle* circle = static_cast<Circle*>(const_cast<Object*>(object1));
+	Rectangle* rectangle = static_cast<Rectangle*>(const_cast<Object*>(object2));
 
 	glm::vec4 circle_position(circle->GetPosition(), 0.0f, 1.0f);
 	glm::vec4 rectangle_position(rectangle->GetPosition(), 0.0f, 1.0f);

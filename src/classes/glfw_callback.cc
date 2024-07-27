@@ -3,13 +3,14 @@
 #include <cmath>
 
 #include "settings.h"
+#include "object_shapes.h"
+#include "key.h"
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
 void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
-
 	double x_pos, y_pos;
 	glfwGetCursorPos(window, &x_pos, &y_pos);
 	float x_world = 2 * (x_pos / Settings::GetInstance().screen_.width) - 1;
@@ -29,22 +30,7 @@ void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
 	}
 }
 
-void CheckSimulationSpeed(GLFWwindow* window, float& delta_time) {	
-	int state_space = glfwGetKey(window, GLFW_KEY_SPACE);
-	if (state_space == GLFW_PRESS) {
-		delta_time = 0.f;
-	}
-	int state_left = glfwGetKey(window, GLFW_KEY_LEFT);
-	if (state_left == GLFW_PRESS) {
-		delta_time *= 0.5f;
-	}
-	int state_right = glfwGetKey(window, GLFW_KEY_RIGHT);
-	if (state_right == GLFW_PRESS) {
-		delta_time *= 2.f;
-	}
-}
-
-void EdgePan(GLFWwindow* window, float delta_time) {
+void EdgePan(GLFWwindow* window, float& delta_time) {
 	double x_pos, y_pos;
 	glfwGetCursorPos(window, &x_pos, &y_pos);
 
@@ -75,4 +61,3 @@ void EdgePan(GLFWwindow* window, float delta_time) {
 		glTranslatef(0, -delta_time, 0);
 	}
 }
-

@@ -8,6 +8,7 @@
 #include "classes/object_handler.h"
 #include "classes/settings.h"
 #include "classes/glfw_callback.h"
+#include "classes/inputs.h"
 
 #define CASE3
 
@@ -116,10 +117,10 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		float current_time = static_cast<float>(glfwGetTime());
 		float delta_time = current_time - last_time;
+		delta_time *= Settings::GetInstance().world_parameters_.simulation_speed;
 
 		EdgePan(window, delta_time);
-		CheckSimulationSpeed(window, delta_time);
-		
+		Inputs::GetInstance().CheckInputs(window, delta_time);		
 		ObjectHandler::GetInstance().MainCycle(Object::GetObjectsList(), delta_time);
 
 		glfwSwapBuffers(window);
