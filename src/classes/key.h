@@ -21,13 +21,4 @@ private:
 	bool pressed_ = false;
 };
 
-namespace std {
-	template <>
-	struct hash<Key> {
-		std::size_t operator()(const Key& key) const {
-			return std::hash<int>()(key.GetKey());
-		}
-	};
-}
-
 #endif // SIMULATION_CLASSES_KEY_H_
