@@ -10,6 +10,7 @@ public:
 	~Circle();
 	void Render() const override;
 	ShapeType GetType() const override;
+	void CalculateMass() override;
 	float GetRadius() const;
 
 private:
@@ -25,6 +26,7 @@ public:
 		float height);
 	~Rectangle();
 	ShapeType GetType() const override;
+	void CalculateMass() override;
 	float GetWidth() const;
 	float GetHeight() const;
 

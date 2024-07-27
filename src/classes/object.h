@@ -22,10 +22,10 @@ class Object {
 	virtual ~Object();
 
 	virtual void Render() const;
+	virtual ShapeType GetType() const = 0;
+	virtual void CalculateMass() = 0;
 
-	static std::list <Object*>& GetObjectsList();
-
-	virtual ShapeType GetType() const = 0;	
+	static std::list <Object*>& GetObjectsList();	
 
 	float GetRotationAngle() const;
 	void AddRotationAngle(float rotation_angle);
