@@ -9,16 +9,16 @@
 
 std::list<Object*> Object::objects_list_;
 
-Object::Object(bool statical, float position_x, float position_y) {
-	this->statical_ = statical;
-	this->position_.x = position_x;
-	this->position_.y = position_y;
+Object::Object(float position_x, float position_y, MaterialType material_type) {
+	position_.x = position_x;
+	position_.y = position_y;
+	material_.SetMaterial(material_type);
 }
 
 Object::~Object() = default;
 
 void Object::Render() const {
-	glColor3f(color_.red_, color_.green_, color_.blue_);
+	glColor3f(material_.GetColor().GetRed(), material_.GetColor().GetGreen(), material_.GetColor().GetBlue());
 	glBegin(GL_POLYGON);
 	for (const auto& it : vertices_) {
 		glVertex2f(it.x, it.y);
@@ -50,14 +50,6 @@ void Object::SetRotationAngle(float rotation_angle) {
 	UpdateVertices();
 }
 
-float Object::GetMass() const {
-	return mass_;
-}
-
-void Object::SetMass(float mass) {
-	mass_ = mass;
-}
-
 float Object::GetInvertedMass() const {
 	return inverted_mass_;
 }
@@ -75,14 +67,6 @@ void Object::AddVelocity(glm::vec2 velocity) {
 
 void Object::SetVelocity(glm::vec2 velocity) {
 	velocity_ = velocity;
-}
-
-float Object::GetRestitution() const {
-	return restitution_;
-}
-
-void Object::SetRestitution(float restitution) {
-	restitution_ = restitution;
 }
 
 glm::vec2 Object::GetPosition() const {
@@ -103,6 +87,11 @@ bool Object::GetStatical() {
 	return statical_;
 }
 
+void Object::SetStatical(bool statical) {
+	statical_ = statical;
+	CalculateMass();
+}
+
 float Object::GetAngularVelocity() const {
 	return angular_velocity_;
 }
@@ -113,4 +102,12 @@ void Object::AddAngularVelocity(float angular_velocity) {
 
 void Object::SetAngularVelocity(float angular_velocity) {
 	angular_velocity_ = angular_velocity;
+}
+
+Material Object::GetMaterial() const {
+	return material_;
+}
+
+void Object::SetMaterial(MaterialType material_type) {
+	material_.SetMaterial(material_type);
 }

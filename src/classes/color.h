@@ -7,6 +7,11 @@ public:
 	void SetRandomColor();
 	void SetColor(float red, float green, float blue);
 
+	float GetRed() const;
+	float GetGreen() const;
+	float GetBlue() const;
+
+private:
 	float red_;
 	float green_;
 	float blue_;
