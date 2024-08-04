@@ -16,7 +16,6 @@ public:
 	};
 	struct WorldParameters {
 		float gravity = -0.98f;
-		float restitution = 0.5f;
 		float simulation_speed = 1.f;
 	};
 

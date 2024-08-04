@@ -10,7 +10,7 @@ class Key {
 public:
 	Key(int key);
 	Key operator=(Key other);	
-	bool Key::operator==(const Key& other) const;
+	bool operator==(const Key& other) const;
 	int GetKey() const;
 
 	void Action(std::function<void(GLFWwindow*, float&)> action, GLFWwindow* window, float& delta_time);	

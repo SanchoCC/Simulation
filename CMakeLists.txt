@@ -24,6 +24,8 @@ src/classes/key.h
 src/classes/key.cc
 src/classes/inputs.h
 src/classes/inputs.cc
+src/classes/material.h
+src/classes/material.cc
 )
 target_compile_features(simulation PRIVATE cxx_std_17)
 target_include_directories( simulation PRIVATE

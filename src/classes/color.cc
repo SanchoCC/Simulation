@@ -24,3 +24,15 @@ void Color::SetColor(float red, float green, float blue) {
 	this->green_ = green;
 	this->blue_ = blue;
 }
+
+float Color::GetRed() const {
+	return red_;
+}
+
+float Color::GetGreen() const {
+	return green_;
+}
+
+float Color::GetBlue() const {
+	return blue_;
+}

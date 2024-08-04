@@ -18,14 +18,15 @@ ObjectHandler::ObjectHandler() {}
 
 void ObjectHandler::MainCycle(std::list<Object*>& object_list,
 float delta_time) {
-	for (auto& it = object_list.begin(); it != object_list.end(); ++it) {		
+	for (auto it = object_list.begin(); it != object_list.end(); ++it) {		
 		auto object1 = *it;
 		object1->Render();
-		Accelerate(object1, glm::vec2{0.0f, gravity_}, delta_time);
-		Rotate(object1, delta_time);
-		Move(object1, delta_time);		
-		for (auto inner_it = object_list.begin(); inner_it != object_list.end();
-			++inner_it) {
+		if (!object1->GetStatical()) {
+			Accelerate(object1, glm::vec2{0.0f, gravity_}, delta_time);
+			Rotate(object1, delta_time);
+			Move(object1, delta_time);
+		}
+		for (auto inner_it = object_list.begin(); inner_it != object_list.end(); ++inner_it) {
 			if (inner_it == it) {
 				continue;
 			}
@@ -40,41 +41,26 @@ float delta_time) {
 }
 
 void ObjectHandler::Move(Object* object, float delta_time) {
-	if (object->GetStatical()) {
-		object->SetVelocity(glm::vec2{0, 0});
-	} else {
-		object->AddPosition(object->GetVelocity() * delta_time);
-	}
+	object->AddPosition(object->GetVelocity() * delta_time);
 }
 
 void ObjectHandler::Rotate(Object* object, float delta_time) {
-	if (object->GetStatical()) {
-		object->SetAngularVelocity(0);
-	} else {
-		object->AddRotationAngle(object->GetAngularVelocity() * delta_time);
-		float rotation_angle = object->GetRotationAngle();
-		if (rotation_angle > 2.0f * M_PI || rotation_angle < -2.0f * M_PI) {
-			object->SetRotationAngle(rotation_angle -
-				2.0f * M_PI *
-				static_cast<float>(static_cast<int>(
-					rotation_angle / (2.0f * M_PI))));
-		}
+	object->AddRotationAngle(object->GetAngularVelocity() * delta_time);
+	float rotation_angle = object->GetRotationAngle();
+	if (rotation_angle > 2.0f * M_PI || rotation_angle < -2.0f * M_PI) {
+		object->SetRotationAngle(rotation_angle - 2.0f * M_PI * 
+			static_cast<float>(static_cast<int>(rotation_angle / (2.0f * M_PI))));
 	}
 }
 
-void ObjectHandler::Accelerate(Object* object, glm::vec2 acceleration,
-	float delta_time) {
-	if (!object->GetStatical()) {
-		object->AddVelocity(acceleration * delta_time);
-	}
+void ObjectHandler::Accelerate(Object* object, glm::vec2 acceleration, float delta_time) {
+	object->AddVelocity(acceleration * delta_time);
 }
 
-void ObjectHandler::ApplyImpulse(Object* object, glm::vec2 impulse,
-	glm::vec2 contact_vector) {
+void ObjectHandler::ApplyImpulse(Object* object, glm::vec2 impulse, glm::vec2 contact_vector) {
 	if (!object->GetStatical()) {
 		object->AddVelocity(object->GetInvertedMass() * impulse);
-		object->AddAngularVelocity(object->GetInvertedInertia() *
-			sim::Cross2D(contact_vector, impulse));
+		object->AddAngularVelocity(object->GetInvertedInertia() * sim::Cross2D(contact_vector, impulse));
 	}
 }
 
@@ -330,10 +316,11 @@ void ObjectHandler::HandleCollision(Object* object1, Object* object2,
 			(r1_cross_normal * r1_cross_normal) * object1->GetInvertedInertia() +
 			(r2_cross_normal * r2_cross_normal) * object2->GetInvertedInertia();
 
-		float restitution_sum =
-			std::min(object1->GetRestitution(), object2->GetRestitution());
+		Material material1 = object1->GetMaterial();
+		Material material2 = object2->GetMaterial();
+		float restitution = (material1.GetRestitution() + material2.GetRestitution()) * 0.5f;
 
-		float j = -(1.0f + restitution_sum) * vel_along_normal;
+		float j = -(1.0f + restitution) * vel_along_normal;
 		j /= inverse_mass_sum;
 		j /= collision_result.contacts.size();
 
@@ -355,10 +342,12 @@ void ObjectHandler::HandleCollision(Object* object1, Object* object2,
 			tangent_magnitude /= collision_result.contacts.size();
 
 			glm::vec2 tangent_impulse;
-			if (std::abs(tangent_magnitude) < j * 0.5f) {
+			float static_friction = (material1.GetStaticFriction() + material2.GetStaticFriction()) * 0.5f;
+			float dynamic_friction = (material1.GetDynamicFriction() + material2.GetDynamicFriction()) * 0.5f;
+			if (std::abs(tangent_magnitude) < j * static_friction) {
 				tangent_impulse = tangent * tangent_magnitude;
 			} else {
-				tangent_impulse = tangent * -j * 0.3f;
+				tangent_impulse = tangent * -j * dynamic_friction;
 			}
 
 			ApplyImpulse(object1, -tangent_impulse, r1);
@@ -372,10 +361,10 @@ void ObjectHandler::SeparateObjects(Object* object1, Object* object2,
 	glm::vec2 normal = glm::normalize(collision_result.normal);
 	float separation_distance = collision_result.penetration;
 	if (!object1->GetStatical()) {
-		object1->AddPosition(separation_distance * -normal);
+		object1->AddPosition(separation_distance/2 * -normal);
 	}
 	if (!object2->GetStatical()) {
-		object2->AddPosition(separation_distance * normal);
+		object2->AddPosition(separation_distance/2 * normal);
 	}
 }
 

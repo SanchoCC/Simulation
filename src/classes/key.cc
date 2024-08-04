@@ -23,8 +23,8 @@ int Key::GetKey() const {
 void Key::Action(std::function<void(GLFWwindow*, float&)> action, GLFWwindow* window, float& delta_time) {
 	int state = GetState(window);
 	if (!pressed_ && state == GLFW_PRESS) {
-	action(window, delta_time); 
-	pressed_ = true;
+		action(window, delta_time); 
+		pressed_ = true;
 	} else if (pressed_ && state == GLFW_RELEASE) {
 		pressed_ = false;
 	}

@@ -10,7 +10,7 @@
 #include "classes/glfw_callback.h"
 #include "classes/inputs.h"
 
-#define CASE3
+#define CASE2
 
 int main() {
 	// GLFW
@@ -63,49 +63,94 @@ int main() {
 #ifdef CASE1
 
 	Settings::GetInstance().world_parameters_.gravity = 0.0f;
-	Rectangle rect(0, 0, 0, 2.0, 0.15);
-	Circle circle0(0, 0.0, 3.5, 0.15);
-	Circle circle1(0, -0.5, -0.2, 0.1);
-	Circle circle2(0, -0.5, 0.2, 0.1);
-	Circle circle3(0, 0.5, -0.2, 0.1);
-	circle0.SetVelocity(glm::vec2(0.5f, -3.0f));
+	Rectangle rect(0, 0, 2.0, 0.15, MaterialType::kMetal);
 	rect.SetAngularVelocity(0.2);
 
+	Circle circle0(0.0, 3.5, 0.2, MaterialType::kRock);
+	circle0.SetVelocity(glm::vec2(0.3f, -2.f));
+
+	Circle circle1(-0.5, -0.2, 0.1, MaterialType::kDefault);
+
+	Circle circle2(-0.5, 0.2, 0.1, MaterialType::kWood);
+
+	Circle circle3(0.5, -0.2, 0.1, MaterialType::kRubber);
 #endif // CASE1
 
 #ifdef CASE2
 
 	Settings::GetInstance().world_parameters_.gravity = 0.0f;
-	Settings::GetInstance().world_parameters_.restitution = 1.0f;
-	Rectangle floor(1, -2, 0, 0.6f, 2.0f);
-	Rectangle floor1(1, 2, 0, 0.6f, 2.0f);
-	Rectangle floor2(1, 0, 1.2, 4.0f, 0.6f);
-	Rectangle floor3(1, 0, -1.2, 4.0f, 0.6f);
-	Circle circle0(0, 0, 0, 0.15);
-	Circle circle1(0, -0.5, -0.2, 0.3);
-	Circle circle2(0, -0.5, 0.2, 0.15);
-	Circle circle3(0, 0.5, -0.2, 0.15);
-	Circle circle4(0, -0.1, -0.7, 0.1);
-	Circle circle5(0, -0.8, 0.3, 0.15);
-	Circle circle6(0, 0.2, -0.1, 0.1);
-	circle0.SetVelocity(glm::vec2(3.5f, -1.2f));
-	circle2.SetVelocity(glm::vec2(-3.0f, 1.2f));
+	Rectangle floor(-2, 0, 0.6f, 2.0f, MaterialType::kRubber);
+	floor.SetStatical(true);
+	Rectangle floor1(2, 0, 0.6f, 2.0f, MaterialType::kRubber);
+	floor1.SetStatical(true);
+	Rectangle floor2(0, 1.2, 4.0f, 0.6f, MaterialType::kRubber);
+	floor2.SetStatical(true);
+	Rectangle floor3(0, -1.2, 4.0f, 0.6f, MaterialType::kRubber);
+	floor3.SetStatical(true);
+	
+	Circle circle0(0, 0, 0.2, MaterialType::kMetal);
+	circle0.SetVelocity(glm::vec2(1.5f, -1.2f));
+	Circle circle1(-0.5, -0.2, 0.3, MaterialType::kRubber);
+	Circle circle2(-0.5, 0.2, 0.2, MaterialType::kMetal);
+	circle2.SetVelocity(glm::vec2(2.0f, 1.5f));
+	Circle circle3(0.5, -0.2, 0.15, MaterialType::kRubber);
+	Circle circle4(-0.1, -0.7, 0.1, MaterialType::kRubber);
+	Circle circle5(-0.8, 0.3, 0.15, MaterialType::kRubber);
+	Circle circle6(0.2, -0.1, 0.1, MaterialType::kRubber);	
 
 #endif // CASE2
 
 #ifdef CASE3
 
-	Rectangle floor(1, 0, -1.5f, 6.0f, 2.0f);
-	Circle circle0(0, -2, 0.7, 0.4);
-	Circle circle1(0, -0.5, 0.3, 0.3);
-	Circle circle2(0, 0.7, 0.5, 0.2);
-	Circle circle3(0, 1.7, 0.2, 0.1);
+	Rectangle floor(0, -1.5f, 6.0f, 2.0f, MaterialType::kIce);
+	floor.SetStatical(true);
+	Circle circle0(-2, 0.7, 0.4, MaterialType::kIce);
+	Circle circle1(-0.5, 0.3, 0.3, MaterialType::kIce);
+	Circle circle2(0.7, 0.5, 0.2, MaterialType::kIce);
+	Circle circle3(1.7, 0.2, 0.1, MaterialType::kIce);
 	circle0.SetAngularVelocity(-7.0);
-	circle2.SetAngularVelocity(4.0);
 	circle1.SetVelocity(glm::vec2(0.0, 0));
+	circle2.SetAngularVelocity(4.0);
 	circle3.SetAngularVelocity(8.0);
 
 #endif // CASE3
+
+#ifdef CASE4
+
+	Rectangle floor00(0, -1.f, 8.0f, 1.0f, MaterialType::kDefault);
+	floor00.SetStatical(true);
+	floor00.SetRotationAngle(-0.25);
+	Circle circle00(-1.5, 0.3, 0.3, MaterialType::kRubber);
+	circle00.SetAngularVelocity(5.0);
+
+	Circle circle01(-0.5, 0.2, 0.3, MaterialType::kRock);
+	circle01.SetAngularVelocity(5.0);
+
+	Circle circle02(0.5, 0.1, 0.3, MaterialType::kMetal);
+	circle02.SetAngularVelocity(5.0);
+
+	Circle circle03(1.5, 0.0, 0.3, MaterialType::kIce);
+	circle03.SetAngularVelocity(5.0);		
+
+	Rectangle floor10(0, 3.f, 8.0f, 1.0f, MaterialType::kIce);
+	floor10.SetStatical(true);
+	floor10.SetRotationAngle(-0.25);
+	Circle circle10(-1.5, 4.3, 0.3, MaterialType::kMetal);
+	circle10.SetAngularVelocity(5.0);
+
+	Circle circle11(-0.5, 4.2, 0.3, MaterialType::kIce);
+	circle11.SetAngularVelocity(5.0);
+
+	Circle circle12(0.5, 4.1, 0.3, MaterialType::kMetal);
+	circle12.SetAngularVelocity(5.0);
+
+	Circle circle13(1.5, 4.0, 0.3, MaterialType::kIce);
+	circle13.SetAngularVelocity(5.0);
+
+	glScalef(0.3f, 0.3f, 1);
+	glTranslatef(0, -1.2f, 0);
+
+#endif // CASE4
 
 	int fps_counter = 0;
 

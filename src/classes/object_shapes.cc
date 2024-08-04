@@ -8,7 +8,7 @@
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-Circle::Circle(bool statical, float position_x, float position_y, float radius) : Object(statical, position_x, position_y) {
+Circle::Circle(float position_x, float position_y, float radius, MaterialType material_type) : Object(position_x, position_y, material_type) {
 	radius_ = radius;
 	CalculateMass();
 	UpdateVertices();
@@ -19,10 +19,18 @@ Circle::Circle(bool statical, float position_x, float position_y, float radius) 
 Circle::Circle() {
 	std::random_device rd;
 	std::mt19937 rng(rd());
-	std::uniform_real_distribution<float> radius_dist(0.05f, 0.2f);
-	statical_ = 0;
-	position_ = glm::vec2(0, 1);
+	std::uniform_real_distribution<float> position_x_dist(-0.5f, 0.5f);
+	std::uniform_real_distribution<float> position_y_dist(1.f, 2.f);
+	position_ = glm::vec2(position_x_dist(rng), position_y_dist(rng));
+	std::uniform_real_distribution<float> radius_dist(0.03f, 0.3f);
 	radius_ = radius_dist(rng);
+	std::uniform_real_distribution<float> angular_velocity_dist(-1.f, 1.f);
+	SetAngularVelocity(angular_velocity_dist(rng));
+	std::uniform_real_distribution<float> velocity_x_dist(-0.2f, 0.2f);
+	std::uniform_real_distribution<float> velocity_y_dist(-0.2f, 0.2f);
+	SetVelocity(glm::vec2(velocity_x_dist(rng), velocity_y_dist(rng)));
+	std::uniform_int_distribution<int> material_dist(0, 5);
+	SetMaterial(static_cast<MaterialType>(material_dist(rng)));
 	CalculateMass();
 	UpdateVertices();
 	Render();
@@ -34,7 +42,7 @@ Circle::~Circle() = default;
 void Circle::Render() const {
 	Object::Render();
 
-	glColor3f(color_.red_ / 1.5f, color_.green_ / 1.5f, color_.blue_ / 1.5f);
+	glColor3f(material_.GetColor().GetRed() * 0.5f, material_.GetColor().GetGreen() * 0.5f, material_.GetColor().GetBlue() * 0.5f);
 	glBegin(GL_TRIANGLES);
 	glVertex2f(position_.x, position_.y);
 	glVertex2f(vertices_[0].x, vertices_[0].y);
@@ -48,11 +56,11 @@ ShapeType Circle::GetType() const {
 
 void Circle::CalculateMass() {
 	if (statical_) {
-		mass_ = inverted_mass_ = inertia_ = inverted_inertia_ = 0.0f;
+		inverted_mass_ = inverted_inertia_ = 0.0f;
 	} else {
-		mass_ = M_PI * radius_ * radius_ * density_;
+		float mass_ = M_PI * radius_ * radius_ * material_.GetDensity();
 		inverted_mass_ = 1.0f / mass_;
-		inertia_ = 0.5f * mass_ * radius_;
+		float inertia_ = 0.5f * mass_ * radius_;
 		inverted_inertia_ = 1.0f / inertia_;
 	}
 }
@@ -77,7 +85,7 @@ float Circle::GetRadius() const {
 	return radius_;
 }
 
-Rectangle::Rectangle(bool statical, float position_x, float position_y, float width, float height) : Object(statical, position_x, position_y) {
+Rectangle::Rectangle(float position_x, float position_y, float width, float height, MaterialType material_type) : Object(position_x, position_y, material_type) {
 	width_ = width;
 	height_ = height;
 	CalculateMass();
@@ -94,11 +102,11 @@ ShapeType Rectangle::GetType() const {
 
 void Rectangle::CalculateMass() {
 	if (statical_) {
-		mass_ = inverted_mass_ = inertia_ = inverted_inertia_ = 0.0f;
+		inverted_mass_ = inverted_inertia_ = 0.0f;
 	} else {
-		mass_ = (width_ * height_) * density_;
+		float mass_ = (width_ * height_) * material_.GetDensity();
 		inverted_mass_ = 1.0f / mass_;
-		inertia_ = 1.0f / 12.0f * mass_ * (width_ * width_ + height_ * height_);
+		float inertia_ = 1.0f / 12.0f * mass_ * (width_ * width_ + height_ * height_);
 		inverted_inertia_ = 1.0f / inertia_;
 	}
 }
@@ -113,18 +121,11 @@ float Rectangle::GetHeight() const {
 
 void Rectangle::UpdateVertices() {
 	vertices_.clear();
-	normals_.clear();
 	std::vector<glm::vec2> original_vertices = {
 		glm::vec2(-width_ / 2.0f, -height_ / 2.0f),
 		glm::vec2(width_ / 2.0f, -height_ / 2.0f),
 		glm::vec2(width_ / 2.0f, height_ / 2.0f),
 		glm::vec2(-width_ / 2.0f, height_ / 2.0f)
-	};
-	std::vector<glm::vec2> original_normals = {
-		glm::vec2(0.0f, -1.0f),
-		glm::vec2(1.0f, 0.0f),
-		glm::vec2(0.0f, 1.0f),
-		glm::vec2(-1.0f, 0.0f)
 	};
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(position_, 0.0f));
@@ -133,10 +134,5 @@ void Rectangle::UpdateVertices() {
 		glm::vec4 vertex = glm::vec4(it, 0.0f, 1.0f);
 		vertex = model * vertex;
 		vertices_.push_back(glm::vec2(vertex.x, vertex.y));
-	}
-	for (const auto& it : original_normals) {
-		glm::vec4 normal = glm::vec4(it, 0.0f, 1.0f);
-		normal = model * normal;
-		normals_.push_back(glm::vec2(normal.x, normal.y));
 	}
 }

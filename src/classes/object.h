@@ -9,6 +9,7 @@
 
 #include "color.h"
 #include "settings.h"
+#include "material.h"
 
 enum class ShapeType {
 	kRectangle,
@@ -17,7 +18,7 @@ enum class ShapeType {
 
 class Object {
  public:
-	Object(bool statical, float position_x, float position_y);
+	Object(float position_x, float position_y, MaterialType material_type);
 	Object() {};
 	virtual ~Object();
 
@@ -31,18 +32,12 @@ class Object {
 	void AddRotationAngle(float rotation_angle);
 	void SetRotationAngle(float rotation_angle);
 
-	float GetMass() const;
-	void SetMass(float mass);
-
 	float GetInvertedMass() const;
 	float GetInvertedInertia() const;
 
 	glm::vec2 GetVelocity() const;
 	void AddVelocity(glm::vec2 velocity);
-	void SetVelocity(glm::vec2 velocity);
-
-	float GetRestitution() const;
-	void SetRestitution(float restitution);	
+	void SetVelocity(glm::vec2 velocity);	
 
 	glm::vec2 GetPosition() const;
 	void AddPosition(glm::vec2 position);
@@ -52,33 +47,31 @@ class Object {
 	void SetVertices(std::vector<glm::vec2> vertices);
 
 	bool GetStatical();
+	void SetStatical(bool statical);
 
 	float GetAngularVelocity() const;
 	void AddAngularVelocity(float angular_velocity);
 	void SetAngularVelocity(float angular_velocity);
+
+	void SetMaterial(MaterialType material_type);
+	Material GetMaterial() const;
  protected:	
 	static std::list<Object*> objects_list_;
 
 	glm::vec2 position_{0, 0};
 	
 	std::vector<glm::vec2> vertices_;
-	std::vector<glm::vec2> normals_;
 	
 	bool statical_ = false;
 	
-	float density_ = 0.6f;
-	float mass_ = 0;
 	float inverted_mass_ = 0; 
-	float inertia_ = 0;
 	float inverted_inertia_ = 0;
 	float rotation_angle_ = 0;
 	
-	Color color_;
+	Material material_;
 
  private:
 	virtual void UpdateVertices() = 0;
-
-	float restitution_ = Settings::GetInstance().world_parameters_.restitution;
 
 	glm::vec2 velocity_{ 0, 0 };
 	float angular_velocity_ = 0;

@@ -5,16 +5,17 @@
 
 class Circle : public Object {
 public:
-	Circle(bool statical, float position_x, float position_y, float radius);
+	Circle(float position_x, float position_y, float radius, MaterialType material_type);
 	Circle();
 	~Circle();
 	void Render() const override;
 	ShapeType GetType() const override;
-	void CalculateMass() override;
+	
 	float GetRadius() const;
 
 private:
 	void UpdateVertices() override;
+	void CalculateMass() override;
 
 	float radius_;
 	const int kCircleSides = 360;
@@ -22,16 +23,16 @@ private:
 };
 class Rectangle : public Object {
 public:
-	Rectangle(bool statical, float position_x, float position_y, float width,
-		float height);
+	Rectangle(float position_x, float position_y, float width, float height, MaterialType material_type);
 	~Rectangle();
 	ShapeType GetType() const override;
-	void CalculateMass() override;
+	
 	float GetWidth() const;
 	float GetHeight() const;
 
 private:
 	void UpdateVertices() override;
+	void CalculateMass() override;
 
 	float width_;
 	float height_;
