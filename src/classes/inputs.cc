@@ -3,7 +3,7 @@
 #include "object_shapes.h"
 #include "settings.h"
 
-Inputs& Inputs::GetInstance() {
+Inputs& Inputs::Get() {
 	static Inputs instance;
 
 	return instance;

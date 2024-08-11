@@ -12,7 +12,7 @@
 
 class Inputs {
 public:
-	static Inputs& GetInstance();
+	static Inputs& Get();
 	Inputs(Inputs const&) = delete;
 	void operator=(Inputs const&) = delete;
 

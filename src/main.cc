@@ -167,7 +167,7 @@ int main() {
 		
 		EdgePan(window, delta_time);
 		
-		Inputs::GetInstance().CheckInputs(window, delta_time);		
+		Inputs::Get().CheckInputs(window, delta_time);		
 		delta_time *= Settings::Get().world_parameters_.simulation_speed;
 
 		ObjectHandler::Get().MainCycle(Object::GetObjectsList(), delta_time);
