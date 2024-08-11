@@ -8,7 +8,7 @@
 #include "math_defines.h"
 #include "object_shapes.h"
 
-ObjectHandler& ObjectHandler::GetInstance() {
+ObjectHandler& ObjectHandler::Get() {
 	static ObjectHandler instance;
 
 	return instance;
