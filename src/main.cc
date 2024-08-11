@@ -163,10 +163,8 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		float current_time = static_cast<float>(glfwGetTime());
-		float delta_time = current_time - last_time;			
+		float delta_time = current_time - last_time;		
 		EdgePan(window, delta_time);
-		glm::vec2 pos = GetCursorWorldPosition(window);
-		std::cout << pos.x << "\t" << pos.y << std::endl;
 		
 		Inputs::Get().CheckInputs(window, delta_time);		
 		delta_time *= Settings::Get().world_parameters_.simulation_speed;
