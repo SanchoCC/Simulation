@@ -2,6 +2,9 @@
 
 #include <cmath>
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "settings.h"
 #include "object_shapes.h"
 #include "key.h"
@@ -16,18 +19,27 @@ void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
 	float x_world = 2 * (x_pos / Settings::Get().screen_.width) - 1;
 	float y_world = -2 * (y_pos / Settings::Get().screen_.height) + 1;
 	float k = 0.5f;
-	float koef_screen = Settings::Get().screen_.koef_screen;
-	float scale = 1.f;
-	
+
+	float scale_factor = 1.0f;
 	if (yoffset > 0.0) {
-		scale = 1.049;
+		scale_factor = 1.1f; 
 	} else if (yoffset < 0.0) {
-		scale = 0.953;
+		scale_factor = 0.9f;
 	}
+
+	float modelViewMatrix[16];
+	glGetFloatv(GL_MODELVIEW_MATRIX, modelViewMatrix);
+
 	for (int i = 0; i < std::abs(std::round(yoffset)); ++i) {
-		glTranslatef(-x_world * k, -y_world * k, 1.f);
-		glScalef(scale, scale, 0);
+		modelViewMatrix[12] -= x_world * k * modelViewMatrix[0] + y_world * k * modelViewMatrix[4];
+		modelViewMatrix[13] -= x_world * k * modelViewMatrix[1] + y_world * k * modelViewMatrix[5];
+
+		modelViewMatrix[0] *= scale_factor;
+		modelViewMatrix[5] *= scale_factor;
+		modelViewMatrix[10] *= scale_factor;
 	}
+
+	glLoadMatrixf(modelViewMatrix);
 }
 
 void EdgePan(GLFWwindow* window, float& delta_time) {
@@ -60,4 +72,37 @@ void EdgePan(GLFWwindow* window, float& delta_time) {
 	} else if (y_pos < 0.0 + threshold_y) {
 		glTranslatef(0, -delta_time, 0);
 	}
+}
+
+glm::vec3 UnProject(const glm::vec3& win, const glm::mat4& model, const glm::mat4& proj, const glm::vec4& viewport) {
+	glm::mat4 inverse = glm::inverse(proj * model);
+	glm::vec4 tmp = glm::vec4(win, 1.0);
+	tmp.x = (tmp.x - viewport[0]) / viewport[2];
+	tmp.y = (tmp.y - viewport[1]) / viewport[3];
+	tmp = tmp * 2.0f - 1.0f;
+
+	glm::vec4 obj = inverse * tmp;
+	obj /= obj.w;
+
+	return glm::vec3(obj);
+}
+
+glm::vec2 GetCursorWorldPosition(GLFWwindow* window) {
+	double x_screen, y_screen;
+	glfwGetCursorPos(window, &x_screen, &y_screen);
+
+	int vp[4];
+	glGetIntegerv(GL_VIEWPORT, vp);
+	y_screen = vp[3] - y_screen - 1;
+
+	glm::vec4 viewport = glm::vec4(vp[0], vp[1], vp[2], vp[3]);
+
+	glm::mat4 model, proj;
+	glGetFloatv(GL_MODELVIEW_MATRIX, glm::value_ptr(model));
+	glGetFloatv(GL_PROJECTION_MATRIX, glm::value_ptr(proj));
+
+	glm::vec3 win = glm::vec3(x_screen, y_screen, 1);
+
+	glm::vec3 world_pos = UnProject(win, model, proj, viewport);
+	return glm::vec2(world_pos.x, world_pos.y);
 }

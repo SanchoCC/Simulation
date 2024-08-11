@@ -2,6 +2,7 @@
 
 #include "object_shapes.h"
 #include "settings.h"
+#include "glfw_callback.h"
 
 Inputs& Inputs::Get() {
 	static Inputs instance;
@@ -23,7 +24,8 @@ void Inputs::CheckInputs(GLFWwindow* window, float& delta_time) {
 	}
 
 void Inputs::SpawnCircle(GLFWwindow* window, float& delta_time) {
-	Circle* circle = new Circle();
+	glm::vec2 position = GetCursorWorldPosition(window);
+	Circle* circle = new Circle(position.x, position.y, 0.3f, MaterialType::kDefault);
 }
 
 void Inputs::Pause(GLFWwindow* window, float& delta_time) {

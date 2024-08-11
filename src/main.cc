@@ -11,7 +11,7 @@
 #include "classes/glfw_callback.h"
 #include "classes/inputs.h"
 
-#define CASE4
+#define CASE3
 
 int main() {
 	// GLFW
@@ -164,8 +164,9 @@ int main() {
 		
 		float current_time = static_cast<float>(glfwGetTime());
 		float delta_time = current_time - last_time;			
-		
 		EdgePan(window, delta_time);
+		glm::vec2 pos = GetCursorWorldPosition(window);
+		std::cout << pos.x << "\t" << pos.y << std::endl;
 		
 		Inputs::Get().CheckInputs(window, delta_time);		
 		delta_time *= Settings::Get().world_parameters_.simulation_speed;
