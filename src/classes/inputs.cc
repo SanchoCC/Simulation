@@ -27,24 +27,24 @@ void Inputs::SpawnCircle(GLFWwindow* window, float& delta_time) {
 }
 
 void Inputs::Pause(GLFWwindow* window, float& delta_time) {
-	float& simulation_speed = Settings::GetInstance().world_parameters_.simulation_speed;
+	float& simulation_speed = Settings::Get().world_parameters_.simulation_speed;
 	if (simulation_speed < 0.1f && simulation_speed > -0.1f) {
 		simulation_speed = last_simulaion_speed_;
 	} else {
 		last_simulaion_speed_ = simulation_speed;
-		Settings::GetInstance().world_parameters_.simulation_speed = 0.f;
+		Settings::Get().world_parameters_.simulation_speed = 0.f;
 	}	
 }
 
 void Inputs::IncreaseSimulationSpeed(GLFWwindow* window, float& delta_time) {
-	float& simulation_speed = Settings::GetInstance().world_parameters_.simulation_speed;
+	float& simulation_speed = Settings::Get().world_parameters_.simulation_speed;
 	if (simulation_speed < 1.9f) {
 		simulation_speed *= 2.f;
 	}
 }
 
 void Inputs::DecreaseSimulationSpeed(GLFWwindow* window, float& delta_time) {	
-	float& simulation_speed = Settings::GetInstance().world_parameters_.simulation_speed;
+	float& simulation_speed = Settings::Get().world_parameters_.simulation_speed;
 	if (simulation_speed > 0.26f)
 	simulation_speed *= 0.5f;
 }

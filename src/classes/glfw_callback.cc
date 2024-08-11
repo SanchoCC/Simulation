@@ -13,10 +13,10 @@ void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
 void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
 	double x_pos, y_pos;
 	glfwGetCursorPos(window, &x_pos, &y_pos);
-	float x_world = 2 * (x_pos / Settings::GetInstance().screen_.width) - 1;
-	float y_world = -2 * (y_pos / Settings::GetInstance().screen_.height) + 1;
+	float x_world = 2 * (x_pos / Settings::Get().screen_.width) - 1;
+	float y_world = -2 * (y_pos / Settings::Get().screen_.height) + 1;
 	float k = 0.5f;
-	float koef_screen = Settings::GetInstance().screen_.koef_screen;
+	float koef_screen = Settings::Get().screen_.koef_screen;
 	float scale = 1.f;
 	
 	if (yoffset > 0.0) {
@@ -34,8 +34,8 @@ void EdgePan(GLFWwindow* window, float& delta_time) {
 	double x_pos, y_pos;
 	glfwGetCursorPos(window, &x_pos, &y_pos);
 
-	double width = Settings::GetInstance().screen_.width;
-	double height = Settings::GetInstance().screen_.height;
+	double width = Settings::Get().screen_.width;
+	double height = Settings::Get().screen_.height;
 	double threshold_x = width * 0.1;
 	double threshold_y = height * 0.1;
 	double threshold_x_closest = width * 0.03;

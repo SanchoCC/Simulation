@@ -3,7 +3,7 @@
 
 class Settings {
 public:
-	static Settings& GetInstance();
+	static Settings& Get();
 	Settings(Settings const&) = delete;
 	void operator=(Settings const&) = delete;
 

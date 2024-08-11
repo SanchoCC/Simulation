@@ -13,12 +13,12 @@
 struct CollisionResult {
 	float penetration;
 	glm::vec2 normal;
-	std::vector <glm::vec2> contacts;
+	std::vector<glm::vec2> contacts;
 };
 
 class ObjectHandler {
 public:
-	static ObjectHandler& GetInstance();
+	static ObjectHandler& Get();
 	ObjectHandler(ObjectHandler const&) = delete;
 	void operator=(ObjectHandler const&) = delete;
 
@@ -39,7 +39,7 @@ private:
 
 	glm::vec2 FindSupportVertex(Object* object, glm::vec2 direction) const;
 
-	float gravity_ = Settings::GetInstance().world_parameters_.gravity;
+	float gravity_ = Settings::Get().world_parameters_.gravity;
 };
 
 #endif // SIMULATION_CLASSES_OBJECT_HANDLER_H_

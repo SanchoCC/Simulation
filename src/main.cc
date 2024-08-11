@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "classes/object.h"
 #include "classes/object_shapes.h"
@@ -10,7 +11,7 @@
 #include "classes/glfw_callback.h"
 #include "classes/inputs.h"
 
-#define CASE2
+#define CASE4
 
 int main() {
 	// GLFW
@@ -24,17 +25,17 @@ int main() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
 	GLFWwindow* window;
-	if (Settings::GetInstance().screen_.fullscreen) {
+	if (Settings::Get().screen_.fullscreen) {
 		glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 		window = glfwCreateWindow(mode->width, mode->height, "Simulation", monitor, nullptr);
-		Settings::GetInstance().screen_.width = mode->width;
-		Settings::GetInstance().screen_.height = mode->height;
-		Settings::GetInstance().screen_.koef_screen = static_cast<float>(mode->width) / mode->height;
+		Settings::Get().screen_.width = mode->width;
+		Settings::Get().screen_.height = mode->height;
+		Settings::Get().screen_.koef_screen = static_cast<float>(mode->width) / mode->height;
 	} else {
-		int width = Settings::GetInstance().screen_.width;
-		int height = Settings::GetInstance().screen_.height;
+		int width = Settings::Get().screen_.width;
+		int height = Settings::Get().screen_.height;
 		window = glfwCreateWindow(width, height, "Simulation", nullptr, nullptr);
 	}
 
@@ -53,12 +54,12 @@ int main() {
 		return -1;
 	}
 
-	glScalef(1 / Settings::GetInstance().screen_.koef_screen, 1, 1);
+	glScalef(1 / Settings::Get().screen_.koef_screen, 1, 1);
 
 	glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
 	glfwSetScrollCallback(window, ScrollCallback);
 
-	glfwSwapInterval(Settings::GetInstance().screen_.vsync);
+	glfwSwapInterval(Settings::Get().screen_.vsync);
 
 #ifdef CASE1
 
@@ -104,7 +105,7 @@ int main() {
 
 	Rectangle floor(0, -1.5f, 6.0f, 2.0f, MaterialType::kIce);
 	floor.SetStatical(true);
-	Circle circle0(-2, 0.7, 0.4, MaterialType::kIce);
+	Circle circle0(-2, 0.7, 0.4, MaterialType::kWood);
 	Circle circle1(-0.5, 0.3, 0.3, MaterialType::kIce);
 	Circle circle2(0.7, 0.5, 0.2, MaterialType::kIce);
 	Circle circle3(1.7, 0.2, 0.1, MaterialType::kIce);
@@ -155,17 +156,21 @@ int main() {
 	int fps_counter = 0;
 
 	float last_time = static_cast<float>(glfwGetTime());
-
+	glm::mat4 origin(1.f);
 	while (!glfwWindowShouldClose(window)) {
 
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		
 		float current_time = static_cast<float>(glfwGetTime());
-		float delta_time = current_time - last_time;		
+		float delta_time = current_time - last_time;			
+		
 		EdgePan(window, delta_time);
-		delta_time *= Settings::GetInstance().world_parameters_.simulation_speed;
+		
 		Inputs::GetInstance().CheckInputs(window, delta_time);		
-		ObjectHandler::GetInstance().MainCycle(Object::GetObjectsList(), delta_time);
+		delta_time *= Settings::Get().world_parameters_.simulation_speed;
+
+		ObjectHandler::Get().MainCycle(Object::GetObjectsList(), delta_time);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
