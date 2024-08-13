@@ -11,7 +11,7 @@ std::list<Object*> Object::objects_list_;
 
 Object::Object(float position_x, float position_y, MaterialType material_type) {
 	position_.x = position_x;
-	position_.y = position_y;
+	position_.y = position_y;	
 	material_.SetMaterial(material_type);
 }
 
