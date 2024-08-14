@@ -90,7 +90,7 @@ glm::vec2 GetCursorWorldPosition(GLFWwindow* window) {
 
 	glm::vec3 win = glm::vec3(x_screen, y_screen, 1);
 
-	auto unProject = [](const glm::vec3& win, const glm::mat4& model, const glm::mat4& proj, const glm::vec4& viewport) {
+	auto UnProject = [](const glm::vec3& win, const glm::mat4& model, const glm::mat4& proj, const glm::vec4& viewport) {
 		glm::mat4 inverse = glm::inverse(proj * model);
 		glm::vec4 tmp = glm::vec4(win, 1.0);
 		tmp.x = (tmp.x - viewport[0]) / viewport[2];
@@ -103,6 +103,6 @@ glm::vec2 GetCursorWorldPosition(GLFWwindow* window) {
 		return glm::vec3(obj);
 	};
 
-	glm::vec3 world_pos = unProject(win, model, proj, viewport);
+	glm::vec3 world_pos = UnProject(win, model, proj, viewport);
 	return glm::vec2(world_pos.x, world_pos.y);
 }
