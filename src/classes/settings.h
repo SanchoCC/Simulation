@@ -15,7 +15,7 @@ public:
 		bool vsync = true;
 	};
 	struct WorldParameters {
-		float gravity = -0.98f;
+		float gravity = -1.96f;
 		float simulation_speed = 1.f;
 	};
 

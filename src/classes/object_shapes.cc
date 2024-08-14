@@ -12,28 +12,6 @@ Circle::Circle(float position_x, float position_y, float radius, MaterialType ma
 	radius_ = radius;
 	CalculateMass();
 	UpdateVertices();
-	Render();
-	objects_list_.push_back(this);
-}
-
-Circle::Circle() {
-	std::random_device rd;
-	std::mt19937 rng(rd());
-	std::uniform_real_distribution<float> position_x_dist(-0.5f, 0.5f);
-	std::uniform_real_distribution<float> position_y_dist(1.f, 2.f);
-	position_ = glm::vec2(position_x_dist(rng), position_y_dist(rng));
-	std::uniform_real_distribution<float> radius_dist(0.03f, 0.3f);
-	radius_ = radius_dist(rng);
-	std::uniform_real_distribution<float> angular_velocity_dist(-1.f, 1.f);
-	SetAngularVelocity(angular_velocity_dist(rng));
-	std::uniform_real_distribution<float> velocity_x_dist(-0.2f, 0.2f);
-	std::uniform_real_distribution<float> velocity_y_dist(-0.2f, 0.2f);
-	SetVelocity(glm::vec2(velocity_x_dist(rng), velocity_y_dist(rng)));
-	std::uniform_int_distribution<int> material_dist(0, 5);
-	SetMaterial(static_cast<MaterialType>(material_dist(rng)));
-	CalculateMass();
-	UpdateVertices();
-	Render();
 	objects_list_.push_back(this);
 }
 
@@ -90,7 +68,6 @@ Rectangle::Rectangle(float position_x, float position_y, float width, float heig
 	height_ = height;
 	CalculateMass();
 	UpdateVertices();
-	Render();
 	objects_list_.push_back(this);
 }
 

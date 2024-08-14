@@ -1,9 +1,10 @@
 #include "inputs.h"
 
+#include <random>
+
 #include "object_shapes.h"
 #include "settings.h"
 #include "glfw_callback.h"
-#include <random>
 
 Inputs& Inputs::Get() {
 	static Inputs instance;
@@ -38,14 +39,23 @@ void Inputs::SpawnChaoticCircle(GLFWwindow* window, float& delta_time) {
 	std::uniform_real_distribution<float> size_dist(0.05f, 0.4f);
 	float radius = size_dist(rng);
 
-	std::uniform_real_distribution<float> vel_x_dist(-3.0f, 3.0f);
-	float vel_x = vel_x_dist(rng);
+	std::uniform_int_distribution<int> material_dist(0, 5);
+	MaterialType material = static_cast<MaterialType>((material_dist(rng)));
 
-	std::uniform_real_distribution<float> vel_y_dist(-3.0f, 3.0f);
-	float vel_y = vel_y_dist(rng);
+
+	std::uniform_real_distribution<float> vel_x_dist(-2.0f, 2.0f);
+	float velocity_x = vel_x_dist(rng);
+
+	std::uniform_real_distribution<float> vel_y_dist(-2.0f, 2.0f);
+	float velocity_y = vel_y_dist(rng);
+
+	std::uniform_real_distribution<float> angular_velocity_dist(-1.f, 1.f);
+	float angular_velocity = angular_velocity_dist(rng);
 	
-	Circle* circle = new Circle(position.x, position.y, radius, MaterialType::kDefault);
-	circle -> SetVelocity(glm::vec2(vel_x, vel_y));
+	
+	Circle* circle = new Circle(position.x, position.y, radius, material);
+	circle->SetVelocity(glm::vec2(velocity_x, velocity_y));
+	circle->SetAngularVelocity(angular_velocity);
 }
 
 void Inputs::Pause(GLFWwindow* window, float& delta_time) {
