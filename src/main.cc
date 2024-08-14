@@ -154,9 +154,8 @@ int main() {
 #endif // CASE4
 
 	int fps_counter = 0;
-
 	float last_time = static_cast<float>(glfwGetTime());
-	glm::mat4 origin(1.f);
+
 	while (!glfwWindowShouldClose(window)) {
 
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
