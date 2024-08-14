@@ -22,6 +22,7 @@ private:
 	Inputs();
 
 	void SpawnCircle(GLFWwindow* window, float& delta_time);
+	void SpawnChaoticCircle(GLFWwindow* window, float& delta_time);
 	void Pause(GLFWwindow* window, float& delta_time);
 	void IncreaseSimulationSpeed(GLFWwindow* window, float& delta_time);
 	void DecreaseSimulationSpeed(GLFWwindow* window, float& delta_time);
@@ -29,6 +30,7 @@ private:
 	std::vector <std::pair<Key*, std::function<void(GLFWwindow*, float&)>>> actions_;
 
 	Key spawn_circle_key_ = Key(GLFW_KEY_Q);
+	Key spawn_chaotic_circle_key = Key(GLFW_KEY_E);
 	Key pause_key_ = Key(GLFW_KEY_SPACE);
 	Key increase_simulation_speed_key_ = Key(GLFW_KEY_RIGHT);
 	Key decrease_simulation_speed_key_ = Key(GLFW_KEY_LEFT);
