@@ -64,22 +64,29 @@ void ObjectHandler::ApplyImpulse(Object* object, glm::vec2 impulse, glm::vec2 co
 	}
 }
 
-CollisionResult ObjectHandler::CheckCollision(const Object* object1,
-	const Object* object2) const {
-	if (object1->GetType() == ShapeType::kRectangle &&
-		object2->GetType() == ShapeType::kRectangle) {
-		return SATCollision(object1, object2);
-	} else if (object1->GetType() == ShapeType::kCircle &&
-		object2->GetType() == ShapeType::kCircle) {
-		return CircleCircle(object1, object2);
-	} else if (object1->GetType() == ShapeType::kCircle &&
-		object2->GetType() == ShapeType::kRectangle) {
-		return CircleRectangle(object1, object2);
-	} else if (object1->GetType() == ShapeType::kRectangle &&
-		object2->GetType() == ShapeType::kCircle) {
-		return CircleRectangle(object2, object1);
+CollisionResult ObjectHandler::CheckCollision(const Object* object1, const Object* object2) const {
+	ShapeType type_1 = object1->GetType();
+	ShapeType type_2 = object2->GetType();
+	switch (type_1)
+	{
+	case ShapeType::kRectangle:
+		if (type_2 == ShapeType::kRectangle) {
+			return SATCollision(object1, object2);
+		} else if (type_2 == ShapeType::kCircle) {
+			return CircleRectangle(object2, object1);
+		}		
+		break;
+	case ShapeType::kCircle:
+		if (type_2 == ShapeType::kRectangle) {
+			return CircleRectangle(object1, object2);
+		} else if (type_2 == ShapeType::kCircle) {
+			return CircleCircle(object1, object2);
+		}
+		break;
+	default:
+		break;
 	}
-	return {};
+	return {};	
 }
 
 CollisionResult ObjectHandler::SATCollision(const Object* object1,
