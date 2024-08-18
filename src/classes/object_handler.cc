@@ -30,7 +30,7 @@ float delta_time) {
 			if (inner_it == it) {
 				continue;
 			}
-			auto& object2 = *inner_it;
+			auto object2 = *inner_it;
 			CollisionResult collision_result = CheckCollision(object1, object2);
 			if (collision_result.contacts.size() > 0) {
 				HandleCollision(object1, object2, collision_result);

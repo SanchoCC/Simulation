@@ -19,11 +19,10 @@ Object::~Object() = default;
 
 void Object::Render() const {
 	glColor3f(material_.GetColor().GetRed(), material_.GetColor().GetGreen(), material_.GetColor().GetBlue());
-	glBegin(GL_POLYGON);
-	for (const auto& it : vertices_) {
-		glVertex2f(it.x, it.y);
-	}
-	glEnd();
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, vertices_.data());
+	glDrawArrays(GL_POLYGON, 0, vertices_.size());
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 std::list<Object*>& Object::GetObjectsList() {
