@@ -16,9 +16,8 @@ ObjectHandler& ObjectHandler::Get() {
 
 ObjectHandler::ObjectHandler() {}
 
-void ObjectHandler::MainCycle(std::list<Object*>& object_list,
-float delta_time) {
-	for (auto it = object_list.begin(); it != object_list.end(); ++it) {		
+void ObjectHandler::MainCycle(float delta_time) {
+	for (auto it = objects_list_.begin(); it != objects_list_.end(); ++it) {		
 		auto object1 = *it;
 		object1->Render();
 		if (!object1->GetStatical()) {
@@ -26,11 +25,11 @@ float delta_time) {
 			Rotate(object1, delta_time);
 			Move(object1, delta_time);
 		}
-		for (auto inner_it = object_list.begin(); inner_it != object_list.end(); ++inner_it) {
+		for (auto inner_it = objects_list_.begin(); inner_it != objects_list_.end(); ++inner_it) {
 			if (inner_it == it) {
 				continue;
 			}
-			auto& object2 = *inner_it;
+			auto object2 = *inner_it;
 			CollisionResult collision_result = CheckCollision(object1, object2);
 			if (collision_result.contacts.size() > 0) {
 				HandleCollision(object1, object2, collision_result);
@@ -38,6 +37,10 @@ float delta_time) {
 			}
 		}
 	}
+}
+
+void ObjectHandler::AddInObjectsList(Object* object) {
+	objects_list_.push_back(object);
 }
 
 void ObjectHandler::Move(Object* object, float delta_time) {
@@ -64,22 +67,29 @@ void ObjectHandler::ApplyImpulse(Object* object, glm::vec2 impulse, glm::vec2 co
 	}
 }
 
-CollisionResult ObjectHandler::CheckCollision(const Object* object1,
-	const Object* object2) const {
-	if (object1->GetType() == ShapeType::kRectangle &&
-		object2->GetType() == ShapeType::kRectangle) {
-		return SATCollision(object1, object2);
-	} else if (object1->GetType() == ShapeType::kCircle &&
-		object2->GetType() == ShapeType::kCircle) {
-		return CircleCircle(object1, object2);
-	} else if (object1->GetType() == ShapeType::kCircle &&
-		object2->GetType() == ShapeType::kRectangle) {
-		return CircleRectangle(object1, object2);
-	} else if (object1->GetType() == ShapeType::kRectangle &&
-		object2->GetType() == ShapeType::kCircle) {
-		return CircleRectangle(object2, object1);
+CollisionResult ObjectHandler::CheckCollision(const Object* object1, const Object* object2) const {
+	ShapeType type_1 = object1->GetType();
+	ShapeType type_2 = object2->GetType();
+	switch (type_1)
+	{
+	case ShapeType::kRectangle:
+		if (type_2 == ShapeType::kRectangle) {
+			return SATCollision(object1, object2);
+		} else if (type_2 == ShapeType::kCircle) {
+			return CircleRectangle(object2, object1);
+		}		
+		break;
+	case ShapeType::kCircle:
+		if (type_2 == ShapeType::kRectangle) {
+			return CircleRectangle(object1, object2);
+		} else if (type_2 == ShapeType::kCircle) {
+			return CircleCircle(object1, object2);
+		}
+		break;
+	default:
+		break;
 	}
-	return {};
+	return {};	
 }
 
 CollisionResult ObjectHandler::SATCollision(const Object* object1,
@@ -367,22 +377,3 @@ void ObjectHandler::SeparateObjects(Object* object1, Object* object2,
 		object2->AddPosition(separation_distance/2 * normal);
 	}
 }
-
-// glm::vec2 ObjectHandler::FindSupportVertex(Object* object, glm::vec2
-// direction) {
-//     float best_projection = -std::numeric_limits<float>::max();;
-//     glm::vec2 best_vertex{};
-//
-//     for (auto& it : object->GetVertices())
-//     {
-//         glm::vec2 vertex = it;
-//         float projection = glm::dot(vertex, direction);
-//
-//         if (projection > best_projection)
-//         {
-//             best_vertex = vertex;
-//             best_projection = projection;
-//         }
-//     }
-//     return best_vertex;
-// }

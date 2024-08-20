@@ -6,7 +6,6 @@
 class Circle : public Object {
 public:
 	Circle(float position_x, float position_y, float radius, MaterialType material_type);
-	Circle();
 	~Circle();
 	void Render() const override;
 	ShapeType GetType() const override;

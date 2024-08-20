@@ -24,9 +24,7 @@ class Object {
 
 	virtual void Render() const;
 	virtual ShapeType GetType() const = 0;
-	virtual void CalculateMass() = 0;
-
-	static std::list <Object*>& GetObjectsList();	
+	virtual void CalculateMass() = 0;	
 
 	float GetRotationAngle() const;
 	void AddRotationAngle(float rotation_angle);
@@ -56,7 +54,6 @@ class Object {
 	void SetMaterial(MaterialType material_type);
 	Material GetMaterial() const;
  protected:	
-	static std::list<Object*> objects_list_;
 
 	glm::vec2 position_{0, 0};
 	

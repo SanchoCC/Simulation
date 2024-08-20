@@ -22,7 +22,9 @@ public:
 	ObjectHandler(ObjectHandler const&) = delete;
 	void operator=(ObjectHandler const&) = delete;
 
-	void MainCycle(std::list<Object*>& object_list, float delta_time);
+	void MainCycle(float delta_time);
+
+	void AddInObjectsList(Object* object);
 private:
 	ObjectHandler();
 
@@ -37,9 +39,8 @@ private:
 	CollisionResult CircleRectangle(const Object* object1, const Object* object2) const;
 	void HandleCollision(Object* object1, Object* object2, CollisionResult collision_result);
 
-	glm::vec2 FindSupportVertex(Object* object, glm::vec2 direction) const;
-
 	float gravity_ = Settings::Get().world_parameters_.gravity;
+	std::list<Object*> objects_list_;
 };
 
 #endif // SIMULATION_CLASSES_OBJECT_HANDLER_H_

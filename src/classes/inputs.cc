@@ -13,15 +13,17 @@ Inputs& Inputs::Get() {
 }
 
 Inputs::Inputs() {
-	actions_.push_back(std::make_pair(&spawn_circle_key_, std::bind(&Inputs::SpawnCircle, this, std::placeholders::_1, std::placeholders::_2)));
-	actions_.push_back(std::make_pair(&spawn_chaotic_circle_key, std::bind(&Inputs::SpawnChaoticCircle, this, std::placeholders::_1, std::placeholders::_2)));
-	actions_.push_back(std::make_pair(&pause_key_, std::bind(&Inputs::Pause, this, std::placeholders::_1, std::placeholders::_2)));
-	actions_.push_back(std::make_pair(&increase_simulation_speed_key_, std::bind(&Inputs::IncreaseSimulationSpeed, this, std::placeholders::_1, std::placeholders::_2)));
-	actions_.push_back(std::make_pair(&decrease_simulation_speed_key_, std::bind(&Inputs::DecreaseSimulationSpeed, this, std::placeholders::_1, std::placeholders::_2)));
+	using namespace std::placeholders;
+
+	actions_.push_back(std::make_pair(&spawn_circle_key_, std::bind(&Inputs::SpawnCircle, this, _1, _2)));
+	actions_.push_back(std::make_pair(&spawn_chaotic_circle_key, std::bind(&Inputs::SpawnChaoticCircle, this, _1, _2)));
+	actions_.push_back(std::make_pair(&pause_key_, std::bind(&Inputs::Pause, this,_1, _2)));
+	actions_.push_back(std::make_pair(&increase_simulation_speed_key_, std::bind(&Inputs::IncreaseSimulationSpeed, this, _1, _2)));
+	actions_.push_back(std::make_pair(&decrease_simulation_speed_key_, std::bind(&Inputs::DecreaseSimulationSpeed, this, _1, _2)));
 }
 
 void Inputs::CheckInputs(GLFWwindow* window, float& delta_time) {
-		for (auto it : actions_) {
+		for (auto& it : actions_) {
 			it.first->Action(it.second, window, delta_time);
 		}
 	}

@@ -8,11 +8,13 @@
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "object_handler.h"
+
 Circle::Circle(float position_x, float position_y, float radius, MaterialType material_type) : Object(position_x, position_y, material_type) {
 	radius_ = radius;
 	CalculateMass();
 	UpdateVertices();
-	objects_list_.push_back(this);
+	ObjectHandler::Get().AddInObjectsList(this);
 }
 
 Circle::~Circle() = default;
@@ -68,7 +70,7 @@ Rectangle::Rectangle(float position_x, float position_y, float width, float heig
 	height_ = height;
 	CalculateMass();
 	UpdateVertices();
-	objects_list_.push_back(this);
+	ObjectHandler::Get().AddInObjectsList(this);
 }
 
 Rectangle::~Rectangle() = default;
