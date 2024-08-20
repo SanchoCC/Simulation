@@ -7,8 +7,6 @@
 #include <math.h>
 #include <algorithm>
 
-std::list<Object*> Object::objects_list_;
-
 Object::Object(float position_x, float position_y, MaterialType material_type) {
 	position_.x = position_x;
 	position_.y = position_y;	
@@ -23,10 +21,6 @@ void Object::Render() const {
 	glVertexPointer(2, GL_FLOAT, 0, vertices_.data());
 	glDrawArrays(GL_POLYGON, 0, vertices_.size());
 	glDisableClientState(GL_VERTEX_ARRAY);
-}
-
-std::list<Object*>& Object::GetObjectsList() {
-	return objects_list_;
 }
 
 std::vector<glm::vec2> Object::GetVertices() const {

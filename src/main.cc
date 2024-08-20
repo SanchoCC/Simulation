@@ -168,7 +168,7 @@ int main() {
 		Inputs::Get().CheckInputs(window, delta_time);		
 		delta_time *= Settings::Get().world_parameters_.simulation_speed;
 
-		ObjectHandler::Get().MainCycle(Object::GetObjectsList(), delta_time);
+		ObjectHandler::Get().MainCycle(delta_time);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

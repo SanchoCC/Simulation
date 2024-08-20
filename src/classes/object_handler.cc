@@ -16,9 +16,8 @@ ObjectHandler& ObjectHandler::Get() {
 
 ObjectHandler::ObjectHandler() {}
 
-void ObjectHandler::MainCycle(std::list<Object*>& object_list,
-float delta_time) {
-	for (auto it = object_list.begin(); it != object_list.end(); ++it) {		
+void ObjectHandler::MainCycle(float delta_time) {
+	for (auto it = objects_list_.begin(); it != objects_list_.end(); ++it) {		
 		auto object1 = *it;
 		object1->Render();
 		if (!object1->GetStatical()) {
@@ -26,7 +25,7 @@ float delta_time) {
 			Rotate(object1, delta_time);
 			Move(object1, delta_time);
 		}
-		for (auto inner_it = object_list.begin(); inner_it != object_list.end(); ++inner_it) {
+		for (auto inner_it = objects_list_.begin(); inner_it != objects_list_.end(); ++inner_it) {
 			if (inner_it == it) {
 				continue;
 			}
@@ -38,6 +37,10 @@ float delta_time) {
 			}
 		}
 	}
+}
+
+void ObjectHandler::AddInObjectsList(Object* object) {
+	objects_list_.push_back(object);
 }
 
 void ObjectHandler::Move(Object* object, float delta_time) {
@@ -374,22 +377,3 @@ void ObjectHandler::SeparateObjects(Object* object1, Object* object2,
 		object2->AddPosition(separation_distance/2 * normal);
 	}
 }
-
-// glm::vec2 ObjectHandler::FindSupportVertex(Object* object, glm::vec2
-// direction) {
-//     float best_projection = -std::numeric_limits<float>::max();;
-//     glm::vec2 best_vertex{};
-//
-//     for (auto& it : object->GetVertices())
-//     {
-//         glm::vec2 vertex = it;
-//         float projection = glm::dot(vertex, direction);
-//
-//         if (projection > best_projection)
-//         {
-//             best_vertex = vertex;
-//             best_projection = projection;
-//         }
-//     }
-//     return best_vertex;
-// }
