@@ -56,20 +56,20 @@ void EdgePan(GLFWwindow* window, float& delta_time) {
 
 	if (x_pos > width - threshold_x_closest) {
 		glTranslatef(-delta_time_2, 0, 0);
-	} else if (x_pos < 0.0 + threshold_x_closest) {
+	} else if (x_pos < threshold_x_closest) {
 		glTranslatef(delta_time_2, 0, 0);
 	} else if (x_pos > width - threshold_x) {
 		glTranslatef(-delta_time, 0, 0);
-	} else if (x_pos < 0.0 + threshold_x) {
+	} else if (x_pos < threshold_x) {
 		glTranslatef(delta_time, 0, 0);
 	}
 	if (y_pos > height - threshold_y_closest) {
 		glTranslatef(0, delta_time_2, 0);
-	} else if (y_pos < 0.0 + threshold_y_closest) {
+	} else if (y_pos < threshold_y_closest) {
 		glTranslatef(0, -delta_time_2, 0);
 	} else if (y_pos > height - threshold_y) {
 		glTranslatef(0, delta_time, 0);
-	} else if (y_pos < 0.0 + threshold_y) {
+	} else if (y_pos < threshold_y) {
 		glTranslatef(0, -delta_time, 0);
 	}
 }
