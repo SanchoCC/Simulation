@@ -1,10 +1,10 @@
 #ifndef SIMULATION_CLASSES_KEY_H_
 #define SIMULATION_CLASSES_KEY_H_
 
+#include <functional>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
-#include <functional>
 
 class Key {
 public:

@@ -14,7 +14,7 @@ Circle::Circle(float position_x, float position_y, float radius, MaterialType ma
 	radius_ = radius;
 	CalculateMass();
 	UpdateVertices();
-	ObjectHandler::Get().AddInObjectsList(this);
+	ObjectHandler::Get().AddInObjects(this);
 }
 
 Circle::~Circle() = default;
@@ -70,7 +70,7 @@ Rectangle::Rectangle(float position_x, float position_y, float width, float heig
 	height_ = height;
 	CalculateMass();
 	UpdateVertices();
-	ObjectHandler::Get().AddInObjectsList(this);
+	ObjectHandler::Get().AddInObjects(this);
 }
 
 Rectangle::~Rectangle() = default;
