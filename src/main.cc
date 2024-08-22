@@ -11,7 +11,7 @@
 #include "classes/glfw_callback.h"
 #include "classes/inputs.h"
 
-#define CASE3
+#define CASE4
 
 int main() {
 	// GLFW
@@ -63,7 +63,7 @@ int main() {
 
 #ifdef CASE1
 
-	Settings::GetInstance().world_parameters_.gravity = 0.0f;
+	Settings::Get().world_parameters_.gravity = 0.0f;
 	Rectangle rect(0, 0, 2.0, 0.15, MaterialType::kMetal);
 	rect.SetAngularVelocity(0.2);
 
@@ -79,7 +79,7 @@ int main() {
 
 #ifdef CASE2
 
-	Settings::GetInstance().world_parameters_.gravity = 0.0f;
+	Settings::Get().world_parameters_.gravity = 0.0f;
 	Rectangle floor(-2, 0, 0.6f, 2.0f, MaterialType::kRubber);
 	floor.SetStatical(true);
 	Rectangle floor1(2, 0, 0.6f, 2.0f, MaterialType::kRubber);
