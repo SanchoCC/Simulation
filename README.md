@@ -1,8 +1,13 @@
+Build with CMake.
+
 # Current stage: 
+## Added materials and creating new objects 
+![2024-08-22 12-45-21](https://github.com/user-attachments/assets/2d0bf49b-b899-4450-8219-5abc890e4e5d)
+
+# Previous stages: 
 ## Added changing of simulation speed
 ![2024-07-03 16-53-15](https://github.com/SanchoCC/Simulation/assets/134946556/f03379f6-723f-46a8-8cdc-36ee83e00577)
 
-# Previous stages: 
 ## Added scroll callback and edge pan
 ![2024-07-02 23-00-53](https://github.com/SanchoCC/Simulation/assets/134946556/238fbbf1-ba35-41c1-a4bd-3389a7f77994)
 
