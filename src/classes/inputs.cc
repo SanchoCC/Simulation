@@ -5,6 +5,7 @@
 #include "object_shapes.h"
 #include "settings.h"
 #include "glfw_callback.h"
+#include "object_handler.h"
 
 Inputs& Inputs::Get() {
 	static Inputs instance;
@@ -31,6 +32,7 @@ void Inputs::CheckInputs(GLFWwindow* window, float& delta_time) {
 void Inputs::SpawnCircle(GLFWwindow* window, float& delta_time) {
 	glm::vec2 position = GetCursorWorldPosition(window);
 	Circle* circle = new Circle(position.x, position.y, 0.3f, MaterialType::kDefault);
+	ObjectHandler::Get().AddInCreatedObjects(circle);
 }
 
 void Inputs::SpawnChaoticCircle(GLFWwindow* window, float& delta_time) {
@@ -56,6 +58,7 @@ void Inputs::SpawnChaoticCircle(GLFWwindow* window, float& delta_time) {
 	
 	
 	Circle* circle = new Circle(position.x, position.y, radius, material);
+	ObjectHandler::Get().AddInCreatedObjects(circle);
 	circle->SetVelocity(glm::vec2(velocity_x, velocity_y));
 	circle->SetAngularVelocity(angular_velocity);
 }

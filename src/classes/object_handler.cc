@@ -16,8 +16,14 @@ ObjectHandler& ObjectHandler::Get() {
 
 ObjectHandler::ObjectHandler() {}
 
+ObjectHandler::~ObjectHandler() {
+	for (auto it : created_objects_) {
+		delete it;
+	}
+}
+
 void ObjectHandler::MainCycle(float delta_time) {
-	for (auto it = objects_list_.begin(); it != objects_list_.end(); ++it) {		
+	for (auto it = objects_.begin(); it != objects_.end(); ++it) {		
 		auto object1 = *it;
 		object1->Render();
 		if (!object1->GetStatical()) {
@@ -25,7 +31,7 @@ void ObjectHandler::MainCycle(float delta_time) {
 			Rotate(object1, delta_time);
 			Move(object1, delta_time);
 		}
-		for (auto inner_it = objects_list_.begin(); inner_it != objects_list_.end(); ++inner_it) {
+		for (auto inner_it = objects_.begin(); inner_it != objects_.end(); ++inner_it) {
 			if (inner_it == it) {
 				continue;
 			}
@@ -39,8 +45,12 @@ void ObjectHandler::MainCycle(float delta_time) {
 	}
 }
 
-void ObjectHandler::AddInObjectsList(Object* object) {
-	objects_list_.push_back(object);
+void ObjectHandler::AddInObjects(Object* object) {
+	objects_.push_back(object);
+}
+
+void ObjectHandler::AddInCreatedObjects(Object* object) {
+	created_objects_.push_back(object);
 }
 
 void ObjectHandler::Move(Object* object, float delta_time) {

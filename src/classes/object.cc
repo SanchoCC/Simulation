@@ -1,11 +1,11 @@
 #include "object.h"
 
-#include <glad/glad.h>
-#include <glm/gtc/matrix_transform.hpp>
-
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <algorithm>
+
+#include <glad/glad.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 Object::Object(float position_x, float position_y, MaterialType material_type) {
 	position_.x = position_x;

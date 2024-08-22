@@ -7,7 +7,6 @@
 
 #include <glm/glm.hpp>
 
-#include "color.h"
 #include "settings.h"
 #include "material.h"
 
