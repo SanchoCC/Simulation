@@ -26,6 +26,7 @@ private:
 	void Pause(GLFWwindow* window, float& delta_time);
 	void IncreaseSimulationSpeed(GLFWwindow* window, float& delta_time);
 	void DecreaseSimulationSpeed(GLFWwindow* window, float& delta_time);
+	void DeleteObject(GLFWwindow* window, float& delta_time);
 
 	std::vector <std::pair<Key*, std::function<void(GLFWwindow*, float&)>>> actions_;
 
@@ -34,6 +35,7 @@ private:
 	Key pause_key_ = Key(GLFW_KEY_SPACE);
 	Key increase_simulation_speed_key_ = Key(GLFW_KEY_RIGHT);
 	Key decrease_simulation_speed_key_ = Key(GLFW_KEY_LEFT);
+	Key delete_object_key_ = Key(GLFW_KEY_X);
 
 	float last_simulaion_speed_ = 1.f;
 

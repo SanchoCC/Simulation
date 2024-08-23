@@ -14,25 +14,23 @@ void FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
 }
 
 void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
-	double x_pos, y_pos;
-	glfwGetCursorPos(window, &x_pos, &y_pos);
-	float x_world = 2 * (x_pos / Settings::Get().screen_.width) - 1;
-	float y_world = -2 * (y_pos / Settings::Get().screen_.height) + 1;
-	float k = 0.5f;
+	glm::vec2 world_position = GetCursorWorldPosition(window);
 
 	float scale_factor = 1.0f;
 	if (yoffset > 0.0) {
 		scale_factor = 1.1f; 
 	} else if (yoffset < 0.0) {
 		scale_factor = 0.9f;
+		world_position *= -1;
 	}
-
+	float k = 0.1f;
+	world_position *= k;
 	float modelViewMatrix[16];
 	glGetFloatv(GL_MODELVIEW_MATRIX, modelViewMatrix);
 
 	for (int i = 0; i < std::abs(std::round(yoffset)); ++i) {
-		modelViewMatrix[12] -= x_world * k * modelViewMatrix[0] + y_world * k * modelViewMatrix[4];
-		modelViewMatrix[13] -= x_world * k * modelViewMatrix[1] + y_world * k * modelViewMatrix[5];
+		modelViewMatrix[12] -= world_position.x * modelViewMatrix[0] + world_position.y * modelViewMatrix[4];
+		modelViewMatrix[13] -= world_position.x * modelViewMatrix[1] + world_position.y * modelViewMatrix[5];
 
 		modelViewMatrix[0] *= scale_factor;
 		modelViewMatrix[5] *= scale_factor;
@@ -56,20 +54,20 @@ void EdgePan(GLFWwindow* window, float& delta_time) {
 
 	if (x_pos > width - threshold_x_closest) {
 		glTranslatef(-delta_time_2, 0, 0);
-	} else if (x_pos < 0.0 + threshold_x_closest) {
+	} else if (x_pos < threshold_x_closest) {
 		glTranslatef(delta_time_2, 0, 0);
 	} else if (x_pos > width - threshold_x) {
 		glTranslatef(-delta_time, 0, 0);
-	} else if (x_pos < 0.0 + threshold_x) {
+	} else if (x_pos < threshold_x) {
 		glTranslatef(delta_time, 0, 0);
 	}
 	if (y_pos > height - threshold_y_closest) {
 		glTranslatef(0, delta_time_2, 0);
-	} else if (y_pos < 0.0 + threshold_y_closest) {
+	} else if (y_pos < threshold_y_closest) {
 		glTranslatef(0, -delta_time_2, 0);
 	} else if (y_pos > height - threshold_y) {
 		glTranslatef(0, delta_time, 0);
-	} else if (y_pos < 0.0 + threshold_y) {
+	} else if (y_pos < threshold_y) {
 		glTranslatef(0, -delta_time, 0);
 	}
 }
