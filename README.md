@@ -1,10 +1,26 @@
 Build with CMake.
 
+## Predefined keys:
+Spawn circle: Q 
+
+Spawn chaotic circle: E
+
+Pause: Space 
+
+Increase simulation speed: Right
+
+Decrease simulation speed: Left
+
+Delete object: X
+
 # Current stage: 
+##Added deleting objects and improved zooming
+![2024-08-23 13-14-51](https://github.com/user-attachments/assets/27825c17-e7e2-42d1-b127-629eff9ffec6)
+
+# Previous stages: 
 ## Added materials and creating new objects 
 ![2024-08-22 12-45-21](https://github.com/user-attachments/assets/2d0bf49b-b899-4450-8219-5abc890e4e5d)
 
-# Previous stages: 
 ## Added changing of simulation speed
 ![2024-07-03 16-53-15](https://github.com/SanchoCC/Simulation/assets/134946556/f03379f6-723f-46a8-8cdc-36ee83e00577)
 
