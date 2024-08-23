@@ -21,6 +21,7 @@ Inputs::Inputs() {
 	actions_.push_back(std::make_pair(&pause_key_, std::bind(&Inputs::Pause, this,_1, _2)));
 	actions_.push_back(std::make_pair(&increase_simulation_speed_key_, std::bind(&Inputs::IncreaseSimulationSpeed, this, _1, _2)));
 	actions_.push_back(std::make_pair(&decrease_simulation_speed_key_, std::bind(&Inputs::DecreaseSimulationSpeed, this, _1, _2)));
+	actions_.push_back(std::make_pair(&delete_object_key_, std::bind(&Inputs::DeleteObject, this, _1, _2)));
 }
 
 void Inputs::CheckInputs(GLFWwindow* window, float& delta_time) {
@@ -84,4 +85,23 @@ void Inputs::DecreaseSimulationSpeed(GLFWwindow* window, float& delta_time) {
 	float& simulation_speed = Settings::Get().world_parameters_.simulation_speed;
 	if (simulation_speed > 0.26f)
 	simulation_speed *= 0.5f;
+}
+
+void Inputs::DeleteObject(GLFWwindow* window, float& delta_time) {
+	std::list<Object*> objects = ObjectHandler::Get().GetObjects();
+	glm::vec2 position = GetCursorWorldPosition(window);
+	Circle* point = new Circle(position.x, position.y, 0.0001f, MaterialType::kDefault);
+	for (auto it = objects.begin(); it != objects.end(); ++it) {
+		auto object = *it;
+		if (object == point) {
+			continue;
+		}
+		int contacts = ObjectHandler::Get().CheckCollision(object, point).contacts.size();
+		ObjectHandler::Get().DeleteObject(point);
+		if (contacts > 0) {
+			ObjectHandler::Get().DeleteObject(object);			
+			break;
+		}
+	}
+
 }

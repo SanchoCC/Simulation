@@ -53,6 +53,14 @@ void ObjectHandler::AddInCreatedObjects(Object* object) {
 	created_objects_.push_back(object);
 }
 
+void ObjectHandler::DeleteObject(Object* object) {
+	objects_.remove(object);	
+}
+
+std::list<Object*> ObjectHandler::GetObjects() {
+	return objects_;
+}
+
 void ObjectHandler::Move(Object* object, float delta_time) {
 	object->AddPosition(object->GetVelocity() * delta_time);
 }
