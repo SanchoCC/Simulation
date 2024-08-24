@@ -1,7 +1,7 @@
 #ifndef SIMULATION_CLASSES_MATH_DEFINES_H_
 #define SIMULATION_CLASSES_MATH_DEFINES_H_
 
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 namespace sim {
 	float Cross2D(const glm::vec2& vector1, const glm::vec2& vector2);

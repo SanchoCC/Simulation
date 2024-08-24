@@ -15,6 +15,7 @@ enum class MaterialType {
 class Material {
 public:
     Material();
+    Material(MaterialType material_type);
 
     void SetMaterial(MaterialType material_type);
     Color GetColor() const;

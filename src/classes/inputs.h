@@ -2,7 +2,6 @@
 #define SIMULATION_CLASSES_INPUTS_H_
 
 #include <vector>
-#include <string>
 #include <functional>
 
 #include <glad/glad.h>

@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
