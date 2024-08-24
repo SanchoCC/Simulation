@@ -16,7 +16,8 @@ Object::Object(float position_x, float position_y, MaterialType material_type) {
 Object::~Object() = default;
 
 void Object::Render() const {
-	glColor3f(material_.GetColor().GetRed(), material_.GetColor().GetGreen(), material_.GetColor().GetBlue());
+	glm::vec3 color = material_.GetColor().GetColor();
+	glColor3f(color.r, color.g, color.b);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, vertices_.data());
 	glDrawArrays(GL_POLYGON, 0, vertices_.size());
@@ -101,6 +102,6 @@ Material Object::GetMaterial() const {
 	return material_;
 }
 
-void Object::SetMaterial(MaterialType material_type) {
-	material_.SetMaterial(material_type);
+void Object::SetMaterial(Material material) {
+	material_ = material;
 }

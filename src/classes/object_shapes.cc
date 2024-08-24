@@ -2,7 +2,6 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
-#include <memory>
 #include <random>
 
 #include <glad/glad.h>
@@ -21,8 +20,9 @@ Circle::~Circle() = default;
 
 void Circle::Render() const {
 	Object::Render();
-
-	glColor3f(material_.GetColor().GetRed() * 0.5f, material_.GetColor().GetGreen() * 0.5f, material_.GetColor().GetBlue() * 0.5f);
+	glm::vec3 color = material_.GetColor().GetColor();
+	color *= 0.5f;
+	glColor3f(color.r, color.g, color.b);
 	glBegin(GL_TRIANGLES);
 	glVertex2f(position_.x, position_.y);
 	glVertex2f(vertices_[0].x, vertices_[0].y);
@@ -54,7 +54,7 @@ void Circle::UpdateVertices() {
 	} else {
 		koef += std::logf(radius_) / std::logf(100.0f);
 	}
-	int sides = kCircleSides * (koef + kMinSidesKoef);
+	int sides = std::roundf(kCircleSides * (koef + kMinSidesKoef));
 	for (int i = 0; i < sides; ++i) {
 		float theta = 2.0f * M_PI * i / sides + rotation_angle_;
 		vertices_.push_back(glm::vec2(radius_ * cosf(theta) + position_.x, radius_ * sinf(theta) + position_.y));

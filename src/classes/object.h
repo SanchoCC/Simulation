@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 #include "settings.h"
 #include "material.h"
@@ -49,9 +49,9 @@ class Object {
 	float GetAngularVelocity() const;
 	void AddAngularVelocity(float angular_velocity);
 	void SetAngularVelocity(float angular_velocity);
-
-	void SetMaterial(MaterialType material_type);
+	
 	Material GetMaterial() const;
+	void SetMaterial(Material material);
  protected:	
 
 	glm::vec2 position_{0, 0};
